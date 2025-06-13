@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Camera, Upload, Download, Share2, Sparkles, Dna, Instagram, AlertCircle, Users, MessageCircle, Facebook, Twitter } from 'lucide-react';
+import { Camera, Upload, Download, Share2, Sparkles, Dna, Instagram, AlertCircle, Heart, MessageCircle, Facebook, Twitter } from 'lucide-react';
 
 interface PhotoSlot {
   id: string;
@@ -222,7 +222,12 @@ function App() {
               <span className="text-green-400 font-semibold">Tecnologia AI Avançada</span>
             </div>
             <div className="flex items-center space-x-2">
-              <Users className="w-6 h-6 text-cyan-400" />
+              {/* Ícones fofos de cachorro e gato */}
+              <div className="flex items-center space-x-1">
+                <span className="text-2xl animate-bounce">🐕</span>
+                <Heart className="w-4 h-4 text-pink-400 animate-pulse" />
+                <span className="text-2xl animate-bounce delay-150">🐱</span>
+              </div>
               <span className="text-cyan-400 font-semibold">{petCount.toLocaleString()} pets já transformados!</span>
             </div>
           </div>
@@ -305,7 +310,7 @@ function App() {
               </div>
             </section>
 
-            {/* Transform Button */}
+            {/* Transform Button - NUNCA CINZA, SEMPRE VIBRANTE */}
             {!showPetDetails && (
               <div className="text-center mb-16">
                 <button
@@ -315,23 +320,28 @@ function App() {
                     group relative inline-flex items-center justify-center px-16 py-8 text-2xl font-black rounded-3xl
                     transition-all duration-500 transform hover:scale-110 active:scale-95 overflow-hidden
                     ${hasRequiredPhotos
-                      ? 'bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 text-white shadow-2xl shadow-cyan-500/50 hover:shadow-cyan-400/70'
-                      : 'bg-gray-600 text-gray-400 cursor-not-allowed'
+                      ? 'tech-button-enabled'
+                      : 'opacity-50 cursor-not-allowed bg-gradient-to-r from-gray-700 to-gray-800'
                     }
                   `}
+                  style={hasRequiredPhotos ? {
+                    background: 'linear-gradient(90deg, #3ECFFF 0%, #A259FF 50%, #FF61D2 100%)',
+                    boxShadow: '0 0 16px 2px rgba(162, 89, 255, 0.5), 0 0 40px 4px rgba(67, 246, 225, 0.6), 0 0 60px 6px rgba(255, 97, 210, 0.4)',
+                    color: '#fff',
+                    fontWeight: 'bold'
+                  } : {}}
                 >
-                  {/* Animated shimmer effect */}
+                  {/* Animated shimmer effect - SEMPRE ATIVO quando habilitado */}
                   {hasRequiredPhotos && (
-                    <div className="absolute inset-0 -top-2 -bottom-2 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12 animate-shimmer"></div>
+                    <div className="absolute inset-0 -top-2 -bottom-2 bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-12 animate-shimmer"></div>
                   )}
                   
-                  {/* Multiple glow layers - always visible when enabled */}
+                  {/* Multiple glow layers - SEMPRE VISÍVEIS quando habilitado */}
                   {hasRequiredPhotos && (
                     <>
-                      <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 opacity-60 blur-lg animate-pulse"></div>
-                      <div className="absolute -inset-2 rounded-3xl bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 opacity-40 blur-xl animate-pulse delay-75"></div>
-                      <div className="absolute -inset-3 rounded-3xl bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 opacity-25 blur-2xl animate-pulse delay-150"></div>
-                      <div className="absolute -inset-4 rounded-3xl bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 opacity-15 blur-3xl animate-pulse delay-300"></div>
+                      <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 opacity-70 blur-lg animate-pulse"></div>
+                      <div className="absolute -inset-2 rounded-3xl bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 opacity-50 blur-xl animate-pulse delay-75"></div>
+                      <div className="absolute -inset-3 rounded-3xl bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 opacity-30 blur-2xl animate-pulse delay-150"></div>
                     </>
                   )}
                   

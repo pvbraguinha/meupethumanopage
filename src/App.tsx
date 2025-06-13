@@ -310,47 +310,50 @@ function App() {
               </div>
             </section>
 
-            {/* Transform Button - NUNCA CINZA, SEMPRE VIBRANTE */}
+            {/* Transform Button - BOTÃO MÁGICO ARCO-ÍRIS! */}
             {!showPetDetails && (
               <div className="text-center mb-16">
                 <button
                   onClick={handleShowPetDetails}
                   disabled={!hasRequiredPhotos}
                   className={`
-                    group relative inline-flex items-center justify-center px-16 py-8 text-2xl font-black rounded-3xl
-                    transition-all duration-500 transform hover:scale-110 active:scale-95 overflow-hidden
-                    ${hasRequiredPhotos
-                      ? 'tech-button-enabled'
-                      : 'opacity-50 cursor-not-allowed bg-gradient-to-r from-gray-700 to-gray-800'
-                    }
+                    magical-rainbow-button group relative inline-flex items-center justify-center 
+                    px-16 py-8 text-2xl font-black rounded-full
+                    transition-all duration-500 transform hover:scale-110 active:scale-95 
+                    overflow-hidden shadow-2xl
+                    ${hasRequiredPhotos ? 'cursor-pointer' : 'opacity-50 cursor-not-allowed'}
                   `}
                   style={hasRequiredPhotos ? {
-                    background: 'linear-gradient(90deg, #3ECFFF 0%, #A259FF 50%, #FF61D2 100%)',
-                    boxShadow: '0 0 16px 2px rgba(162, 89, 255, 0.5), 0 0 40px 4px rgba(67, 246, 225, 0.6), 0 0 60px 6px rgba(255, 97, 210, 0.4)',
-                    color: '#fff',
-                    fontWeight: 'bold'
-                  } : {}}
+                    background: 'linear-gradient(45deg, #3ECFFF 0%, #A259FF 25%, #FF61D2 50%, #43F6E1 75%, #3ECFFF 100%)',
+                    backgroundSize: '400% 400%',
+                    animation: 'rainbow-flow 3s ease-in-out infinite, magical-glow 2s ease-in-out infinite',
+                    boxShadow: `
+                      0 0 30px rgba(62, 207, 255, 0.8),
+                      0 0 60px rgba(162, 89, 255, 0.6),
+                      0 0 90px rgba(255, 97, 210, 0.4),
+                      0 0 120px rgba(67, 246, 225, 0.3)
+                    `,
+                    border: '3px solid rgba(255, 255, 255, 0.3)',
+                    color: '#fff'
+                  } : {
+                    background: 'linear-gradient(45deg, #666 0%, #888 50%, #666 100%)',
+                    color: '#ccc'
+                  }}
                 >
-                  {/* Animated shimmer effect - SEMPRE ATIVO quando habilitado */}
-                  {hasRequiredPhotos && (
-                    <div className="absolute inset-0 -top-2 -bottom-2 bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-12 animate-shimmer"></div>
-                  )}
-                  
-                  {/* Multiple glow layers - SEMPRE VISÍVEIS quando habilitado */}
+                  {/* Shimmer effect - SEMPRE ATIVO */}
                   {hasRequiredPhotos && (
                     <>
-                      <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 opacity-70 blur-lg animate-pulse"></div>
-                      <div className="absolute -inset-2 rounded-3xl bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 opacity-50 blur-xl animate-pulse delay-75"></div>
-                      <div className="absolute -inset-3 rounded-3xl bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 opacity-30 blur-2xl animate-pulse delay-150"></div>
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-12 animate-shimmer-fast"></div>
+                      <div className="absolute inset-0 bg-gradient-to-l from-transparent via-cyan-300/30 to-transparent animate-pulse"></div>
                     </>
                   )}
                   
                   <div className="relative flex items-center z-10">
-                    <Sparkles className="w-8 h-8 mr-4 animate-spin group-hover:animate-pulse" />
-                    <span className="bg-gradient-to-r from-white to-cyan-100 bg-clip-text text-transparent font-black tracking-wide">
-                      Transformar em Humano
+                    <Sparkles className="w-10 h-10 mr-4 animate-spin text-white drop-shadow-lg" />
+                    <span className="font-black tracking-wide text-white drop-shadow-lg">
+                      ✨ Transformar em Humano ✨
                     </span>
-                    <span className="ml-3 text-3xl animate-pulse">🧬</span>
+                    <span className="ml-4 text-4xl animate-bounce">🦄</span>
                   </div>
                 </button>
               </div>

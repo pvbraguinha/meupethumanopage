@@ -313,28 +313,34 @@ function App() {
                   disabled={!hasRequiredPhotos}
                   className={`
                     group relative inline-flex items-center justify-center px-16 py-8 text-2xl font-black rounded-3xl
-                    transition-all duration-500 transform hover:scale-110 active:scale-95
+                    transition-all duration-500 transform hover:scale-110 active:scale-95 overflow-hidden
                     ${hasRequiredPhotos
-                      ? 'bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 text-white shadow-2xl shadow-cyan-500/50 animate-pulse hover:shadow-cyan-400/70'
+                      ? 'bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 text-white shadow-2xl shadow-cyan-500/50 hover:shadow-cyan-400/70'
                       : 'bg-gray-600 text-gray-400 cursor-not-allowed'
                     }
                   `}
                 >
-                  {/* Glow effects - sempre visíveis quando habilitado */}
+                  {/* Animated shimmer effect */}
+                  {hasRequiredPhotos && (
+                    <div className="absolute inset-0 -top-2 -bottom-2 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12 animate-shimmer"></div>
+                  )}
+                  
+                  {/* Multiple glow layers - always visible when enabled */}
                   {hasRequiredPhotos && (
                     <>
-                      <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 opacity-40 blur-lg animate-pulse"></div>
-                      <div className="absolute -inset-2 rounded-3xl bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 opacity-25 blur-2xl animate-pulse delay-75"></div>
-                      <div className="absolute -inset-3 rounded-3xl bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 opacity-15 blur-3xl animate-pulse delay-150"></div>
+                      <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 opacity-60 blur-lg animate-pulse"></div>
+                      <div className="absolute -inset-2 rounded-3xl bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 opacity-40 blur-xl animate-pulse delay-75"></div>
+                      <div className="absolute -inset-3 rounded-3xl bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 opacity-25 blur-2xl animate-pulse delay-150"></div>
+                      <div className="absolute -inset-4 rounded-3xl bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 opacity-15 blur-3xl animate-pulse delay-300"></div>
                     </>
                   )}
                   
                   <div className="relative flex items-center z-10">
                     <Sparkles className="w-8 h-8 mr-4 animate-spin group-hover:animate-pulse" />
-                    <span className="bg-gradient-to-r from-white to-cyan-100 bg-clip-text text-transparent font-black">
+                    <span className="bg-gradient-to-r from-white to-cyan-100 bg-clip-text text-transparent font-black tracking-wide">
                       Transformar em Humano
                     </span>
-                    <span className="ml-3 text-3xl">🧬</span>
+                    <span className="ml-3 text-3xl animate-pulse">🧬</span>
                   </div>
                 </button>
               </div>

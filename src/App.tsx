@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Camera, Upload, Download, Share2, Sparkles, Dna, Instagram, AlertCircle, Users } from 'lucide-react';
+import { Camera, Upload, Download, Share2, Sparkles, Dna, Instagram, AlertCircle, Users, MessageCircle, Facebook, Twitter } from 'lucide-react';
 
 interface PhotoSlot {
   id: string;
@@ -154,13 +154,32 @@ function App() {
   };
 
   const handleShare = (platform: string) => {
-    const text = encodeURIComponent('Olha como meu pet ficaria como humano! 🐕➡️👤');
-    const url = encodeURIComponent(window.location.href);
+    if (!result?.result_url) {
+      setError('Não há imagem para compartilhar. Transforme seu pet primeiro!');
+      return;
+    }
+
+    const shareText = 'A IA transformou meu pet em humano! 😱✨ Descubra como seu pet ficaria: meupethumano.com';
+    const encodedText = encodeURIComponent(shareText);
+    const currentUrl = encodeURIComponent(window.location.href);
+    const imageUrl = encodeURIComponent(result.result_url);
     
-    if (platform === 'instagram') {
-      alert('Baixe a imagem e compartilhe no Instagram Stories!');
-    } else if (platform === 'tiktok') {
-      window.open(`https://www.tiktok.com/share?text=${text}&url=${url}`, '_blank');
+    switch (platform) {
+      case 'whatsapp':
+        window.open(`https://wa.me/?text=${encodedText}%20${imageUrl}`, '_blank');
+        break;
+      case 'facebook':
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${currentUrl}&quote=${encodedText}`, '_blank');
+        break;
+      case 'twitter':
+        window.open(`https://twitter.com/intent/tweet?text=${encodedText}&url=${currentUrl}`, '_blank');
+        break;
+      case 'instagram':
+        alert('📸 Para compartilhar no Instagram:\n\n1. Baixe a imagem usando o botão "Baixar Imagem"\n2. Abra o Instagram\n3. Crie um novo post ou story\n4. Adicione a imagem baixada\n5. Use o texto: "' + shareText + '"');
+        break;
+      case 'tiktok':
+        alert('🎵 Para compartilhar no TikTok:\n\n1. Baixe a imagem usando o botão "Baixar Imagem"\n2. Abra o TikTok\n3. Crie um novo vídeo\n4. Adicione a imagem como fundo\n5. Use o texto: "' + shareText + '"');
+        break;
     }
   };
 
@@ -296,26 +315,27 @@ function App() {
                     group relative inline-flex items-center justify-center px-16 py-8 text-2xl font-black rounded-3xl
                     transition-all duration-500 transform hover:scale-110 active:scale-95
                     ${hasRequiredPhotos
-                      ? 'bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 hover:from-cyan-300 hover:via-blue-400 hover:to-purple-500 text-white shadow-2xl shadow-cyan-500/40 hover:shadow-cyan-400/60 animate-pulse hover:animate-none'
+                      ? 'bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 text-white shadow-2xl shadow-cyan-500/50 animate-pulse hover:shadow-cyan-400/70'
                       : 'bg-gray-600 text-gray-400 cursor-not-allowed'
                     }
                   `}
                 >
-                  <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl"></div>
-                  <div className="relative flex items-center">
+                  {/* Glow effects - sempre visíveis quando habilitado */}
+                  {hasRequiredPhotos && (
+                    <>
+                      <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 opacity-40 blur-lg animate-pulse"></div>
+                      <div className="absolute -inset-2 rounded-3xl bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 opacity-25 blur-2xl animate-pulse delay-75"></div>
+                      <div className="absolute -inset-3 rounded-3xl bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 opacity-15 blur-3xl animate-pulse delay-150"></div>
+                    </>
+                  )}
+                  
+                  <div className="relative flex items-center z-10">
                     <Sparkles className="w-8 h-8 mr-4 animate-spin group-hover:animate-pulse" />
-                    <span className="bg-gradient-to-r from-white to-cyan-100 bg-clip-text text-transparent">
+                    <span className="bg-gradient-to-r from-white to-cyan-100 bg-clip-text text-transparent font-black">
                       Transformar em Humano
                     </span>
                     <span className="ml-3 text-3xl">🧬</span>
                   </div>
-                  
-                  {hasRequiredPhotos && (
-                    <>
-                      <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 opacity-30 blur-lg animate-pulse"></div>
-                      <div className="absolute -inset-2 rounded-3xl bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 opacity-20 blur-2xl animate-pulse delay-75"></div>
-                    </>
-                  )}
                 </button>
               </div>
             )}
@@ -503,30 +523,73 @@ function App() {
               )}
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+            {/* Download Button */}
+            <div className="mb-8">
               <button
                 onClick={handleDownload}
-                className="flex items-center justify-center px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-400 hover:to-emerald-500 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105"
+                className="flex items-center justify-center px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-400 hover:to-emerald-500 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 mx-auto"
               >
                 <Download className="w-5 h-5 mr-2" />
                 Baixar Imagem
               </button>
+            </div>
+
+            {/* Social Sharing Section */}
+            <div className="mb-8">
+              <h3 className="text-xl font-bold mb-6 text-cyan-300">
+                🚀 Compartilhe sua transformação!
+              </h3>
               
-              <button
-                onClick={() => handleShare('instagram')}
-                className="flex items-center justify-center px-8 py-4 bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-400 hover:to-rose-500 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105"
-              >
-                <Instagram className="w-5 h-5 mr-2" />
-                Instagram
-              </button>
-              
-              <button
-                onClick={() => handleShare('tiktok')}
-                className="flex items-center justify-center px-8 py-4 bg-gradient-to-r from-purple-500 to-violet-600 hover:from-purple-400 hover:to-violet-500 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105"
-              >
-                <Share2 className="w-5 h-5 mr-2" />
-                TikTok
-              </button>
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-4 max-w-lg mx-auto">
+                {/* WhatsApp */}
+                <button
+                  onClick={() => handleShare('whatsapp')}
+                  className="group flex flex-col items-center justify-center p-4 bg-gradient-to-br from-green-500 to-green-600 hover:from-green-400 hover:to-green-500 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-green-500/30"
+                >
+                  <MessageCircle className="w-8 h-8 text-white mb-2 group-hover:animate-bounce" />
+                  <span className="text-xs font-semibold text-white">WhatsApp</span>
+                </button>
+
+                {/* Facebook */}
+                <button
+                  onClick={() => handleShare('facebook')}
+                  className="group flex flex-col items-center justify-center p-4 bg-gradient-to-br from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-blue-500/30"
+                >
+                  <Facebook className="w-8 h-8 text-white mb-2 group-hover:animate-bounce" />
+                  <span className="text-xs font-semibold text-white">Facebook</span>
+                </button>
+
+                {/* Twitter/X */}
+                <button
+                  onClick={() => handleShare('twitter')}
+                  className="group flex flex-col items-center justify-center p-4 bg-gradient-to-br from-gray-800 to-black hover:from-gray-700 hover:to-gray-900 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-gray-500/30"
+                >
+                  <Twitter className="w-8 h-8 text-white mb-2 group-hover:animate-bounce" />
+                  <span className="text-xs font-semibold text-white">X</span>
+                </button>
+
+                {/* Instagram */}
+                <button
+                  onClick={() => handleShare('instagram')}
+                  className="group flex flex-col items-center justify-center p-4 bg-gradient-to-br from-pink-500 via-red-500 to-yellow-500 hover:from-pink-400 hover:via-red-400 hover:to-yellow-400 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-pink-500/30"
+                >
+                  <Instagram className="w-8 h-8 text-white mb-2 group-hover:animate-bounce" />
+                  <span className="text-xs font-semibold text-white">Instagram</span>
+                </button>
+
+                {/* TikTok */}
+                <button
+                  onClick={() => handleShare('tiktok')}
+                  className="group flex flex-col items-center justify-center p-4 bg-gradient-to-br from-black via-red-600 to-cyan-400 hover:from-gray-900 hover:via-red-500 hover:to-cyan-300 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-red-500/30"
+                >
+                  <Share2 className="w-8 h-8 text-white mb-2 group-hover:animate-bounce" />
+                  <span className="text-xs font-semibold text-white">TikTok</span>
+                </button>
+              </div>
+
+              <p className="text-sm text-gray-400 mt-4 max-w-md mx-auto">
+                💡 Para Instagram e TikTok: baixe a imagem e compartilhe manualmente no app
+              </p>
             </div>
 
             <button

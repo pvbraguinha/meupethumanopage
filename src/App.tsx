@@ -328,12 +328,6 @@ function App() {
                     </span>
                   </div>
                 </button>
-
-                {!hasRequiredPhotos && (
-                  <p className="mt-6 text-gray-400 text-lg">
-                    📸 Envie pelo menos a foto frontal para continuar
-                  </p>
-                )}
               </div>
             )}
 

@@ -26,6 +26,7 @@ interface TransformResult {
   output_url?: string;
   image?: string;
   transformed_image?: string;
+  transform_pet_humano?: string; // CAMPO CORRETO DO BACKEND
   message?: string;
 }
 
@@ -128,12 +129,21 @@ function App() {
       formData.append('age', petDetails.age.toString());
       formData.append('session', `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
 
+      console.log('Enviando dados para API:', {
+        especie: petDetails.especie,
+        breed: petDetails.breed,
+        sex: petDetails.sex,
+        age: petDetails.age,
+        photos: photos.filter(p => p.file).map(p => p.id)
+      });
+
       const response = await fetch('https://smartdog-backend-vlm0.onrender.com/api/upload-pet-images', {
         method: 'POST',
         body: formData,
       });
 
       const data = await response.json();
+      console.log('Resposta da API:', data);
 
       if (response.ok) {
         setResult(data);
@@ -203,12 +213,13 @@ function App() {
     setImageError(false);
   };
 
-  // Função para obter a URL da imagem transformada
+  // Função para obter a URL da imagem transformada - PRIORIZA transform_pet_humano
   const getImageUrl = (): string | null => {
     if (!result) return null;
     
-    // Tentar diferentes campos possíveis da resposta do backend
-    return result.result_url || 
+    // PRIORIDADE: transform_pet_humano (campo correto do backend)
+    return result.transform_pet_humano || 
+           result.result_url || 
            result.output_url || 
            result.image || 
            result.transformed_image || 
@@ -218,16 +229,30 @@ function App() {
   const handleImageLoad = () => {
     setImageLoaded(true);
     setImageError(false);
+    console.log('Imagem carregada com sucesso!');
   };
 
   const handleImageError = () => {
     setImageLoaded(false);
     setImageError(true);
+    console.error('Erro ao carregar imagem:', getImageUrl());
   };
 
   const hasRequiredPhotos = photos.find(p => p.id === 'frontal')?.file !== null;
   const imageUrl = getImageUrl();
   const canShowButtons = imageUrl && imageLoaded && !imageError;
+
+  // Debug: Log da resposta da API
+  useEffect(() => {
+    if (result) {
+      console.log('=== DEBUG RESPOSTA API ===');
+      console.log('Resposta completa:', result);
+      console.log('transform_pet_humano:', result.transform_pet_humano);
+      console.log('result_url:', result.result_url);
+      console.log('URL escolhida:', getImageUrl());
+      console.log('========================');
+    }
+  }, [result]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900 text-white overflow-hidden">

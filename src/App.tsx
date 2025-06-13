@@ -310,19 +310,13 @@ function App() {
               </div>
             </section>
 
-            {/* Transform Button - BOTÃO MÁGICO ARCO-ÍRIS SEMPRE COLORIDO! */}
+            {/* Transform Button - BOTÃO SEMPRE COLORIDO! */}
             {!showPetDetails && (
               <div className="text-center mb-16">
                 <button
                   onClick={handleShowPetDetails}
                   disabled={!hasRequiredPhotos}
-                  className={`
-                    magical-rainbow-button group relative inline-flex items-center justify-center 
-                    px-16 py-8 text-2xl font-black rounded-full
-                    transition-all duration-500 transform hover:scale-110 active:scale-95 
-                    overflow-hidden shadow-2xl
-                    ${hasRequiredPhotos ? 'cursor-pointer' : 'opacity-50 cursor-not-allowed'}
-                  `}
+                  className="perfect-colorful-button group relative inline-flex items-center justify-center px-16 py-8 text-2xl font-black rounded-full transition-all duration-500 transform hover:scale-110 active:scale-95 overflow-hidden shadow-2xl"
                 >
                   {/* Shimmer overlay sempre ativo */}
                   <div className="shimmer-overlay"></div>
@@ -332,7 +326,6 @@ function App() {
                     <span className="font-black tracking-wide text-white drop-shadow-lg">
                       ✨ Transformar em Humano ✨
                     </span>
-                    <span className="ml-4 text-4xl animate-bounce">🦄</span>
                   </div>
                 </button>
 

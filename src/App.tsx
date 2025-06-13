@@ -226,7 +226,7 @@ function App() {
               <div className="flex items-center space-x-1">
                 <span className="text-2xl animate-bounce">🐕</span>
                 <Heart className="w-4 h-4 text-pink-400 animate-pulse" />
-                <span className="text-2xl animate-bounce delay-150">🐱</span>
+                <span className="text-2xl animate-bounce delay-150">😺</span>
               </div>
               <span className="text-cyan-400 font-semibold">{petCount.toLocaleString()} pets já transformados!</span>
             </div>
@@ -260,7 +260,6 @@ function App() {
                     <div className="text-center mb-4">
                       <h3 className="text-lg font-semibold text-white mb-1 flex items-center justify-center">
                         {photo.label}
-                        {photo.required && <span className="text-red-400 ml-1">*</span>}
                       </h3>
                       <p className="text-sm text-gray-400">{photo.description}</p>
                     </div>

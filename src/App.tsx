@@ -293,27 +293,30 @@ function App() {
                   onClick={handleShowPetDetails}
                   disabled={!hasRequiredPhotos}
                   className={`
-                    group relative inline-flex items-center justify-center px-12 py-6 text-xl font-bold rounded-2xl
-                    transition-all duration-300 transform hover:scale-105
+                    group relative inline-flex items-center justify-center px-16 py-8 text-2xl font-black rounded-3xl
+                    transition-all duration-500 transform hover:scale-110 active:scale-95
                     ${hasRequiredPhotos
-                      ? 'bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white shadow-lg shadow-cyan-500/25 animate-pulse hover:animate-none'
+                      ? 'bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 hover:from-cyan-300 hover:via-blue-400 hover:to-purple-500 text-white shadow-2xl shadow-cyan-500/40 hover:shadow-cyan-400/60 animate-pulse hover:animate-none'
                       : 'bg-gray-600 text-gray-400 cursor-not-allowed'
                     }
                   `}
                 >
-                  <Sparkles className="w-6 h-6 mr-3" />
-                  Transformar em Humano 🧬
+                  <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl"></div>
+                  <div className="relative flex items-center">
+                    <Sparkles className="w-8 h-8 mr-4 animate-spin group-hover:animate-pulse" />
+                    <span className="bg-gradient-to-r from-white to-cyan-100 bg-clip-text text-transparent">
+                      Transformar em Humano
+                    </span>
+                    <span className="ml-3 text-3xl">🧬</span>
+                  </div>
                   
                   {hasRequiredPhotos && (
-                    <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-cyan-500 to-purple-600 opacity-75 blur-xl animate-pulse"></div>
+                    <>
+                      <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 opacity-30 blur-lg animate-pulse"></div>
+                      <div className="absolute -inset-2 rounded-3xl bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 opacity-20 blur-2xl animate-pulse delay-75"></div>
+                    </>
                   )}
                 </button>
-
-                {!hasRequiredPhotos && (
-                  <p className="mt-4 text-gray-400">
-                    Envie pelo menos a foto frontal para continuar
-                  </p>
-                )}
               </div>
             )}
 

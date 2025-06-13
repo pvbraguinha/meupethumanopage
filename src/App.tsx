@@ -23,6 +23,9 @@ interface TransformResult {
   angulo_url?: string;
   prompt?: string;
   result_url?: string;
+  output_url?: string;
+  image?: string;
+  transformed_image?: string;
   message?: string;
 }
 
@@ -46,6 +49,8 @@ function App() {
   const [error, setError] = useState<string | null>(null);
   const [petCount, setPetCount] = useState<number>(0);
   const [termsAccepted, setTermsAccepted] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
   
   const fileInputRefs = useRef<{ [key: string]: HTMLInputElement | null }>({});
 
@@ -103,6 +108,8 @@ function App() {
 
     setIsProcessing(true);
     setError(null);
+    setImageLoaded(false);
+    setImageError(false);
 
     try {
       const formData = new FormData();
@@ -144,9 +151,10 @@ function App() {
   };
 
   const handleDownload = () => {
-    if (result?.result_url) {
+    const imageUrl = getImageUrl();
+    if (imageUrl) {
       const link = document.createElement('a');
-      link.href = result.result_url;
+      link.href = imageUrl;
       link.download = 'meu-pet-humano.jpg';
       link.target = '_blank';
       link.click();
@@ -154,19 +162,20 @@ function App() {
   };
 
   const handleShare = (platform: string) => {
-    if (!result?.result_url) {
+    const imageUrl = getImageUrl();
+    if (!imageUrl) {
       setError('Não há imagem para compartilhar. Transforme seu pet primeiro!');
       return;
     }
 
-    const shareText = 'A IA transformou meu pet em humano! 😱✨ Descubra como seu pet ficaria: meupethumano.com';
+    const shareText = 'Veja como meu pet ficaria na versão humana! 🧬 Teste grátis em meupethumano.com';
     const encodedText = encodeURIComponent(shareText);
     const currentUrl = encodeURIComponent(window.location.href);
-    const imageUrl = encodeURIComponent(result.result_url);
+    const encodedImageUrl = encodeURIComponent(imageUrl);
     
     switch (platform) {
       case 'whatsapp':
-        window.open(`https://wa.me/?text=${encodedText}%20${imageUrl}`, '_blank');
+        window.open(`https://wa.me/?text=${encodedText}%20${encodedImageUrl}`, '_blank');
         break;
       case 'facebook':
         window.open(`https://www.facebook.com/sharer/sharer.php?u=${currentUrl}&quote=${encodedText}`, '_blank');
@@ -190,9 +199,35 @@ function App() {
     setShowPetDetails(false);
     setTermsAccepted(false);
     setError(null);
+    setImageLoaded(false);
+    setImageError(false);
+  };
+
+  // Função para obter a URL da imagem transformada
+  const getImageUrl = (): string | null => {
+    if (!result) return null;
+    
+    // Tentar diferentes campos possíveis da resposta do backend
+    return result.result_url || 
+           result.output_url || 
+           result.image || 
+           result.transformed_image || 
+           null;
+  };
+
+  const handleImageLoad = () => {
+    setImageLoaded(true);
+    setImageError(false);
+  };
+
+  const handleImageError = () => {
+    setImageLoaded(false);
+    setImageError(true);
   };
 
   const hasRequiredPhotos = photos.find(p => p.id === 'frontal')?.file !== null;
+  const imageUrl = getImageUrl();
+  const canShowButtons = imageUrl && imageLoaded && !imageError;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900 text-white overflow-hidden">
@@ -479,8 +514,8 @@ function App() {
                     <Dna className="w-16 h-16 text-cyan-400 mx-auto animate-spin" />
                     <div className="absolute inset-0 bg-cyan-400/20 rounded-full blur-xl animate-pulse"></div>
                   </div>
-                  <h3 className="text-2xl font-bold mb-4 text-cyan-300">Transformando seu pet...</h3>
-                  <p className="text-gray-300 mb-6">Nossa IA está analisando as características do seu pet e criando a versão humana!</p>
+                  <h3 className="text-2xl font-bold mb-4 text-cyan-300">Transformando em humano</h3>
+                  <p className="text-gray-300 mb-6">Pode demorar aproximadamente 2 minutos.</p>
                   <div className="w-full bg-gray-700 rounded-full h-2 overflow-hidden">
                     <div className="bg-gradient-to-r from-cyan-400 to-purple-500 h-full rounded-full animate-pulse w-3/4"></div>
                   </div>
@@ -496,19 +531,51 @@ function App() {
             </h2>
             
             <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 mb-8">
-              {result.result_url ? (
-                <img 
-                  src={result.result_url} 
-                  alt="Pet transformado em humano"
-                  className="w-full max-w-md mx-auto rounded-xl shadow-2xl shadow-cyan-500/20"
-                />
+              {imageUrl ? (
+                <div className="relative">
+                  <img 
+                    src={imageUrl} 
+                    alt="Pet transformado em humano"
+                    className="w-full max-w-md mx-auto rounded-xl shadow-2xl shadow-cyan-500/20"
+                    onLoad={handleImageLoad}
+                    onError={handleImageError}
+                    style={{ display: imageError ? 'none' : 'block' }}
+                  />
+                  {imageError && (
+                    <div className="w-full max-w-md mx-auto h-64 flex items-center justify-center">
+                      <div className="text-center">
+                        <AlertCircle className="w-16 h-16 text-red-400 mx-auto mb-4" />
+                        <p className="text-red-300 text-lg font-semibold">
+                          Ocorreu um erro ao transformar a imagem. Por favor, tente novamente.
+                        </p>
+                        <button
+                          onClick={resetApp}
+                          className="mt-4 px-6 py-2 bg-red-500 hover:bg-red-400 rounded-lg transition-colors"
+                        >
+                          Tentar Novamente
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
               ) : (
-                <div className="w-full max-w-md mx-auto h-64 bg-gray-700 rounded-xl flex items-center justify-center">
-                  <p className="text-gray-400">Imagem não disponível</p>
+                <div className="w-full max-w-md mx-auto h-64 flex items-center justify-center">
+                  <div className="text-center">
+                    <AlertCircle className="w-16 h-16 text-red-400 mx-auto mb-4" />
+                    <p className="text-red-300 text-lg font-semibold">
+                      Ocorreu um erro ao transformar a imagem. Por favor, tente novamente.
+                    </p>
+                    <button
+                      onClick={resetApp}
+                      className="mt-4 px-6 py-2 bg-red-500 hover:bg-red-400 rounded-lg transition-colors"
+                    >
+                      Tentar Novamente
+                    </button>
+                  </div>
                 </div>
               )}
               
-              {result.prompt && (
+              {result.prompt && canShowButtons && (
                 <div className="mt-6 p-4 bg-white/5 rounded-xl">
                   <h4 className="text-sm font-semibold text-cyan-300 mb-2">Prompt usado:</h4>
                   <p className="text-sm text-gray-300">{result.prompt}</p>
@@ -516,74 +583,78 @@ function App() {
               )}
             </div>
 
-            {/* Download Button */}
-            <div className="mb-8">
-              <button
-                onClick={handleDownload}
-                className="flex items-center justify-center px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-400 hover:to-emerald-500 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 mx-auto"
-              >
-                <Download className="w-5 h-5 mr-2" />
-                Baixar Imagem
-              </button>
-            </div>
-
-            {/* Social Sharing Section */}
-            <div className="mb-8">
-              <h3 className="text-xl font-bold mb-6 text-cyan-300">
-                🚀 Compartilhe sua transformação!
-              </h3>
-              
-              <div className="grid grid-cols-2 md:grid-cols-5 gap-4 max-w-lg mx-auto">
-                {/* WhatsApp */}
+            {/* Download Button - só aparece se imagem carregou */}
+            {canShowButtons && (
+              <div className="mb-8">
                 <button
-                  onClick={() => handleShare('whatsapp')}
-                  className="group flex flex-col items-center justify-center p-4 bg-gradient-to-br from-green-500 to-green-600 hover:from-green-400 hover:to-green-500 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-green-500/30"
+                  onClick={handleDownload}
+                  className="flex items-center justify-center px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-400 hover:to-emerald-500 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 mx-auto"
                 >
-                  <MessageCircle className="w-8 h-8 text-white mb-2 group-hover:animate-bounce" />
-                  <span className="text-xs font-semibold text-white">WhatsApp</span>
-                </button>
-
-                {/* Facebook */}
-                <button
-                  onClick={() => handleShare('facebook')}
-                  className="group flex flex-col items-center justify-center p-4 bg-gradient-to-br from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-blue-500/30"
-                >
-                  <Facebook className="w-8 h-8 text-white mb-2 group-hover:animate-bounce" />
-                  <span className="text-xs font-semibold text-white">Facebook</span>
-                </button>
-
-                {/* Twitter/X */}
-                <button
-                  onClick={() => handleShare('twitter')}
-                  className="group flex flex-col items-center justify-center p-4 bg-gradient-to-br from-gray-800 to-black hover:from-gray-700 hover:to-gray-900 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-gray-500/30"
-                >
-                  <Twitter className="w-8 h-8 text-white mb-2 group-hover:animate-bounce" />
-                  <span className="text-xs font-semibold text-white">X</span>
-                </button>
-
-                {/* Instagram */}
-                <button
-                  onClick={() => handleShare('instagram')}
-                  className="group flex flex-col items-center justify-center p-4 bg-gradient-to-br from-pink-500 via-red-500 to-yellow-500 hover:from-pink-400 hover:via-red-400 hover:to-yellow-400 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-pink-500/30"
-                >
-                  <Instagram className="w-8 h-8 text-white mb-2 group-hover:animate-bounce" />
-                  <span className="text-xs font-semibold text-white">Instagram</span>
-                </button>
-
-                {/* TikTok */}
-                <button
-                  onClick={() => handleShare('tiktok')}
-                  className="group flex flex-col items-center justify-center p-4 bg-gradient-to-br from-black via-red-600 to-cyan-400 hover:from-gray-900 hover:via-red-500 hover:to-cyan-300 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-red-500/30"
-                >
-                  <Share2 className="w-8 h-8 text-white mb-2 group-hover:animate-bounce" />
-                  <span className="text-xs font-semibold text-white">TikTok</span>
+                  <Download className="w-5 h-5 mr-2" />
+                  Baixar Imagem
                 </button>
               </div>
+            )}
 
-              <p className="text-sm text-gray-400 mt-4 max-w-md mx-auto">
-                💡 Para Instagram e TikTok: baixe a imagem e compartilhe manualmente no app
-              </p>
-            </div>
+            {/* Social Sharing Section - só aparece se imagem carregou */}
+            {canShowButtons && (
+              <div className="mb-8">
+                <h3 className="text-xl font-bold mb-6 text-cyan-300">
+                  🚀 Compartilhe sua transformação!
+                </h3>
+                
+                <div className="grid grid-cols-2 md:grid-cols-5 gap-4 max-w-lg mx-auto">
+                  {/* WhatsApp */}
+                  <button
+                    onClick={() => handleShare('whatsapp')}
+                    className="group flex flex-col items-center justify-center p-4 bg-gradient-to-br from-green-500 to-green-600 hover:from-green-400 hover:to-green-500 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-green-500/30"
+                  >
+                    <MessageCircle className="w-8 h-8 text-white mb-2 group-hover:animate-bounce" />
+                    <span className="text-xs font-semibold text-white">WhatsApp</span>
+                  </button>
+
+                  {/* Facebook */}
+                  <button
+                    onClick={() => handleShare('facebook')}
+                    className="group flex flex-col items-center justify-center p-4 bg-gradient-to-br from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-blue-500/30"
+                  >
+                    <Facebook className="w-8 h-8 text-white mb-2 group-hover:animate-bounce" />
+                    <span className="text-xs font-semibold text-white">Facebook</span>
+                  </button>
+
+                  {/* Twitter/X */}
+                  <button
+                    onClick={() => handleShare('twitter')}
+                    className="group flex flex-col items-center justify-center p-4 bg-gradient-to-br from-gray-800 to-black hover:from-gray-700 hover:to-gray-900 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-gray-500/30"
+                  >
+                    <Twitter className="w-8 h-8 text-white mb-2 group-hover:animate-bounce" />
+                    <span className="text-xs font-semibold text-white">X</span>
+                  </button>
+
+                  {/* Instagram */}
+                  <button
+                    onClick={() => handleShare('instagram')}
+                    className="group flex flex-col items-center justify-center p-4 bg-gradient-to-br from-pink-500 via-red-500 to-yellow-500 hover:from-pink-400 hover:via-red-400 hover:to-yellow-400 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-pink-500/30"
+                  >
+                    <Instagram className="w-8 h-8 text-white mb-2 group-hover:animate-bounce" />
+                    <span className="text-xs font-semibold text-white">Instagram</span>
+                  </button>
+
+                  {/* TikTok */}
+                  <button
+                    onClick={() => handleShare('tiktok')}
+                    className="group flex flex-col items-center justify-center p-4 bg-gradient-to-br from-black via-red-600 to-cyan-400 hover:from-gray-900 hover:via-red-500 hover:to-cyan-300 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-red-500/30"
+                  >
+                    <Share2 className="w-8 h-8 text-white mb-2 group-hover:animate-bounce" />
+                    <span className="text-xs font-semibold text-white">TikTok</span>
+                  </button>
+                </div>
+
+                <p className="text-sm text-gray-400 mt-4 max-w-md mx-auto">
+                  💡 Para Instagram e TikTok: baixe a imagem e compartilhe manualmente no app
+                </p>
+              </div>
+            )}
 
             <button
               onClick={resetApp}

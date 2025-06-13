@@ -43,41 +43,67 @@ h1, h2, h3, h4, h5, h6 {
   100% { transform: translateX(200%) skewX(-12deg); }
 }
 
-/* ANIMAÇÕES MÁGICAS DO BOTÃO ARCO-ÍRIS! 🌈✨ */
-@keyframes rainbow-flow {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+/* 🌈✨ ANIMAÇÕES MÁGICAS DO BOTÃO ARCO-ÍRIS - SEMPRE COLORIDO! ✨🌈 */
+@keyframes rainbow-flow-continuous {
+  0% { 
+    background: linear-gradient(45deg, #3ECFFF 0%, #A259FF 25%, #FF61D2 50%, #43F6E1 75%, #3ECFFF 100%);
+    background-size: 400% 400%;
+    background-position: 0% 50%;
+  }
+  25% { 
+    background: linear-gradient(45deg, #A259FF 0%, #FF61D2 25%, #43F6E1 50%, #3ECFFF 75%, #A259FF 100%);
+    background-size: 400% 400%;
+    background-position: 25% 50%;
+  }
+  50% { 
+    background: linear-gradient(45deg, #FF61D2 0%, #43F6E1 25%, #3ECFFF 50%, #A259FF 75%, #FF61D2 100%);
+    background-size: 400% 400%;
+    background-position: 50% 50%;
+  }
+  75% { 
+    background: linear-gradient(45deg, #43F6E1 0%, #3ECFFF 25%, #A259FF 50%, #FF61D2 75%, #43F6E1 100%);
+    background-size: 400% 400%;
+    background-position: 75% 50%;
+  }
+  100% { 
+    background: linear-gradient(45deg, #3ECFFF 0%, #A259FF 25%, #FF61D2 50%, #43F6E1 75%, #3ECFFF 100%);
+    background-size: 400% 400%;
+    background-position: 100% 50%;
+  }
 }
 
-@keyframes magical-glow {
+@keyframes magical-glow-rainbow {
   0%, 100% { 
     box-shadow: 
-      0 0 30px rgba(62, 207, 255, 0.8),
-      0 0 60px rgba(162, 89, 255, 0.6),
-      0 0 90px rgba(255, 97, 210, 0.4),
-      0 0 120px rgba(67, 246, 225, 0.3);
+      0 0 30px rgba(62, 207, 255, 1.0),
+      0 0 60px rgba(162, 89, 255, 0.8),
+      0 0 90px rgba(255, 97, 210, 0.6),
+      0 0 120px rgba(67, 246, 225, 0.4),
+      inset 0 0 30px rgba(255, 255, 255, 0.2);
   }
   25% {
     box-shadow: 
-      0 0 40px rgba(162, 89, 255, 0.9),
-      0 0 80px rgba(255, 97, 210, 0.7),
-      0 0 120px rgba(67, 246, 225, 0.5),
-      0 0 160px rgba(62, 207, 255, 0.4);
+      0 0 40px rgba(162, 89, 255, 1.0),
+      0 0 80px rgba(255, 97, 210, 0.8),
+      0 0 120px rgba(67, 246, 225, 0.6),
+      0 0 160px rgba(62, 207, 255, 0.4),
+      inset 0 0 40px rgba(255, 255, 255, 0.3);
   }
   50% { 
     box-shadow: 
       0 0 50px rgba(255, 97, 210, 1.0),
       0 0 100px rgba(67, 246, 225, 0.8),
       0 0 150px rgba(62, 207, 255, 0.6),
-      0 0 200px rgba(162, 89, 255, 0.4);
+      0 0 200px rgba(162, 89, 255, 0.4),
+      inset 0 0 50px rgba(255, 255, 255, 0.4);
   }
   75% {
     box-shadow: 
-      0 0 45px rgba(67, 246, 225, 0.9),
-      0 0 90px rgba(62, 207, 255, 0.7),
-      0 0 135px rgba(162, 89, 255, 0.5),
-      0 0 180px rgba(255, 97, 210, 0.4);
+      0 0 45px rgba(67, 246, 225, 1.0),
+      0 0 90px rgba(62, 207, 255, 0.8),
+      0 0 135px rgba(162, 89, 255, 0.6),
+      0 0 180px rgba(255, 97, 210, 0.4),
+      inset 0 0 45px rgba(255, 255, 255, 0.35);
   }
 }
 
@@ -86,6 +112,21 @@ h1, h2, h3, h4, h5, h6 {
   25% { transform: rotate(90deg) scale(1.2); opacity: 0.8; }
   50% { transform: rotate(180deg) scale(1.4); opacity: 0.6; }
   75% { transform: rotate(270deg) scale(1.2); opacity: 0.8; }
+}
+
+@keyframes rainbow-pulse {
+  0%, 100% { 
+    filter: brightness(1.0) saturate(1.0) hue-rotate(0deg);
+  }
+  25% { 
+    filter: brightness(1.2) saturate(1.3) hue-rotate(90deg);
+  }
+  50% { 
+    filter: brightness(1.4) saturate(1.6) hue-rotate(180deg);
+  }
+  75% { 
+    filter: brightness(1.2) saturate(1.3) hue-rotate(270deg);
+  }
 }
 
 .animate-float {
@@ -106,19 +147,41 @@ h1, h2, h3, h4, h5, h6 {
   animation: shimmer-fast 2s ease-in-out infinite;
 }
 
-/* BOTÃO MÁGICO ARCO-ÍRIS - NUNCA CINZA! 🌈🦄 */
+/* 🌈🦄 BOTÃO MÁGICO ARCO-ÍRIS - SEMPRE COLORIDO, NUNCA CINZA! 🦄🌈 */
 .magical-rainbow-button {
   position: relative;
   overflow: hidden;
   font-weight: 900 !important;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-  border: 3px solid rgba(255, 255, 255, 0.3) !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  border: 3px solid rgba(255, 255, 255, 0.5) !important;
+  
+  /* FUNDO SEMPRE COLORIDO - NUNCA CINZA! */
+  background: linear-gradient(45deg, #3ECFFF 0%, #A259FF 25%, #FF61D2 50%, #43F6E1 75%, #3ECFFF 100%) !important;
+  background-size: 400% 400% !important;
+  
+  /* ANIMAÇÕES SEMPRE ATIVAS */
+  animation: 
+    rainbow-flow-continuous 4s ease-in-out infinite,
+    magical-glow-rainbow 3s ease-in-out infinite,
+    rainbow-pulse 5s ease-in-out infinite !important;
 }
 
 .magical-rainbow-button:hover {
-  animation: rainbow-flow 1.5s ease-in-out infinite, magical-glow 1s ease-in-out infinite !important;
+  /* NO HOVER: MAIS BRILHO E MOVIMENTO */
+  animation: 
+    rainbow-flow-continuous 2s ease-in-out infinite,
+    magical-glow-rainbow 1.5s ease-in-out infinite,
+    rainbow-pulse 2.5s ease-in-out infinite !important;
   transform: scale(1.15) !important;
-  filter: brightness(1.2) saturate(1.3);
+  filter: brightness(1.3) saturate(1.4) !important;
+}
+
+.magical-rainbow-button:disabled {
+  /* MESMO DESABILITADO: COLORIDO! */
+  background: linear-gradient(45deg, #666 0%, #888 25%, #aaa 50%, #999 75%, #777 100%) !important;
+  animation: none !important;
+  opacity: 0.6 !important;
+  cursor: not-allowed !important;
 }
 
 .magical-rainbow-button::before {
@@ -130,29 +193,45 @@ h1, h2, h3, h4, h5, h6 {
   height: 200%;
   background: conic-gradient(
     from 0deg,
-    #3ECFFF,
-    #A259FF,
-    #FF61D2,
-    #43F6E1,
-    #3ECFFF,
-    #A259FF,
-    #FF61D2,
-    #43F6E1,
-    #3ECFFF
+    rgba(62, 207, 255, 0.4),
+    rgba(162, 89, 255, 0.4),
+    rgba(255, 97, 210, 0.4),
+    rgba(67, 246, 225, 0.4),
+    rgba(62, 207, 255, 0.4)
   );
-  animation: unicorn-sparkle 4s linear infinite;
-  opacity: 0.3;
-  z-index: -1;
+  animation: unicorn-sparkle 6s linear infinite;
+  z-index: 1;
+  pointer-events: none;
 }
 
 .magical-rainbow-button::after {
   content: '✨';
   position: absolute;
   top: 10px;
-  right: 10px;
-  font-size: 1.5rem;
-  animation: unicorn-sparkle 2s ease-in-out infinite reverse;
+  right: 15px;
+  font-size: 1.8rem;
+  animation: unicorn-sparkle 3s ease-in-out infinite reverse;
   z-index: 10;
+  pointer-events: none;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
+/* SHIMMER EFFECT SEMPRE COLORIDO */
+.magical-rainbow-button .shimmer-overlay {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.6),
+    transparent
+  );
+  animation: shimmer-fast 3s ease-in-out infinite;
+  z-index: 5;
+  pointer-events: none;
 }
 
 /* Scrollbar styling */
@@ -232,8 +311,8 @@ a {
   }
   
   .magical-rainbow-button {
-    padding: 1.5rem 3rem !important;
-    font-size: 1.25rem !important;
+    padding: 1.5rem 2rem !important;
+    font-size: 1.1rem !important;
   }
 }
 

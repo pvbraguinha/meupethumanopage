@@ -427,7 +427,7 @@ function App() {
                         <div className="text-sm text-gray-300 leading-relaxed group-hover:text-gray-200 transition-colors">
                           Ao continuar, você concorda com os nossos{' '}
                           <a 
-                            href="https://smartdog-backend-vlm0.onrender.com/Termos%20de%20uso%20.html" 
+                            href="https://smartdog-backend-vlm0.onrender.com/termos-de-uso.html" 
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-cyan-400 hover:text-cyan-300 transition-colors"
@@ -437,7 +437,7 @@ function App() {
                           </a>
                           {' '}e{' '}
                           <a 
-                            href="https://smartdog-backend-vlm0.onrender.com/Politicas%20de%20privacidade.html" 
+                            href="https://smartdog-backend-vlm0.onrender.com/politica-de-privacidade.html" 
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-cyan-400 hover:text-cyan-300 transition-colors"
@@ -600,7 +600,7 @@ function App() {
           <div className="max-w-4xl mx-auto text-center">
             <div className="flex flex-wrap justify-center gap-8 mb-8">
               <a 
-                href="https://smartdog-backend-vlm0.onrender.com/Termos%20de%20uso%20.html" 
+                href="https://smartdog-backend-vlm0.onrender.com/termos-de-uso.html" 
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-cyan-300 hover:text-cyan-200 transition-colors font-medium text-lg"
@@ -608,7 +608,7 @@ function App() {
                 Termos de Uso
               </a>
               <a 
-                href="https://smartdog-backend-vlm0.onrender.com/Politicas%20de%20privacidade.html" 
+                href="https://smartdog-backend-vlm0.onrender.com/politica-de-privacidade.html" 
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-cyan-300 hover:text-cyan-200 transition-colors font-medium text-lg"

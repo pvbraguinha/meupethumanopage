@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { Camera, Upload, Download, Share2, Sparkles, Dna, Instagram } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { Camera, Upload, Download, Share2, Sparkles, Dna, Instagram, AlertCircle, Users } from 'lucide-react';
 
 interface PhotoSlot {
   id: string;
@@ -7,19 +7,64 @@ interface PhotoSlot {
   description: string;
   file: File | null;
   preview: string | null;
+  required: boolean;
+}
+
+interface PetDetails {
+  especie: 'cão' | 'gato' | '';
+  breed: string;
+  sex: 'macho' | 'fêmea' | '';
+  age: number;
+}
+
+interface TransformResult {
+  frontal_url?: string;
+  focinho_url?: string;
+  angulo_url?: string;
+  prompt?: string;
+  result_url?: string;
+  message?: string;
 }
 
 function App() {
   const [photos, setPhotos] = useState<PhotoSlot[]>([
-    { id: 'nose', label: 'Foto do Focinho', description: 'Close-up do nariz', file: null, preview: null },
-    { id: 'front', label: 'Foto Frontal', description: 'Rosto de frente', file: null, preview: null },
-    { id: 'angle', label: 'Foto em Ângulo', description: 'Rosto de lado', file: null, preview: null }
+    { id: 'frontal', label: 'Foto Frontal', description: 'Rosto de frente (obrigatória)', file: null, preview: null, required: true },
+    { id: 'focinho', label: 'Foto do Focinho', description: 'Close-up do nariz (opcional)', file: null, preview: null, required: false },
+    { id: 'angulo', label: 'Foto em Ângulo', description: 'Rosto de lado (opcional)', file: null, preview: null, required: false }
   ]);
   
+  const [showPetDetails, setShowPetDetails] = useState(false);
+  const [petDetails, setPetDetails] = useState<PetDetails>({
+    especie: '',
+    breed: '',
+    sex: '',
+    age: 1
+  });
+  
   const [isProcessing, setIsProcessing] = useState(false);
-  const [result, setResult] = useState<string | null>(null);
+  const [result, setResult] = useState<TransformResult | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [petCount, setPetCount] = useState<number>(0);
   const [termsAccepted, setTermsAccepted] = useState(false);
+  
   const fileInputRefs = useRef<{ [key: string]: HTMLInputElement | null }>({});
+
+  // Buscar contador de pets transformados
+  useEffect(() => {
+    const fetchPetCount = async () => {
+      try {
+        const response = await fetch('https://smartdog-backend-vlm0.onrender.com/api/pet-human-count');
+        if (response.ok) {
+          const data = await response.json();
+          setPetCount(data.count || 0);
+        }
+      } catch (error) {
+        console.error('Erro ao buscar contador:', error);
+      }
+    };
+
+    fetchPetCount();
+  }, []);
 
   const handleFileSelect = (id: string, file: File) => {
     if (file && file.type.startsWith('image/')) {
@@ -31,28 +76,81 @@ function App() {
         ));
       };
       reader.readAsDataURL(file);
+      setError(null);
     }
   };
 
+  const handleShowPetDetails = () => {
+    const frontalPhoto = photos.find(p => p.id === 'frontal');
+    if (!frontalPhoto?.file) {
+      setError('A foto frontal é obrigatória para continuar.');
+      return;
+    }
+    setShowPetDetails(true);
+    setError(null);
+  };
+
   const handleTransform = async () => {
-    const allPhotosUploaded = photos.every(photo => photo.file);
-    if (!allPhotosUploaded || !termsAccepted) return;
+    if (!petDetails.especie || !petDetails.sex || !petDetails.breed.trim()) {
+      setError('Por favor, preencha todos os campos obrigatórios.');
+      return;
+    }
+
+    if (!termsAccepted) {
+      setError('Você deve aceitar os termos para continuar.');
+      return;
+    }
 
     setIsProcessing(true);
-    
-    // Simulate API call
-    setTimeout(() => {
-      setResult('https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=2');
+    setError(null);
+
+    try {
+      const formData = new FormData();
+      
+      // Adicionar imagens
+      photos.forEach(photo => {
+        if (photo.file) {
+          formData.append(photo.id, photo.file);
+        }
+      });
+
+      // Adicionar dados do pet
+      formData.append('especie', petDetails.especie);
+      formData.append('breed', petDetails.breed);
+      formData.append('sex', petDetails.sex);
+      formData.append('age', petDetails.age.toString());
+      formData.append('session', `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
+
+      const response = await fetch('https://smartdog-backend-vlm0.onrender.com/api/upload-pet-images', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setResult(data);
+        // Atualizar contador
+        setPetCount(prev => prev + 1);
+      } else {
+        setError(data.message || 'Erro ao processar a transformação. Tente novamente.');
+      }
+    } catch (error) {
+      console.error('Erro na requisição:', error);
+      setError('Erro de conexão. Verifique sua internet e tente novamente.');
+    } finally {
       setIsProcessing(false);
-    }, 4000);
+    }
   };
 
   const handleDownload = () => {
-    // Simulate download
-    const link = document.createElement('a');
-    link.href = result || '';
-    link.download = 'meu-pet-humano.jpg';
-    link.click();
+    if (result?.result_url) {
+      const link = document.createElement('a');
+      link.href = result.result_url;
+      link.download = 'meu-pet-humano.jpg';
+      link.target = '_blank';
+      link.click();
+    }
   };
 
   const handleShare = (platform: string) => {
@@ -66,8 +164,16 @@ function App() {
     }
   };
 
-  const allPhotosUploaded = photos.every(photo => photo.file);
-  const canTransform = allPhotosUploaded && termsAccepted;
+  const resetApp = () => {
+    setResult(null);
+    setPhotos(photos.map(photo => ({ ...photo, file: null, preview: null })));
+    setPetDetails({ especie: '', breed: '', sex: '', age: 1 });
+    setShowPetDetails(false);
+    setTermsAccepted(false);
+    setError(null);
+  };
+
+  const hasRequiredPhotos = photos.find(p => p.id === 'frontal')?.file !== null;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900 text-white overflow-hidden">
@@ -89,13 +195,29 @@ function App() {
             <Sparkles className="w-8 h-8 text-cyan-400 ml-3 animate-pulse" />
           </div>
           <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            Envie 3 fotos e veja a mágica acontecer.
+            Envie fotos do seu pet e veja a mágica acontecer.
           </p>
-          <div className="mt-8 flex items-center justify-center space-x-2">
-            <Dna className="w-6 h-6 text-green-400 animate-spin" />
-            <span className="text-green-400 font-semibold">Tecnologia AI Avançada</span>
+          <div className="mt-8 flex items-center justify-center space-x-6">
+            <div className="flex items-center space-x-2">
+              <Dna className="w-6 h-6 text-green-400 animate-spin" />
+              <span className="text-green-400 font-semibold">Tecnologia AI Avançada</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Users className="w-6 h-6 text-cyan-400" />
+              <span className="text-cyan-400 font-semibold">{petCount.toLocaleString()} pets já transformados!</span>
+            </div>
           </div>
         </header>
+
+        {/* Error Message */}
+        {error && (
+          <div className="max-w-2xl mx-auto mb-8">
+            <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-4 flex items-center space-x-3">
+              <AlertCircle className="w-6 h-6 text-red-400 flex-shrink-0" />
+              <p className="text-red-300">{error}</p>
+            </div>
+          </div>
+        )}
 
         {!result ? (
           <>
@@ -106,13 +228,16 @@ function App() {
               </h2>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-                {photos.map((photo, index) => (
+                {photos.map((photo) => (
                   <div
                     key={photo.id}
                     className="group relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:border-cyan-400/50 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-400/20"
                   >
                     <div className="text-center mb-4">
-                      <h3 className="text-lg font-semibold text-white mb-1">{photo.label}</h3>
+                      <h3 className="text-lg font-semibold text-white mb-1 flex items-center justify-center">
+                        {photo.label}
+                        {photo.required && <span className="text-red-400 ml-1">*</span>}
+                      </h3>
                       <p className="text-sm text-gray-400">{photo.description}</p>
                     </div>
 
@@ -132,9 +257,9 @@ function App() {
                         </div>
                       ) : (
                         <div className="text-center">
-                          <Upload className="w-12 h-12 text-gray-400 mx-auto mb-4 group-hover:text-cyan-400 transition-colors" />
-                          <p className="text-gray-400 group-hover:text-cyan-400 transition-colors">
-                            Clique para enviar
+                          <Camera className="w-12 h-12 text-gray-400 mx-auto mb-4 group-hover:text-cyan-400 transition-colors" />
+                          <p className="text-gray-400 group-hover:text-cyan-400 transition-colors text-sm">
+                            Toque para capturar ou escolher foto
                           </p>
                         </div>
                       )}
@@ -144,6 +269,7 @@ function App() {
                       ref={el => fileInputRefs.current[photo.id] = el}
                       type="file"
                       accept="image/*"
+                      capture="environment"
                       className="hidden"
                       onChange={(e) => {
                         const file = e.target.files?.[0];
@@ -160,99 +286,174 @@ function App() {
               </div>
             </section>
 
-            {/* Terms and Privacy Checkbox */}
-            <section className="mb-12">
-              <div className="max-w-2xl mx-auto">
-                <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6 shadow-lg shadow-cyan-500/10">
-                  <label className="flex items-start space-x-4 cursor-pointer group">
-                    <div className="relative flex-shrink-0 mt-1">
-                      <input
-                        type="checkbox"
-                        checked={termsAccepted}
-                        onChange={(e) => setTermsAccepted(e.target.checked)}
-                        className="sr-only"
-                      />
-                      <div className={`
-                        w-5 h-5 rounded border-2 transition-all duration-300 flex items-center justify-center
-                        ${termsAccepted 
-                          ? 'bg-gradient-to-r from-cyan-500 to-purple-600 border-cyan-400 shadow-lg shadow-cyan-400/30' 
-                          : 'border-gray-500 group-hover:border-cyan-400/50'
-                        }
-                      `}>
-                        {termsAccepted && (
-                          <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                          </svg>
-                        )}
-                      </div>
-                    </div>
-                    <div className="text-sm text-gray-300 leading-relaxed group-hover:text-gray-200 transition-colors">
-                      Ao continuar, você concorda com os nossos{' '}
-                      <a 
-                        href="#" 
-                        className="text-cyan-400 hover:text-cyan-300 underline transition-colors"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        Termos de Uso
-                      </a>
-                      {' '}e{' '}
-                      <a 
-                        href="#" 
-                        className="text-cyan-400 hover:text-cyan-300 underline transition-colors"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        Política de Privacidade
-                      </a>
-                      .
-                    </div>
-                  </label>
-                </div>
-              </div>
-            </section>
-
             {/* Transform Button */}
-            <div className="text-center mb-16">
-              <button
-                onClick={handleTransform}
-                disabled={!canTransform || isProcessing}
-                className={`
-                  group relative inline-flex items-center justify-center px-12 py-6 text-xl font-bold rounded-2xl
-                  transition-all duration-300 transform hover:scale-105
-                  ${canTransform && !isProcessing
-                    ? 'bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white shadow-lg shadow-cyan-500/25 animate-pulse hover:animate-none'
-                    : 'bg-gray-600 text-gray-400 cursor-not-allowed'
-                  }
-                `}
-              >
-                {isProcessing ? (
-                  <>
-                    <Dna className="w-6 h-6 mr-3 animate-spin" />
-                    Analisando DNA do seu pet...
-                  </>
-                ) : (
-                  <>
-                    <Sparkles className="w-6 h-6 mr-3" />
-                    Transformar em Humano 🧬
-                  </>
-                )}
-                
-                {canTransform && !isProcessing && (
-                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-cyan-500 to-purple-600 opacity-75 blur-xl animate-pulse"></div>
-                )}
-              </button>
+            {!showPetDetails && (
+              <div className="text-center mb-16">
+                <button
+                  onClick={handleShowPetDetails}
+                  disabled={!hasRequiredPhotos}
+                  className={`
+                    group relative inline-flex items-center justify-center px-12 py-6 text-xl font-bold rounded-2xl
+                    transition-all duration-300 transform hover:scale-105
+                    ${hasRequiredPhotos
+                      ? 'bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white shadow-lg shadow-cyan-500/25 animate-pulse hover:animate-none'
+                      : 'bg-gray-600 text-gray-400 cursor-not-allowed'
+                    }
+                  `}
+                >
+                  <Sparkles className="w-6 h-6 mr-3" />
+                  Transformar em Humano 🧬
+                  
+                  {hasRequiredPhotos && (
+                    <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-cyan-500 to-purple-600 opacity-75 blur-xl animate-pulse"></div>
+                  )}
+                </button>
 
-              {!allPhotosUploaded && (
-                <p className="mt-4 text-gray-400">
-                  Envie todas as 3 fotos para continuar
-                </p>
-              )}
-              
-              {allPhotosUploaded && !termsAccepted && (
-                <p className="mt-4 text-gray-400">
-                  Aceite os termos para continuar
-                </p>
-              )}
-            </div>
+                {!hasRequiredPhotos && (
+                  <p className="mt-4 text-gray-400">
+                    Envie pelo menos a foto frontal para continuar
+                  </p>
+                )}
+              </div>
+            )}
+
+            {/* Pet Details Form */}
+            {showPetDetails && (
+              <section className="mb-12">
+                <div className="max-w-2xl mx-auto">
+                  <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 text-cyan-300">
+                    Detalhes do Seu Pet
+                  </h2>
+                  
+                  <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 space-y-6">
+                    {/* Espécie */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                        Espécie <span className="text-red-400">*</span>
+                      </label>
+                      <select
+                        value={petDetails.especie}
+                        onChange={(e) => setPetDetails(prev => ({ ...prev, especie: e.target.value as 'cão' | 'gato' }))}
+                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:border-cyan-400 focus:outline-none transition-colors"
+                      >
+                        <option value="">Selecione a espécie</option>
+                        <option value="cão">Cão</option>
+                        <option value="gato">Gato</option>
+                      </select>
+                    </div>
+
+                    {/* Raça */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                        Raça <span className="text-red-400">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        value={petDetails.breed}
+                        onChange={(e) => setPetDetails(prev => ({ ...prev, breed: e.target.value }))}
+                        placeholder="Ex: Labrador, Vira-lata, Persa..."
+                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:border-cyan-400 focus:outline-none transition-colors"
+                      />
+                    </div>
+
+                    {/* Sexo */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                        Sexo <span className="text-red-400">*</span>
+                      </label>
+                      <select
+                        value={petDetails.sex}
+                        onChange={(e) => setPetDetails(prev => ({ ...prev, sex: e.target.value as 'macho' | 'fêmea' }))}
+                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:border-cyan-400 focus:outline-none transition-colors"
+                      >
+                        <option value="">Selecione o sexo</option>
+                        <option value="macho">Macho</option>
+                        <option value="fêmea">Fêmea</option>
+                      </select>
+                    </div>
+
+                    {/* Idade */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                        Idade (anos) <span className="text-red-400">*</span>
+                      </label>
+                      <input
+                        type="number"
+                        min="1"
+                        max="30"
+                        value={petDetails.age}
+                        onChange={(e) => setPetDetails(prev => ({ ...prev, age: parseInt(e.target.value) || 1 }))}
+                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:border-cyan-400 focus:outline-none transition-colors"
+                      />
+                    </div>
+
+                    {/* Terms and Privacy Checkbox */}
+                    <div className="pt-4">
+                      <label className="flex items-start space-x-4 cursor-pointer group">
+                        <div className="relative flex-shrink-0 mt-1">
+                          <input
+                            type="checkbox"
+                            checked={termsAccepted}
+                            onChange={(e) => setTermsAccepted(e.target.checked)}
+                            className="sr-only"
+                          />
+                          <div className={`
+                            w-5 h-5 rounded border-2 transition-all duration-300 flex items-center justify-center
+                            ${termsAccepted 
+                              ? 'bg-gradient-to-r from-cyan-500 to-purple-600 border-cyan-400 shadow-lg shadow-cyan-400/30' 
+                              : 'border-gray-500 group-hover:border-cyan-400/50'
+                            }
+                          `}>
+                            {termsAccepted && (
+                              <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                              </svg>
+                            )}
+                          </div>
+                        </div>
+                        <div className="text-sm text-gray-300 leading-relaxed group-hover:text-gray-200 transition-colors">
+                          Ao continuar, você concorda com os nossos{' '}
+                          <a 
+                            href="#" 
+                            className="text-cyan-400 hover:text-cyan-300 underline transition-colors"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            Termos de Uso
+                          </a>
+                          {' '}e{' '}
+                          <a 
+                            href="#" 
+                            className="text-cyan-400 hover:text-cyan-300 underline transition-colors"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            Política de Privacidade
+                          </a>
+                          .
+                        </div>
+                      </label>
+                    </div>
+
+                    {/* Submit Button */}
+                    <div className="pt-6">
+                      <button
+                        onClick={handleTransform}
+                        disabled={isProcessing}
+                        className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-400 hover:to-emerald-500 text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {isProcessing ? (
+                          <>
+                            <Dna className="w-6 h-6 mr-3 animate-spin inline" />
+                            Transformando...
+                          </>
+                        ) : (
+                          'Finalizar e Transformar em Humano'
+                        )}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            )}
 
             {/* Processing State */}
             {isProcessing && (
@@ -262,8 +463,8 @@ function App() {
                     <Dna className="w-16 h-16 text-cyan-400 mx-auto animate-spin" />
                     <div className="absolute inset-0 bg-cyan-400/20 rounded-full blur-xl animate-pulse"></div>
                   </div>
-                  <h3 className="text-2xl font-bold mb-4 text-cyan-300">Processando...</h3>
-                  <p className="text-gray-300 mb-6">Nossa IA está analisando o DNA do seu pet e criando a versão humana!</p>
+                  <h3 className="text-2xl font-bold mb-4 text-cyan-300">Transformando seu pet...</h3>
+                  <p className="text-gray-300 mb-6">Nossa IA está analisando as características do seu pet e criando a versão humana!</p>
                   <div className="w-full bg-gray-700 rounded-full h-2 overflow-hidden">
                     <div className="bg-gradient-to-r from-cyan-400 to-purple-500 h-full rounded-full animate-pulse w-3/4"></div>
                   </div>
@@ -279,11 +480,24 @@ function App() {
             </h2>
             
             <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 mb-8">
-              <img 
-                src={result} 
-                alt="Pet transformado em humano"
-                className="w-full max-w-md mx-auto rounded-xl shadow-2xl shadow-cyan-500/20"
-              />
+              {result.result_url ? (
+                <img 
+                  src={result.result_url} 
+                  alt="Pet transformado em humano"
+                  className="w-full max-w-md mx-auto rounded-xl shadow-2xl shadow-cyan-500/20"
+                />
+              ) : (
+                <div className="w-full max-w-md mx-auto h-64 bg-gray-700 rounded-xl flex items-center justify-center">
+                  <p className="text-gray-400">Imagem não disponível</p>
+                </div>
+              )}
+              
+              {result.prompt && (
+                <div className="mt-6 p-4 bg-white/5 rounded-xl">
+                  <h4 className="text-sm font-semibold text-cyan-300 mb-2">Prompt usado:</h4>
+                  <p className="text-sm text-gray-300">{result.prompt}</p>
+                </div>
+              )}
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
@@ -313,11 +527,7 @@ function App() {
             </div>
 
             <button
-              onClick={() => {
-                setResult(null);
-                setPhotos(photos.map(photo => ({ ...photo, file: null, preview: null })));
-                setTermsAccepted(false);
-              }}
+              onClick={resetApp}
               className="text-cyan-400 hover:text-cyan-300 font-semibold transition-colors underline"
             >
               Transformar outro pet
@@ -334,7 +544,7 @@ function App() {
             </div>
             
             <p className="text-gray-500 text-sm">
-              © 2024 Pet AI Transform.
+              © 2024 Pet AI Transform. {petCount.toLocaleString()} pets já transformados!
             </p>
           </div>
         </footer>

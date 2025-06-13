@@ -427,16 +427,20 @@ function App() {
                         <div className="text-sm text-gray-300 leading-relaxed group-hover:text-gray-200 transition-colors">
                           Ao continuar, você concorda com os nossos{' '}
                           <a 
-                            href="#" 
-                            className="text-cyan-400 hover:text-cyan-300 underline transition-colors"
+                            href="https://smartdog-backend-vlm0.onrender.com/Termos%20de%20uso%20.html" 
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-cyan-400 hover:text-cyan-300 transition-colors"
                             onClick={(e) => e.stopPropagation()}
                           >
                             Termos de Uso
                           </a>
                           {' '}e{' '}
                           <a 
-                            href="#" 
-                            className="text-cyan-400 hover:text-cyan-300 underline transition-colors"
+                            href="https://smartdog-backend-vlm0.onrender.com/Politicas%20de%20privacidade.html" 
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-cyan-400 hover:text-cyan-300 transition-colors"
                             onClick={(e) => e.stopPropagation()}
                           >
                             Política de Privacidade
@@ -594,9 +598,23 @@ function App() {
         {/* Footer */}
         <footer className="mt-20 pt-12 border-t border-white/10">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="flex flex-wrap justify-center gap-6 mb-8">
-              <a href="#" className="text-gray-400 hover:text-cyan-400 transition-colors">Termos de Uso</a>
-              <a href="#" className="text-gray-400 hover:text-cyan-400 transition-colors">Política de Privacidade</a>
+            <div className="flex flex-wrap justify-center gap-8 mb-8">
+              <a 
+                href="https://smartdog-backend-vlm0.onrender.com/Termos%20de%20uso%20.html" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-cyan-300 hover:text-cyan-200 transition-colors font-medium text-lg"
+              >
+                Termos de Uso
+              </a>
+              <a 
+                href="https://smartdog-backend-vlm0.onrender.com/Politicas%20de%20privacidade.html" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-cyan-300 hover:text-cyan-200 transition-colors font-medium text-lg"
+              >
+                Política de Privacidade
+              </a>
             </div>
             
             <p className="text-gray-500 text-sm">

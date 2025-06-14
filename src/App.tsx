@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Camera, Upload, Download, Share2, Sparkles, Dna, Instagram, AlertCircle, Heart, MessageCircle, Facebook, Twitter } from 'lucide-react';
+import { Camera, Upload, Download, Share2, Sparkles, Dna, Instagram, AlertCircle, Heart, MessageCircle, Facebook, Twitter, User } from 'lucide-react';
 
 interface PhotoSlot {
   id: string;
@@ -14,7 +14,7 @@ interface PetDetails {
   especie: 'cão' | 'gato' | '';
   breed: string;
   sex: 'macho' | 'fêmea' | '';
-  age: number;
+  age: string; // Mudado para string para aceitar texto livre
 }
 
 interface TransformResult {
@@ -27,6 +27,7 @@ interface TransformResult {
   image?: string;
   transformed_image?: string;
   transform_pet_humano?: string; // CAMPO CORRETO DO BACKEND
+  idade_humana?: number; // NOVO: idade humana estimada
   message?: string;
 }
 
@@ -42,7 +43,7 @@ function App() {
     especie: '',
     breed: '',
     sex: '',
-    age: 1
+    age: '' // Mudado para string vazia
   });
   
   const [isProcessing, setIsProcessing] = useState(false);
@@ -97,7 +98,7 @@ function App() {
   };
 
   const handleTransform = async () => {
-    if (!petDetails.especie || !petDetails.sex || !petDetails.breed.trim()) {
+    if (!petDetails.especie || !petDetails.sex || !petDetails.breed.trim() || !petDetails.age.trim()) {
       setError('Por favor, preencha todos os campos obrigatórios.');
       return;
     }
@@ -126,7 +127,7 @@ function App() {
       formData.append('especie', petDetails.especie);
       formData.append('breed', petDetails.breed);
       formData.append('sex', petDetails.sex);
-      formData.append('age', petDetails.age.toString());
+      formData.append('age', petDetails.age); // Agora envia como string
       formData.append('session', `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
 
       console.log('Enviando dados para API:', {
@@ -205,7 +206,7 @@ function App() {
   const resetApp = () => {
     setResult(null);
     setPhotos(photos.map(photo => ({ ...photo, file: null, preview: null })));
-    setPetDetails({ especie: '', breed: '', sex: '', age: 1 });
+    setPetDetails({ especie: '', breed: '', sex: '', age: '' });
     setShowPetDetails(false);
     setTermsAccepted(false);
     setError(null);
@@ -249,6 +250,7 @@ function App() {
       console.log('Resposta completa:', result);
       console.log('transform_pet_humano:', result.transform_pet_humano);
       console.log('result_url:', result.result_url);
+      console.log('idade_humana:', result.idade_humana);
       console.log('URL escolhida:', getImageUrl());
       console.log('========================');
     }
@@ -444,19 +446,21 @@ function App() {
                       </select>
                     </div>
 
-                    {/* Idade */}
+                    {/* Idade - CAMPO FLEXÍVEL */}
                     <div>
                       <label className="block text-sm font-medium text-gray-300 mb-2">
-                        Idade (anos) <span className="text-red-400">*</span>
+                        Idade <span className="text-red-400">*</span>
                       </label>
                       <input
-                        type="number"
-                        min="1"
-                        max="30"
+                        type="text"
                         value={petDetails.age}
-                        onChange={(e) => setPetDetails(prev => ({ ...prev, age: parseInt(e.target.value) || 1 }))}
-                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:border-cyan-400 focus:outline-none transition-colors"
+                        onChange={(e) => setPetDetails(prev => ({ ...prev, age: e.target.value }))}
+                        placeholder="Ex: 3 anos, 6 meses, 45 dias..."
+                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:border-cyan-400 focus:outline-none transition-colors"
                       />
+                      <p className="text-xs text-gray-400 mt-2">
+                        💡 Você pode informar em dias, meses ou anos (ex: "2 anos", "8 meses", "30 dias")
+                      </p>
                     </div>
 
                     {/* Terms and Privacy Checkbox */}
@@ -596,6 +600,18 @@ function App() {
                     >
                       Tentar Novamente
                     </button>
+                  </div>
+                </div>
+              )}
+              
+              {/* NOVA: Exibição da idade humana estimada */}
+              {result.idade_humana && canShowButtons && (
+                <div className="mt-6 p-4 bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-400/20 rounded-xl">
+                  <div className="flex items-center justify-center space-x-3">
+                    <User className="w-6 h-6 text-blue-400" />
+                    <span className="text-lg font-semibold text-blue-300">
+                      🧓 Idade humana estimada: {result.idade_humana} anos
+                    </span>
                   </div>
                 </div>
               )}

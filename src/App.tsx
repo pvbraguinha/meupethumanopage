@@ -15,6 +15,7 @@ interface PetDetails {
   breed: string;
   sex: 'macho' | 'fêmea' | '';
   age: string;
+  pelagem: string;
 }
 
 interface TransformResult {
@@ -26,6 +27,75 @@ interface TransformResult {
   message?: string;
   error?: string;
 }
+
+// Opções de raças por espécie
+const DOG_BREEDS = [
+  { value: '', label: 'Selecione a raça' },
+  { value: 'husky', label: 'Husky' },
+  { value: 'shih-tzu', label: 'Shih-tzu' },
+  { value: 'pitbull', label: 'Pitbull' },
+  { value: 'poodle', label: 'Poodle' },
+  { value: 'pinscher', label: 'Pinscher' },
+  { value: 'maltes', label: 'Maltês' },
+  { value: 'srd', label: 'SRD' },
+  { value: 'sem-raca-definida', label: 'Sem raça definida' },
+  { value: 'golden-retriever', label: 'Golden Retriever' },
+  { value: 'labrador', label: 'Labrador' },
+  { value: 'chihuahua', label: 'Chihuahua' },
+  { value: 'dachshund', label: 'Dachshund (Salsicha)' },
+  { value: 'pug', label: 'Pug' },
+  { value: 'bulldog-frances', label: 'Bulldog Francês' },
+  { value: 'pastor-alemao', label: 'Pastor Alemão' },
+  { value: 'outro', label: 'Outro' }
+];
+
+const CAT_BREEDS = [
+  { value: '', label: 'Selecione a raça' },
+  { value: 'sem-raca-definida', label: 'Sem raça definida (SRD)' },
+  { value: 'siames', label: 'Siamês (Siamese)' },
+  { value: 'persa', label: 'Persa (Persian)' },
+  { value: 'maine-coon', label: 'Maine Coon' },
+  { value: 'sphynx', label: 'Sphynx (gato sem pelo)' },
+  { value: 'british-shorthair', label: 'British Shorthair' },
+  { value: 'scottish-fold', label: 'Scottish Fold' },
+  { value: 'bengal', label: 'Bengal' },
+  { value: 'ragdoll', label: 'Ragdoll' },
+  { value: 'abissinio', label: 'Abissínio (Abyssinian)' },
+  { value: 'noruegues-floresta', label: 'Norueguês da Floresta (Norwegian Forest)' },
+  { value: 'himalaio', label: 'Himalaio (Himalayan)' },
+  { value: 'birmanes', label: 'Birmanês (Burmese)' },
+  { value: 'oriental-shorthair', label: 'Oriental Shorthair' },
+  { value: 'american-shorthair', label: 'American Shorthair' },
+  { value: 'savannah', label: 'Savannah' },
+  { value: 'devon-rex', label: 'Devon Rex' },
+  { value: 'cornish-rex', label: 'Cornish Rex' },
+  { value: 'exotic-shorthair', label: 'Exotic Shorthair' },
+  { value: 'manx', label: 'Manx' },
+  { value: 'turkish-angora', label: 'Turkish Angora' },
+  { value: 'turkish-van', label: 'Turkish Van' },
+  { value: 'tonquines', label: 'Tonquinês (Tonkinese)' },
+  { value: 'selkirk-rex', label: 'Selkirk Rex' },
+  { value: 'balinese', label: 'Balinese' },
+  { value: 'chartreux', label: 'Chartreux' },
+  { value: 'bombay', label: 'Bombay' },
+  { value: 'laperm', label: 'LaPerm' },
+  { value: 'singapura', label: 'Singapura' },
+  { value: 'snowshoe', label: 'Snowshoe' },
+  { value: 'munchkin', label: 'Munchkin' }
+];
+
+// Opções de cor da pelagem
+const PELAGEM_OPTIONS = [
+  { value: '', label: 'Selecione a cor da pelagem' },
+  { value: 'clara', label: 'Branco ou creme' },
+  { value: 'escura', label: 'Preto ou marrom escuro' },
+  { value: 'alaranjada', label: 'Alaranjado ou dourado' },
+  { value: 'preto_branco', label: 'Preto e branco (bicolor)' },
+  { value: 'cinza', label: 'Cinza' },
+  { value: 'tigrada', label: 'Tigrado (listrado)' },
+  { value: 'malhada', label: 'Malhado (manchas grandes)' },
+  { value: 'tricolor', label: 'Tricolor (3 cores)' }
+];
 
 function App() {
   const [photos, setPhotos] = useState<PhotoSlot[]>([
@@ -39,7 +109,8 @@ function App() {
     especie: '',
     breed: '',
     sex: '',
-    age: ''
+    age: '',
+    pelagem: ''
   });
   
   const [isProcessing, setIsProcessing] = useState(false);
@@ -100,7 +171,7 @@ function App() {
 
   // Nova função para enviar formulário usando DALL·E API
   const handleSubmitPetForm = async () => {
-    if (!petDetails.especie || !petDetails.sex || !petDetails.breed.trim() || !petDetails.age.trim()) {
+    if (!petDetails.especie || !petDetails.sex || !petDetails.breed.trim() || !petDetails.age.trim() || !petDetails.pelagem) {
       setError('Por favor, preencha todos os campos obrigatórios.');
       return;
     }
@@ -133,6 +204,7 @@ function App() {
       formData.append('sex', petDetails.sex);
       formData.append('age', petDetails.age);
       formData.append('especie', petDetails.especie);
+      formData.append('pelagem', petDetails.pelagem);
 
       console.log('=== ENVIANDO PARA DALL·E API ===');
       console.log('Endpoint:', 'https://smartdog-backend-vlm0.onrender.com/api/transform-pet');
@@ -141,6 +213,7 @@ function App() {
         breed: petDetails.breed,
         sex: petDetails.sex,
         age: petDetails.age,
+        pelagem: petDetails.pelagem,
         frontal: frontalPhoto.file.name
       });
 
@@ -218,7 +291,7 @@ function App() {
   const resetApp = () => {
     setResult(null);
     setPhotos(photos.map(photo => ({ ...photo, file: null, preview: null })));
-    setPetDetails({ especie: '', breed: '', sex: '', age: '' });
+    setPetDetails({ especie: '', breed: '', sex: '', age: '', pelagem: '' });
     setShowPetDetails(false);
     setTermsAccepted(false);
     setError(null);
@@ -249,6 +322,13 @@ function App() {
   const hasRequiredPhotos = photos.find(p => p.id === 'frontal')?.file !== null;
   const imageUrl = getImageUrl();
   const canShowButtons = imageUrl && imageLoaded && !imageError;
+
+  // Obter opções de raça baseado na espécie selecionada
+  const getBreedOptions = () => {
+    if (petDetails.especie === 'cachorro') return DOG_BREEDS;
+    if (petDetails.especie === 'gato') return CAT_BREEDS;
+    return [{ value: '', label: 'Selecione primeiro a espécie' }];
+  };
 
   // Debug: Log da resposta da API DALL·E
   useEffect(() => {
@@ -416,7 +496,14 @@ function App() {
                       </label>
                       <select
                         value={petDetails.especie}
-                        onChange={(e) => setPetDetails(prev => ({ ...prev, especie: e.target.value as 'cachorro' | 'gato' }))}
+                        onChange={(e) => {
+                          const newEspecie = e.target.value as 'cachorro' | 'gato';
+                          setPetDetails(prev => ({ 
+                            ...prev, 
+                            especie: newEspecie,
+                            breed: '' // Reset breed when species changes
+                          }));
+                        }}
                         className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:border-cyan-400 focus:outline-none transition-colors"
                       >
                         <option value="">Selecione a espécie</option>
@@ -425,18 +512,46 @@ function App() {
                       </select>
                     </div>
 
-                    {/* Raça */}
+                    {/* Raça - Dropdown baseado na espécie */}
                     <div>
                       <label className="block text-sm font-medium text-gray-300 mb-2">
                         Raça <span className="text-red-400">*</span>
                       </label>
-                      <input
-                        type="text"
+                      <select
                         value={petDetails.breed}
                         onChange={(e) => setPetDetails(prev => ({ ...prev, breed: e.target.value }))}
-                        placeholder="Ex: Labrador, Vira-lata, Persa..."
-                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:border-cyan-400 focus:outline-none transition-colors"
-                      />
+                        disabled={!petDetails.especie}
+                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:border-cyan-400 focus:outline-none transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {getBreedOptions().map(option => (
+                          <option key={option.value} value={option.value}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </select>
+                      {!petDetails.especie && (
+                        <p className="text-xs text-gray-400 mt-2">
+                          💡 Selecione primeiro a espécie para ver as opções de raça
+                        </p>
+                      )}
+                    </div>
+
+                    {/* Cor da Pelagem */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                        Cor da Pelagem <span className="text-red-400">*</span>
+                      </label>
+                      <select
+                        value={petDetails.pelagem}
+                        onChange={(e) => setPetDetails(prev => ({ ...prev, pelagem: e.target.value }))}
+                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:border-cyan-400 focus:outline-none transition-colors"
+                      >
+                        {PELAGEM_OPTIONS.map(option => (
+                          <option key={option.value} value={option.value}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </select>
                     </div>
 
                     {/* Sexo */}
@@ -565,7 +680,7 @@ function App() {
           /* Result Section */
           <section className="max-w-2xl mx-auto text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-8 bg-gradient-to-r from-green-400 to-cyan-400 bg-clip-text text-transparent">
-              🎉 Transformação DALL·E Completa!
+              🎉 Transformação realizada!
             </h2>
             
             <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 mb-8">

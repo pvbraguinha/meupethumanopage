@@ -84,16 +84,16 @@ const CAT_BREEDS = [
   { value: 'munchkin', label: 'Munchkin' }
 ];
 
-// Opções de cor da pelagem
+// Opções de cor da pelagem - VALORES CORRETOS PARA O BACKEND
 const PELAGEM_OPTIONS = [
   { value: '', label: 'Selecione a cor da pelagem' },
   { value: 'clara', label: 'Branco ou creme' },
   { value: 'escura', label: 'Preto ou marrom escuro' },
-  { value: 'alaranjada', label: 'Alaranjado ou dourado' },
+  { value: 'laranja', label: 'Alaranjado ou dourado' }, // CORRIGIDO: laranja em vez de alaranjada
   { value: 'preto_branco', label: 'Preto e branco (bicolor)' },
   { value: 'cinza', label: 'Cinza' },
-  { value: 'tigrada', label: 'Tigrado (listrado)' },
-  { value: 'malhada', label: 'Malhado (manchas grandes)' },
+  { value: 'tigrado', label: 'Tigrado (listrado)' }, // CORRIGIDO: tigrado em vez de tigrada
+  { value: 'malhado', label: 'Malhado (manchas grandes)' }, // CORRIGIDO: malhado em vez de malhada
   { value: 'tricolor', label: 'Tricolor (3 cores)' }
 ];
 
@@ -169,6 +169,23 @@ function App() {
     return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
   };
 
+  // 🔄 FUNÇÃO PARA MAPEAR DADOS ANTES DE ENVIAR
+  const mapDataForBackend = (petDetails: PetDetails) => {
+    // Mapear sexo: "fêmea" → "female", "macho" → "male"
+    const sexMapping: { [key: string]: string } = {
+      'fêmea': 'female',
+      'macho': 'male'
+    };
+
+    return {
+      especie: petDetails.especie,
+      breed: petDetails.breed,
+      sex: sexMapping[petDetails.sex] || petDetails.sex, // Mapear sexo
+      pelagem: petDetails.pelagem, // Já está com valores corretos
+      age: petDetails.age
+    };
+  };
+
   // Nova função para enviar formulário usando DALL·E API
   const handleSubmitPetForm = async () => {
     if (!petDetails.especie || !petDetails.sex || !petDetails.breed.trim() || !petDetails.age.trim() || !petDetails.pelagem) {
@@ -198,22 +215,33 @@ function App() {
       // Adicionar apenas a imagem frontal (obrigatória)
       formData.append('frontal', frontalPhoto.file);
       
-      // Adicionar dados do pet
+      // 🔄 MAPEAR DADOS ANTES DE ENVIAR
+      const mappedData = mapDataForBackend(petDetails);
+      
+      // Adicionar dados do pet MAPEADOS
       formData.append('session', generateSessionId());
-      formData.append('breed', petDetails.breed);
-      formData.append('sex', petDetails.sex);
-      formData.append('age', petDetails.age);
-      formData.append('especie', petDetails.especie);
-      formData.append('pelagem', petDetails.pelagem);
+      formData.append('breed', mappedData.breed);
+      formData.append('sex', mappedData.sex); // ✅ "female" ou "male"
+      formData.append('age', mappedData.age);
+      formData.append('especie', mappedData.especie);
+      formData.append('pelagem', mappedData.pelagem); // ✅ Valores corretos
 
       console.log('=== ENVIANDO PARA DALL·E API ===');
       console.log('Endpoint:', 'https://smartdog-backend-vlm0.onrender.com/api/transform-pet');
-      console.log('Dados enviados:', {
+      console.log('Dados ORIGINAIS do usuário:', {
         especie: petDetails.especie,
         breed: petDetails.breed,
         sex: petDetails.sex,
         age: petDetails.age,
         pelagem: petDetails.pelagem,
+        frontal: frontalPhoto.file.name
+      });
+      console.log('Dados MAPEADOS enviados:', {
+        especie: mappedData.especie,
+        breed: mappedData.breed,
+        sex: mappedData.sex, // ✅ "female" ou "male"
+        age: mappedData.age,
+        pelagem: mappedData.pelagem, // ✅ Valores corretos
         frontal: frontalPhoto.file.name
       });
 

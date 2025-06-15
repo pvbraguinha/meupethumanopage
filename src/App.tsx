@@ -95,6 +95,57 @@ function App() {
     return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
   };
 
+  // Função de teste do backend
+  const testBackendIntegration = async () => {
+    console.log('🧪 TESTE MANUAL INICIADO');
+    
+    try {
+      // Criar uma imagem de teste
+      const canvas = document.createElement('canvas');
+      canvas.width = 100;
+      canvas.height = 100;
+      const ctx = canvas.getContext('2d');
+      
+      ctx.fillStyle = '#FF6B6B';
+      ctx.fillRect(0, 0, 100, 100);
+      ctx.fillStyle = '#4ECDC4';
+      ctx.fillRect(25, 25, 50, 50);
+      
+      const blob = await new Promise<Blob>((resolve) => {
+        canvas.toBlob((blob) => resolve(blob!), 'image/jpeg', 0.8);
+      });
+      
+      const testFile = new File([blob], 'test-pet.jpg', { type: 'image/jpeg' });
+      
+      const formData = new FormData();
+      formData.append('frontal', testFile);
+      formData.append('session', 'teste_' + Date.now());
+      formData.append('breed', 'Poodle');
+      formData.append('sex', 'fêmea');
+      formData.append('age', '2 anos');
+      formData.append('especie', 'cachorro');
+      
+      console.log('📤 Enviando dados de teste...');
+      
+      const response = await fetch('https://smartdog-backend-vlm0.onrender.com/transform-pet', {
+        method: 'POST',
+        body: formData,
+      });
+      
+      console.log('📊 Status:', response.status);
+      console.log('📋 Headers:', Object.fromEntries(response.headers.entries()));
+      
+      const data = await response.json();
+      console.log('📄 Resposta completa:', data);
+      
+      return { success: response.ok, status: response.status, data };
+      
+    } catch (error) {
+      console.error('💥 Erro no teste:', error);
+      return { success: false, error: error.message };
+    }
+  };
+
   // Nova função para enviar formulário usando DALL·E API
   const handleSubmitPetForm = async () => {
     if (!petDetails.especie || !petDetails.sex || !petDetails.breed.trim() || !petDetails.age.trim()) {
@@ -294,6 +345,16 @@ function App() {
               </div>
               <span className="text-cyan-400 font-semibold">{petCount.toLocaleString()} pets já transformados!</span>
             </div>
+          </div>
+          
+          {/* Botão de teste do backend */}
+          <div className="mt-8">
+            <button
+              onClick={testBackendIntegration}
+              className="px-6 py-3 bg-yellow-600 hover:bg-yellow-500 rounded-lg font-semibold transition-colors"
+            >
+              🧪 Testar Backend (Dev)
+            </button>
           </div>
         </header>
 

@@ -11,23 +11,16 @@ interface PhotoSlot {
 }
 
 interface PetDetails {
-  especie: 'cão' | 'gato' | '';
+  especie: 'cachorro' | 'gato' | '';
   breed: string;
   sex: 'macho' | 'fêmea' | '';
-  age: string; // Mudado para string para aceitar texto livre
+  age: string;
 }
 
 interface TransformResult {
-  frontal_url?: string;
-  focinho_url?: string;
-  angulo_url?: string;
-  prompt?: string;
-  result_url?: string;
-  output_url?: string;
-  image?: string;
+  composite_image?: string;
   transformed_image?: string;
-  transform_pet_humano?: string; // CAMPO CORRETO DO BACKEND
-  idade_humana?: number; // NOVO: idade humana estimada
+  prompt_used?: string;
   message?: string;
 }
 
@@ -43,7 +36,7 @@ function App() {
     especie: '',
     breed: '',
     sex: '',
-    age: '' // Mudado para string vazia
+    age: ''
   });
   
   const [isProcessing, setIsProcessing] = useState(false);
@@ -97,7 +90,13 @@ function App() {
     setError(null);
   };
 
-  const handleTransform = async () => {
+  // Gerar UUID único para sessão
+  const generateSessionId = () => {
+    return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+  };
+
+  // Nova função para enviar formulário usando DALL·E API
+  const handleSubmitPetForm = async () => {
     if (!petDetails.especie || !petDetails.sex || !petDetails.breed.trim() || !petDetails.age.trim()) {
       setError('Por favor, preencha todos os campos obrigatórios.');
       return;
@@ -105,6 +104,12 @@ function App() {
 
     if (!termsAccepted) {
       setError('Você deve aceitar os termos para continuar.');
+      return;
+    }
+
+    const frontalPhoto = photos.find(p => p.id === 'frontal');
+    if (!frontalPhoto?.file) {
+      setError('A foto frontal é obrigatória para continuar.');
       return;
     }
 
@@ -116,35 +121,37 @@ function App() {
     try {
       const formData = new FormData();
       
-      // Adicionar imagens
-      photos.forEach(photo => {
-        if (photo.file) {
-          formData.append(photo.id, photo.file);
-        }
-      });
-
+      // Adicionar apenas a imagem frontal (obrigatória)
+      formData.append('frontal', frontalPhoto.file);
+      
       // Adicionar dados do pet
-      formData.append('especie', petDetails.especie);
+      formData.append('session', generateSessionId());
       formData.append('breed', petDetails.breed);
       formData.append('sex', petDetails.sex);
-      formData.append('age', petDetails.age); // Agora envia como string
-      formData.append('session', `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
+      formData.append('age', petDetails.age);
+      formData.append('especie', petDetails.especie);
 
-      console.log('Enviando dados para API:', {
+      console.log('=== ENVIANDO PARA DALL·E API ===');
+      console.log('Endpoint:', 'https://smartdog-backend-vlm0.onrender.com/transform-pet');
+      console.log('Dados enviados:', {
         especie: petDetails.especie,
         breed: petDetails.breed,
         sex: petDetails.sex,
         age: petDetails.age,
-        photos: photos.filter(p => p.file).map(p => p.id)
+        frontal: frontalPhoto.file.name
       });
 
-      const response = await fetch('https://smartdog-backend-vlm0.onrender.com/api/upload-pet-images', {
+      const response = await fetch('https://smartdog-backend-vlm0.onrender.com/transform-pet', {
         method: 'POST',
         body: formData,
       });
 
       const data = await response.json();
-      console.log('Resposta da API:', data);
+      console.log('=== RESPOSTA DALL·E API ===');
+      console.log('Resposta completa:', data);
+      console.log('composite_image:', data.composite_image);
+      console.log('transformed_image:', data.transformed_image);
+      console.log('prompt_used:', data.prompt_used);
 
       if (response.ok) {
         setResult(data);
@@ -154,7 +161,7 @@ function App() {
         setError(data.message || 'Erro ao processar a transformação. Tente novamente.');
       }
     } catch (error) {
-      console.error('Erro na requisição:', error);
+      console.error('Erro na requisição DALL·E:', error);
       setError('Erro de conexão. Verifique sua internet e tente novamente.');
     } finally {
       setIsProcessing(false);
@@ -214,45 +221,40 @@ function App() {
     setImageError(false);
   };
 
-  // Função para obter a URL da imagem transformada - PRIORIZA transform_pet_humano
+  // Função para obter a URL da imagem transformada - DALL·E API
   const getImageUrl = (): string | null => {
     if (!result) return null;
     
-    // PRIORIDADE: transform_pet_humano (campo correto do backend)
-    return result.transform_pet_humano || 
-           result.result_url || 
-           result.output_url || 
-           result.image || 
-           result.transformed_image || 
-           null;
+    // Prioridade: composite_image ou transformed_image (campos do DALL·E)
+    return result.composite_image || result.transformed_image || null;
   };
 
   const handleImageLoad = () => {
     setImageLoaded(true);
     setImageError(false);
-    console.log('Imagem carregada com sucesso!');
+    console.log('Imagem DALL·E carregada com sucesso!');
   };
 
   const handleImageError = () => {
     setImageLoaded(false);
     setImageError(true);
-    console.error('Erro ao carregar imagem:', getImageUrl());
+    console.error('Erro ao carregar imagem DALL·E:', getImageUrl());
   };
 
   const hasRequiredPhotos = photos.find(p => p.id === 'frontal')?.file !== null;
   const imageUrl = getImageUrl();
   const canShowButtons = imageUrl && imageLoaded && !imageError;
 
-  // Debug: Log da resposta da API
+  // Debug: Log da resposta da API DALL·E
   useEffect(() => {
     if (result) {
-      console.log('=== DEBUG RESPOSTA API ===');
+      console.log('=== DEBUG RESPOSTA DALL·E ===');
       console.log('Resposta completa:', result);
-      console.log('transform_pet_humano:', result.transform_pet_humano);
-      console.log('result_url:', result.result_url);
-      console.log('idade_humana:', result.idade_humana);
+      console.log('composite_image:', result.composite_image);
+      console.log('transformed_image:', result.transformed_image);
+      console.log('prompt_used:', result.prompt_used);
       console.log('URL escolhida:', getImageUrl());
-      console.log('========================');
+      console.log('============================');
     }
   }, [result]);
 
@@ -276,12 +278,12 @@ function App() {
             <Sparkles className="w-8 h-8 text-cyan-400 ml-3 animate-pulse" />
           </div>
           <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            Envie fotos do seu pet e veja a mágica acontecer.
+            Envie fotos do seu pet e veja a mágica acontecer com IA DALL·E.
           </p>
           <div className="mt-8 flex items-center justify-center space-x-6">
             <div className="flex items-center space-x-2">
               <Dna className="w-6 h-6 text-green-400 animate-spin" />
-              <span className="text-green-400 font-semibold">Tecnologia AI Avançada</span>
+              <span className="text-green-400 font-semibold">Tecnologia DALL·E Avançada</span>
             </div>
             <div className="flex items-center space-x-2">
               {/* Ícones fofos de cachorro e gato */}
@@ -407,11 +409,11 @@ function App() {
                       </label>
                       <select
                         value={petDetails.especie}
-                        onChange={(e) => setPetDetails(prev => ({ ...prev, especie: e.target.value as 'cão' | 'gato' }))}
+                        onChange={(e) => setPetDetails(prev => ({ ...prev, especie: e.target.value as 'cachorro' | 'gato' }))}
                         className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:border-cyan-400 focus:outline-none transition-colors"
                       >
                         <option value="">Selecione a espécie</option>
-                        <option value="cão">Cão</option>
+                        <option value="cachorro">Cachorro</option>
                         <option value="gato">Gato</option>
                       </select>
                     </div>
@@ -516,14 +518,14 @@ function App() {
                     {/* Submit Button */}
                     <div className="pt-6">
                       <button
-                        onClick={handleTransform}
+                        onClick={handleSubmitPetForm}
                         disabled={isProcessing}
                         className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-400 hover:to-emerald-500 text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         {isProcessing ? (
                           <>
                             <Dna className="w-6 h-6 mr-3 animate-spin inline" />
-                            Transformando...
+                            Transformando com DALL·E...
                           </>
                         ) : (
                           'Finalizar e Transformar em Humano'
@@ -556,7 +558,7 @@ function App() {
           /* Result Section */
           <section className="max-w-2xl mx-auto text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-8 bg-gradient-to-r from-green-400 to-cyan-400 bg-clip-text text-transparent">
-              🎉 Transformação Completa!
+              🎉 Transformação DALL·E Completa!
             </h2>
             
             <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 mb-8">
@@ -564,7 +566,7 @@ function App() {
                 <div className="relative">
                   <img 
                     src={imageUrl} 
-                    alt="Pet transformado em humano"
+                    alt="Pet transformado em humano pelo DALL·E"
                     className="w-full max-w-md mx-auto rounded-xl shadow-2xl shadow-cyan-500/20"
                     onLoad={handleImageLoad}
                     onError={handleImageError}
@@ -604,22 +606,11 @@ function App() {
                 </div>
               )}
               
-              {/* NOVA: Exibição da idade humana estimada */}
-              {result.idade_humana && canShowButtons && (
-                <div className="mt-6 p-4 bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-400/20 rounded-xl">
-                  <div className="flex items-center justify-center space-x-3">
-                    <User className="w-6 h-6 text-blue-400" />
-                    <span className="text-lg font-semibold text-blue-300">
-                      🧓 Idade humana estimada: {result.idade_humana} anos
-                    </span>
-                  </div>
-                </div>
-              )}
-              
-              {result.prompt && canShowButtons && (
+              {/* Exibição do prompt usado pelo DALL·E */}
+              {result.prompt_used && canShowButtons && (
                 <div className="mt-6 p-4 bg-white/5 rounded-xl">
-                  <h4 className="text-sm font-semibold text-cyan-300 mb-2">Prompt usado:</h4>
-                  <p className="text-sm text-gray-300">{result.prompt}</p>
+                  <h4 className="text-sm font-semibold text-cyan-300 mb-2">🎨 Prompt DALL·E usado:</h4>
+                  <p className="text-sm text-gray-300">{result.prompt_used}</p>
                 </div>
               )}
             </div>
@@ -632,7 +623,7 @@ function App() {
                   className="flex items-center justify-center px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-400 hover:to-emerald-500 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 mx-auto"
                 >
                   <Download className="w-5 h-5 mr-2" />
-                  Baixar Imagem
+                  Baixar Imagem DALL·E
                 </button>
               </div>
             )}
@@ -641,7 +632,7 @@ function App() {
             {canShowButtons && (
               <div className="mb-8">
                 <h3 className="text-xl font-bold mb-6 text-cyan-300">
-                  🚀 Compartilhe sua transformação!
+                  🚀 Compartilhe sua transformação DALL·E!
                 </h3>
                 
                 <div className="grid grid-cols-2 md:grid-cols-5 gap-4 max-w-lg mx-auto">

@@ -18,10 +18,13 @@ interface PetDetails {
 }
 
 interface TransformResult {
+  success?: boolean;
   composite_image?: string;
   transformed_image?: string;
   prompt_used?: string;
+  idade_humana?: number;
   message?: string;
+  error?: string;
 }
 
 function App() {
@@ -95,57 +98,6 @@ function App() {
     return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
   };
 
-  // Função de teste do backend
-  const testBackendIntegration = async () => {
-    console.log('🧪 TESTE MANUAL INICIADO');
-    
-    try {
-      // Criar uma imagem de teste
-      const canvas = document.createElement('canvas');
-      canvas.width = 100;
-      canvas.height = 100;
-      const ctx = canvas.getContext('2d');
-      
-      ctx.fillStyle = '#FF6B6B';
-      ctx.fillRect(0, 0, 100, 100);
-      ctx.fillStyle = '#4ECDC4';
-      ctx.fillRect(25, 25, 50, 50);
-      
-      const blob = await new Promise<Blob>((resolve) => {
-        canvas.toBlob((blob) => resolve(blob!), 'image/jpeg', 0.8);
-      });
-      
-      const testFile = new File([blob], 'test-pet.jpg', { type: 'image/jpeg' });
-      
-      const formData = new FormData();
-      formData.append('frontal', testFile);
-      formData.append('session', 'teste_' + Date.now());
-      formData.append('breed', 'Poodle');
-      formData.append('sex', 'fêmea');
-      formData.append('age', '2 anos');
-      formData.append('especie', 'cachorro');
-      
-      console.log('📤 Enviando dados de teste...');
-      
-      const response = await fetch('https://smartdog-backend-vlm0.onrender.com/transform-pet', {
-        method: 'POST',
-        body: formData,
-      });
-      
-      console.log('📊 Status:', response.status);
-      console.log('📋 Headers:', Object.fromEntries(response.headers.entries()));
-      
-      const data = await response.json();
-      console.log('📄 Resposta completa:', data);
-      
-      return { success: response.ok, status: response.status, data };
-      
-    } catch (error) {
-      console.error('💥 Erro no teste:', error);
-      return { success: false, error: error.message };
-    }
-  };
-
   // Nova função para enviar formulário usando DALL·E API
   const handleSubmitPetForm = async () => {
     if (!petDetails.especie || !petDetails.sex || !petDetails.breed.trim() || !petDetails.age.trim()) {
@@ -183,7 +135,7 @@ function App() {
       formData.append('especie', petDetails.especie);
 
       console.log('=== ENVIANDO PARA DALL·E API ===');
-      console.log('Endpoint:', 'https://smartdog-backend-vlm0.onrender.com/transform-pet');
+      console.log('Endpoint:', 'https://smartdog-backend-vlm0.onrender.com/api/transform-pet');
       console.log('Dados enviados:', {
         especie: petDetails.especie,
         breed: petDetails.breed,
@@ -192,7 +144,7 @@ function App() {
         frontal: frontalPhoto.file.name
       });
 
-      const response = await fetch('https://smartdog-backend-vlm0.onrender.com/transform-pet', {
+      const response = await fetch('https://smartdog-backend-vlm0.onrender.com/api/transform-pet', {
         method: 'POST',
         body: formData,
       });
@@ -200,16 +152,18 @@ function App() {
       const data = await response.json();
       console.log('=== RESPOSTA DALL·E API ===');
       console.log('Resposta completa:', data);
+      console.log('success:', data.success);
       console.log('composite_image:', data.composite_image);
       console.log('transformed_image:', data.transformed_image);
       console.log('prompt_used:', data.prompt_used);
+      console.log('idade_humana:', data.idade_humana);
 
-      if (response.ok) {
+      if (response.ok && data.success) {
         setResult(data);
         // Atualizar contador
         setPetCount(prev => prev + 1);
       } else {
-        setError(data.message || 'Erro ao processar a transformação. Tente novamente.');
+        setError(data.error || data.message || 'Erro ao processar a transformação. Tente novamente.');
       }
     } catch (error) {
       console.error('Erro na requisição DALL·E:', error);
@@ -301,9 +255,11 @@ function App() {
     if (result) {
       console.log('=== DEBUG RESPOSTA DALL·E ===');
       console.log('Resposta completa:', result);
+      console.log('success:', result.success);
       console.log('composite_image:', result.composite_image);
       console.log('transformed_image:', result.transformed_image);
       console.log('prompt_used:', result.prompt_used);
+      console.log('idade_humana:', result.idade_humana);
       console.log('URL escolhida:', getImageUrl());
       console.log('============================');
     }
@@ -345,16 +301,6 @@ function App() {
               </div>
               <span className="text-cyan-400 font-semibold">{petCount.toLocaleString()} pets já transformados!</span>
             </div>
-          </div>
-          
-          {/* Botão de teste do backend */}
-          <div className="mt-8">
-            <button
-              onClick={testBackendIntegration}
-              className="px-6 py-3 bg-yellow-600 hover:bg-yellow-500 rounded-lg font-semibold transition-colors"
-            >
-              🧪 Testar Backend (Dev)
-            </button>
           </div>
         </header>
 
@@ -667,11 +613,31 @@ function App() {
                 </div>
               )}
               
-              {/* Exibição do prompt usado pelo DALL·E */}
-              {result.prompt_used && canShowButtons && (
-                <div className="mt-6 p-4 bg-white/5 rounded-xl">
-                  <h4 className="text-sm font-semibold text-cyan-300 mb-2">🎨 Prompt DALL·E usado:</h4>
-                  <p className="text-sm text-gray-300">{result.prompt_used}</p>
+              {/* Informações adicionais - só aparece se imagem carregou */}
+              {canShowButtons && (
+                <div className="mt-6 space-y-4">
+                  {/* Idade humana estimada */}
+                  {result.idade_humana && (
+                    <div className="p-4 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-xl border border-blue-400/20">
+                      <div className="flex items-center justify-center space-x-2">
+                        <User className="w-6 h-6 text-blue-400" />
+                        <span className="text-lg font-semibold text-blue-300">
+                          Idade humana estimada: {result.idade_humana} anos
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* Prompt usado pelo DALL·E */}
+                  {result.prompt_used && (
+                    <div className="p-4 bg-white/5 rounded-xl">
+                      <h4 className="text-sm font-semibold text-cyan-300 mb-2 flex items-center">
+                        <Sparkles className="w-4 h-4 mr-2" />
+                        Prompt DALL·E usado:
+                      </h4>
+                      <p className="text-sm text-gray-300 italic">{result.prompt_used}</p>
+                    </div>
+                  )}
                 </div>
               )}
             </div>

@@ -84,17 +84,17 @@ const CAT_BREEDS = [
   { value: 'munchkin', label: 'Munchkin' }
 ];
 
-// Opções de cor da pelagem - VALORES CORRETOS PARA O BACKEND
+// Opções de cor da pelagem - VALORES PARA EXIBIÇÃO AO USUÁRIO
 const PELAGEM_OPTIONS = [
   { value: '', label: 'Selecione a cor da pelagem' },
-  { value: 'clara', label: 'Branco ou creme' },
-  { value: 'escura', label: 'Preto ou marrom escuro' },
-  { value: 'laranja', label: 'Alaranjado ou dourado' }, // CORRIGIDO: laranja em vez de alaranjada
-  { value: 'preto_branco', label: 'Preto e branco (bicolor)' },
-  { value: 'cinza', label: 'Cinza' },
-  { value: 'tigrado', label: 'Tigrado (listrado)' }, // CORRIGIDO: tigrado em vez de tigrada
-  { value: 'malhado', label: 'Malhado (manchas grandes)' }, // CORRIGIDO: malhado em vez de malhada
-  { value: 'tricolor', label: 'Tricolor (3 cores)' }
+  { value: 'Branco ou creme', label: 'Branco ou creme' },
+  { value: 'Preto ou marrom escuro', label: 'Preto ou marrom escuro' },
+  { value: 'Alaranjado ou dourado', label: 'Alaranjado ou dourado' },
+  { value: 'Preto e branco (bicolor)', label: 'Preto e branco (bicolor)' },
+  { value: 'Cinza', label: 'Cinza' },
+  { value: 'Tigrado (listrado)', label: 'Tigrado (listrado)' },
+  { value: 'Malhado (manchas grandes)', label: 'Malhado (manchas grandes)' },
+  { value: 'Tricolor (3 cores)', label: 'Tricolor (3 cores)' }
 ];
 
 function App() {
@@ -169,19 +169,31 @@ function App() {
     return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
   };
 
-  // 🔄 FUNÇÃO PARA MAPEAR DADOS ANTES DE ENVIAR
+  // 🔄 FUNÇÃO PARA MAPEAR DADOS ANTES DE ENVIAR - CORRIGIDA!
   const mapDataForBackend = (petDetails: PetDetails) => {
-    // Mapear sexo: "fêmea" → "female", "macho" → "male"
+    // ✅ Mapear sexo: "fêmea" → "female", "macho" → "male"
     const sexMapping: { [key: string]: string } = {
       'fêmea': 'female',
       'macho': 'male'
     };
 
+    // ✅ Mapear cor da pelagem: valores exibidos → valores do backend
+    const pelagemMapping: { [key: string]: string } = {
+      'Branco ou creme': 'clara',
+      'Preto ou marrom escuro': 'escura',
+      'Alaranjado ou dourado': 'laranja',
+      'Preto e branco (bicolor)': 'preto_branco',
+      'Cinza': 'cinza',
+      'Tigrado (listrado)': 'tigrado',
+      'Malhado (manchas grandes)': 'malhado',
+      'Tricolor (3 cores)': 'tricolor'
+    };
+
     return {
       especie: petDetails.especie,
       breed: petDetails.breed,
-      sex: sexMapping[petDetails.sex] || petDetails.sex, // Mapear sexo
-      pelagem: petDetails.pelagem, // Já está com valores corretos
+      sex: sexMapping[petDetails.sex] || petDetails.sex, // ✅ Mapear sexo
+      pelagem: pelagemMapping[petDetails.pelagem] || petDetails.pelagem, // ✅ Mapear pelagem
       age: petDetails.age
     };
   };
@@ -215,7 +227,7 @@ function App() {
       // Adicionar apenas a imagem frontal (obrigatória)
       formData.append('frontal', frontalPhoto.file);
       
-      // 🔄 MAPEAR DADOS ANTES DE ENVIAR
+      // 🔄 MAPEAR DADOS ANTES DE ENVIAR - CORRIGIDO!
       const mappedData = mapDataForBackend(petDetails);
       
       // Adicionar dados do pet MAPEADOS
@@ -231,9 +243,9 @@ function App() {
       console.log('Dados ORIGINAIS do usuário:', {
         especie: petDetails.especie,
         breed: petDetails.breed,
-        sex: petDetails.sex,
+        sex: petDetails.sex, // "fêmea" ou "macho"
         age: petDetails.age,
-        pelagem: petDetails.pelagem,
+        pelagem: petDetails.pelagem, // "Branco ou creme", etc.
         frontal: frontalPhoto.file.name
       });
       console.log('Dados MAPEADOS enviados:', {
@@ -241,7 +253,7 @@ function App() {
         breed: mappedData.breed,
         sex: mappedData.sex, // ✅ "female" ou "male"
         age: mappedData.age,
-        pelagem: mappedData.pelagem, // ✅ Valores corretos
+        pelagem: mappedData.pelagem, // ✅ "clara", "escura", etc.
         frontal: frontalPhoto.file.name
       });
 

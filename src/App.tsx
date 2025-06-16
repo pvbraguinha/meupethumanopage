@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { 
   Camera, 
   Heart, 
@@ -10,7 +10,9 @@ import {
   Globe,
   Award,
   Zap,
-  Target
+  Target,
+  Upload,
+  AlertCircle
 } from 'lucide-react';
 
 interface RoadmapPhase {
@@ -27,9 +29,54 @@ interface RoadmapPhase {
   color: string;
 }
 
+interface PhotoSlot {
+  id: string;
+  label: string;
+  description: string;
+  file: File | null;
+  preview: string | null;
+  required: boolean;
+}
+
+interface PetDetails {
+  name: string;
+  species: 'cachorro' | 'gato' | '';
+  breed: string;
+  sex: 'macho' | 'fêmea' | '';
+  age: string;
+}
+
+interface UploadResult {
+  success?: boolean;
+  message?: string;
+  error?: string;
+}
+
 function App() {
+  const [currentView, setCurrentView] = useState<'roadmap' | 'upload'>('roadmap');
   const [visiblePhases, setVisiblePhases] = useState<number[]>([]);
   const [petCount, setPetCount] = useState<number>(0);
+  
+  // Upload states
+  const [photos, setPhotos] = useState<PhotoSlot[]>([
+    { id: 'frontal', label: 'Imagem Frontal', description: 'Rosto da frente', file: null, preview: null, required: true },
+    { id: 'focinho', label: 'Foto de Focinho', description: 'Close-up do Nariz', file: null, preview: null, required: true }
+  ]);
+  
+  const [showPetDetails, setShowPetDetails] = useState(false);
+  const [petDetails, setPetDetails] = useState<PetDetails>({
+    name: '',
+    species: '',
+    breed: '',
+    sex: '',
+    age: ''
+  });
+  
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [result, setResult] = useState<UploadResult | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  
+  const fileInputRefs = useRef<{ [key: string]: HTMLInputElement | null }>({});
 
   // Buscar contador de pets
   useEffect(() => {
@@ -52,18 +99,20 @@ function App() {
 
   // Animação de entrada das fases
   useEffect(() => {
-    const timer = setInterval(() => {
-      setVisiblePhases(prev => {
-        if (prev.length < roadmapPhases.length) {
-          return [...prev, prev.length];
-        }
-        clearInterval(timer);
-        return prev;
-      });
-    }, 600);
+    if (currentView === 'roadmap') {
+      const timer = setInterval(() => {
+        setVisiblePhases(prev => {
+          if (prev.length < roadmapPhases.length) {
+            return [...prev, prev.length];
+          }
+          clearInterval(timer);
+          return prev;
+        });
+      }, 600);
 
-    return () => clearInterval(timer);
-  }, []);
+      return () => clearInterval(timer);
+    }
+  }, [currentView]);
 
   const roadmapPhases: RoadmapPhase[] = [
     {
@@ -90,12 +139,13 @@ function App() {
       id: 3,
       title: "Conexão Global",
       subtitle: "Criação de medidas e prevenção de risco à saúde pública",
-      description: "Diminuição do número de zoonoses",
+      description: "",
       status: 'upcoming',
       icon: <Globe className="w-8 h-8" />,
       color: 'from-green-500 to-green-600',
       items: [
-        { text: "Diminuir a zero os animais das ruas", status: 'upcoming' }
+        { text: "Diminuir a zero os animais das ruas", status: 'upcoming' },
+        { text: "Diminuição do número de zoonoses", status: 'upcoming' }
       ]
     }
   ];
@@ -127,9 +177,412 @@ function App() {
   };
 
   const handleContributeClick = () => {
-    // Redirecionar para a página de upload
-    window.location.href = '/upload';
+    setCurrentView('upload');
   };
+
+  const handleBackToRoadmap = () => {
+    setCurrentView('roadmap');
+    setResult(null);
+    setPhotos(photos.map(photo => ({ ...photo, file: null, preview: null })));
+    setPetDetails({ name: '', species: '', breed: '', sex: '', age: '' });
+    setShowPetDetails(false);
+    setError(null);
+  };
+
+  const handleFileSelect = (id: string, file: File) => {
+    if (file && file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const preview = e.target?.result as string;
+        setPhotos(prev => prev.map(photo => 
+          photo.id === id ? { ...photo, file, preview } : photo
+        ));
+      };
+      reader.readAsDataURL(file);
+      setError(null);
+    }
+  };
+
+  const handleShowPetDetails = () => {
+    const frontalPhoto = photos.find(p => p.id === 'frontal');
+    const focinhoPhoto = photos.find(p => p.id === 'focinho');
+    
+    if (!frontalPhoto?.file || !focinhoPhoto?.file) {
+      setError('Ambas as imagens (frontal e focinho) são obrigatórias para continuar.');
+      return;
+    }
+    setShowPetDetails(true);
+    setError(null);
+  };
+
+  // Gerar UUID único para sessão
+  const generateSessionId = () => {
+    return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+  };
+
+  // Função para enviar formulário
+  const handleSubmitPetForm = async () => {
+    // Validação dos campos obrigatórios
+    if (!petDetails.name.trim()) {
+      setError('O nome do pet é obrigatório.');
+      return;
+    }
+    
+    if (!petDetails.species || !petDetails.sex || !petDetails.breed.trim() || !petDetails.age.trim()) {
+      setError('Por favor, preencha todos os campos obrigatórios.');
+      return;
+    }
+
+    const frontalPhoto = photos.find(p => p.id === 'frontal');
+    const focinhoPhoto = photos.find(p => p.id === 'focinho');
+    
+    if (!frontalPhoto?.file || !focinhoPhoto?.file) {
+      setError('Ambas as imagens são obrigatórias para continuar.');
+      return;
+    }
+
+    setIsProcessing(true);
+    setError(null);
+
+    try {
+      const formData = new FormData();
+      
+      // Adicionar imagens
+      formData.append('frontal', frontalPhoto.file);
+      formData.append('focinho', focinhoPhoto.file);
+      
+      // Adicionar dados do pet
+      formData.append('name', petDetails.name.trim());
+      formData.append('session', generateSessionId());
+      formData.append('breed', petDetails.breed.trim());
+      formData.append('sex', petDetails.sex === 'fêmea' ? 'female' : 'male');
+      formData.append('age', petDetails.age.trim());
+      formData.append('species', petDetails.species);
+
+      console.log('=== ENVIANDO PARA BACKEND ===');
+      console.log('Endpoint:', 'https://smartdog-backend-vlm0.onrender.com/upload-pet-images');
+
+      const response = await fetch('https://smartdog-backend-vlm0.onrender.com/upload-pet-images', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await response.json();
+      console.log('=== RESPOSTA BACKEND ===');
+      console.log('Resposta completa:', data);
+
+      if (response.ok && data.success) {
+        setResult({ 
+          success: true, 
+          message: petDetails.name.trim() 
+            ? `${petDetails.name} acabou de contribuir para ajudar uma família!`
+            : 'Seu pet acabou de contribuir para ajudar uma família!'
+        });
+        
+        // Atualizar contador
+        const newCount = petCount + 1;
+        setPetCount(newCount);
+        localStorage.setItem('petContributionCount', newCount.toString());
+      } else {
+        setError(data.error || data.message || 'Erro ao enviar as fotos. Tente novamente.');
+      }
+    } catch (error) {
+      console.error('Erro na requisição:', error);
+      setError('Erro de conexão. Verifique sua internet e tente novamente.');
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const hasRequiredPhotos = photos.every(photo => photo.file !== null);
+
+  if (currentView === 'upload') {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+        <div className="container mx-auto px-4 py-8">
+          {/* Header */}
+          <header className="text-center mb-12">
+            <button
+              onClick={handleBackToRoadmap}
+              className="mb-6 text-blue-600 hover:text-blue-800 font-semibold flex items-center mx-auto"
+            >
+              <ArrowRight className="w-4 h-4 mr-2 rotate-180" />
+              Voltar ao Roadmap
+            </button>
+            
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Contribua com Imagens
+            </h1>
+            <p className="text-lg text-gray-600 mb-8">
+              Ajude a treinar nossa IA para salvar pets perdidos
+            </p>
+            
+            <div className="flex items-center justify-center space-x-2 mb-8">
+              <Users className="w-5 h-5 text-blue-600" />
+              <span className="text-gray-600 font-medium">
+                {petCount.toLocaleString()} pets já contribuíram
+              </span>
+            </div>
+          </header>
+
+          {/* Error Message */}
+          {error && (
+            <div className="max-w-2xl mx-auto mb-8">
+              <div className="bg-red-50 border border-red-200 rounded-xl p-4 flex items-center space-x-3">
+                <AlertCircle className="w-6 h-6 text-red-500 flex-shrink-0" />
+                <p className="text-red-700">{error}</p>
+              </div>
+            </div>
+          )}
+
+          {!result ? (
+            <>
+              {/* Upload Section */}
+              <section className="mb-12">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                  {photos.map((photo) => (
+                    <div
+                      key={photo.id}
+                      className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300"
+                    >
+                      <div className="text-center mb-4">
+                        <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                          {photo.label}
+                        </h3>
+                        <p className="text-sm text-gray-500">{photo.description}</p>
+                      </div>
+
+                      <div 
+                        className="upload-area relative rounded-xl p-8 border-2 border-dashed border-gray-300 hover:border-blue-400 transition-all duration-300 cursor-pointer bg-gray-50 hover:bg-blue-50"
+                        onClick={() => fileInputRefs.current[photo.id]?.click()}
+                      >
+                        {photo.preview ? (
+                          <div className="relative">
+                            <img 
+                              src={photo.preview} 
+                              alt={`Preview ${photo.label}`}
+                              className="w-full h-32 object-cover rounded-lg"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent rounded-lg"></div>
+                            <Camera className="absolute bottom-2 right-2 w-6 h-6 text-white" />
+                          </div>
+                        ) : (
+                          <div className="text-center">
+                            <Camera className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                            <p className="text-gray-600 text-sm">
+                              Toque para capturar ou escolher foto
+                            </p>
+                          </div>
+                        )}
+                      </div>
+
+                      <input
+                        ref={el => fileInputRefs.current[photo.id] = el}
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) handleFileSelect(photo.id, file);
+                        }}
+                      />
+
+                      {/* Progress indicator */}
+                      <div className="mt-4 flex items-center justify-center">
+                        <div className={`w-3 h-3 rounded-full ${photo.file ? 'bg-green-500' : 'bg-gray-300'} transition-colors`}></div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              {/* Continue Button */}
+              {!showPetDetails && (
+                <div className="text-center mb-16">
+                  <button
+                    onClick={handleShowPetDetails}
+                    disabled={!hasRequiredPhotos}
+                    className="professional-cta-button disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <div className="flex items-center space-x-3">
+                      <Heart className="w-6 h-6" />
+                      <span>Continuar</span>
+                      <ArrowRight className="w-6 h-6" />
+                    </div>
+                  </button>
+                </div>
+              )}
+
+              {/* Pet Details Form */}
+              {showPetDetails && (
+                <section className="mb-12">
+                  <div className="max-w-2xl mx-auto">
+                    <h2 className="text-2xl font-bold text-center mb-8 text-gray-900">
+                      Detalhes do Seu Pet
+                    </h2>
+                    
+                    <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-200 space-y-6">
+                      {/* Nome do Pet */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Nome do Pet <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          value={petDetails.name}
+                          onChange={(e) => setPetDetails(prev => ({ ...prev, name: e.target.value }))}
+                          placeholder="Ex: Luna, Thor, Nina..."
+                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        />
+                      </div>
+
+                      {/* Espécie */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Espécie <span className="text-red-500">*</span>
+                        </label>
+                        <select
+                          value={petDetails.species}
+                          onChange={(e) => {
+                            const newSpecies = e.target.value as 'cachorro' | 'gato';
+                            setPetDetails(prev => ({ 
+                              ...prev, 
+                              species: newSpecies,
+                              breed: ''
+                            }));
+                          }}
+                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        >
+                          <option value="">Selecione a espécie</option>
+                          <option value="cachorro">Cachorro</option>
+                          <option value="gato">Gato</option>
+                        </select>
+                      </div>
+
+                      {/* Raça */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Raça <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          value={petDetails.breed}
+                          onChange={(e) => setPetDetails(prev => ({ ...prev, breed: e.target.value }))}
+                          placeholder="Ex: Labrador, SRD, Persa, etc..."
+                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        />
+                      </div>
+
+                      {/* Sexo */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Sexo <span className="text-red-500">*</span>
+                        </label>
+                        <select
+                          value={petDetails.sex}
+                          onChange={(e) => setPetDetails(prev => ({ ...prev, sex: e.target.value as 'macho' | 'fêmea' }))}
+                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        >
+                          <option value="">Selecione o sexo</option>
+                          <option value="macho">Macho</option>
+                          <option value="fêmea">Fêmea</option>
+                        </select>
+                      </div>
+
+                      {/* Idade */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Idade <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          value={petDetails.age}
+                          onChange={(e) => setPetDetails(prev => ({ ...prev, age: e.target.value }))}
+                          placeholder="Ex: 3 anos, 6 meses, 45 dias..."
+                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        />
+                      </div>
+
+                      {/* Submit Button */}
+                      <div className="pt-6">
+                        <button
+                          onClick={handleSubmitPetForm}
+                          disabled={isProcessing}
+                          className="professional-cta-button w-full disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          {isProcessing ? (
+                            <>
+                              <Heart className="w-6 h-6 mr-3 animate-pulse" />
+                              Enviando contribuição...
+                            </>
+                          ) : (
+                            'Finalizar'
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              )}
+
+              {/* Processing State */}
+              {isProcessing && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                  <div className="bg-white rounded-2xl p-8 max-w-md mx-4 text-center">
+                    <div className="relative mb-6">
+                      <Heart className="w-16 h-16 text-blue-600 mx-auto animate-pulse" />
+                    </div>
+                    <h3 className="text-2xl font-bold mb-4 text-gray-900">Enviando contribuição</h3>
+                    <p className="text-gray-600 mb-6">Seu pet está ajudando uma família!</p>
+                    <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+                      <div className="bg-gradient-to-r from-blue-500 to-purple-600 h-full rounded-full animate-pulse w-3/4"></div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </>
+          ) : (
+            /* Result Section */
+            <section className="max-w-2xl mx-auto text-center">
+              <h2 className="text-3xl md:text-4xl font-bold mb-8 text-green-600">
+                Obrigado pela contribuição!
+              </h2>
+              
+              <div className="bg-green-50 border border-green-200 rounded-2xl p-8 mb-8">
+                <div className="relative mb-6">
+                  <div className="w-24 h-24 mx-auto bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center">
+                    <Heart className="w-12 h-12 text-white" />
+                  </div>
+                </div>
+                
+                <h3 className="text-2xl font-bold mb-4 text-green-700">
+                  {result.message}
+                </h3>
+                
+                <p className="text-lg text-gray-700 mb-6">
+                  As fotos enviadas serão usadas para treinar uma inteligência artificial capaz de identificar animais perdidos.
+                </p>
+                
+                <div className="flex items-center justify-center space-x-2 mb-6">
+                  <Users className="w-6 h-6 text-blue-600" />
+                  <span className="text-gray-700 font-semibold text-lg">
+                    {petCount.toLocaleString()} pets já contribuíram!
+                  </span>
+                </div>
+              </div>
+
+              <button
+                onClick={handleBackToRoadmap}
+                className="text-blue-600 hover:text-blue-800 font-semibold transition-colors underline"
+              >
+                Voltar ao início
+              </button>
+            </section>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
@@ -205,9 +658,11 @@ function App() {
                       {phase.subtitle}
                     </p>
                     
-                    <p className="text-gray-600 mb-6 leading-relaxed">
-                      {phase.description}
-                    </p>
+                    {phase.description && (
+                      <p className="text-sm text-gray-600 mb-6 leading-relaxed">
+                        {phase.description}
+                      </p>
+                    )}
 
                     {/* Phase Items */}
                     {phase.items.length > 0 && (

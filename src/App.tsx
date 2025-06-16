@@ -175,7 +175,7 @@ function App() {
     return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
   };
 
-  // Função para enviar formulário
+  // Função para enviar formulário - SIMPLIFICADA
   const handleSubmitPetForm = async () => {
     // Validação dos campos obrigatórios
     if (!petDetails.name.trim()) {
@@ -214,30 +214,27 @@ function App() {
       formData.append('age', petDetails.age.trim());
       formData.append('species', petDetails.species);
 
-      console.log('=== ENVIANDO PARA BACKEND ===');
-      console.log('Endpoint:', 'https://smartdog-backend-vlm0.onrender.com/api/upload-pet-images');
-
       const response = await fetch('https://smartdog-backend-vlm0.onrender.com/api/upload-pet-images', {
         method: 'POST',
         body: formData,
       });
 
       const data = await response.json();
-      console.log('=== RESPOSTA BACKEND ===');
-      console.log('Resposta completa:', data);
 
+      // FLUXO SIMPLIFICADO: Apenas verificar success e mostrar resultado
       if (response.ok && data.success) {
+        // Atualizar contador IMEDIATAMENTE
+        const newCount = petCount + 1;
+        setPetCount(newCount);
+        localStorage.setItem('petContributionCount', newCount.toString());
+        
+        // Mostrar tela de agradecimento IMEDIATAMENTE
         setResult({ 
           success: true, 
           message: petDetails.name.trim() 
             ? `${petDetails.name} acabou de contribuir para ajudar uma família!`
             : 'Seu pet acabou de contribuir para ajudar uma família!'
         });
-        
-        // Atualizar contador
-        const newCount = petCount + 1;
-        setPetCount(newCount);
-        localStorage.setItem('petContributionCount', newCount.toString());
       } else {
         setError(data.error || data.message || 'Erro ao enviar as fotos. Tente novamente.');
       }
@@ -456,7 +453,7 @@ function App() {
                 </div>
               )}
 
-              {/* Pet Details Form */}
+              {/* Pet Details Form - TEXTO PRETO CORRIGIDO */}
               {showPetDetails && (
                 <div className="max-w-2xl mx-auto">
                   <h3 className="text-2xl font-bold text-center mb-8 text-white">
@@ -474,7 +471,7 @@ function App() {
                         value={petDetails.name}
                         onChange={(e) => setPetDetails(prev => ({ ...prev, name: e.target.value }))}
                         placeholder="Ex: Luna, Thor, Nina..."
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 placeholder-gray-500"
                       />
                     </div>
 
@@ -493,11 +490,11 @@ function App() {
                             breed: ''
                           }));
                         }}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                       >
-                        <option value="">Selecione a espécie</option>
-                        <option value="cachorro">Cachorro</option>
-                        <option value="gato">Gato</option>
+                        <option value="" className="text-gray-500">Selecione a espécie</option>
+                        <option value="cachorro" className="text-gray-900">Cachorro</option>
+                        <option value="gato" className="text-gray-900">Gato</option>
                       </select>
                     </div>
 
@@ -511,7 +508,7 @@ function App() {
                         value={petDetails.breed}
                         onChange={(e) => setPetDetails(prev => ({ ...prev, breed: e.target.value }))}
                         placeholder="Ex: Labrador, SRD, Persa, etc..."
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 placeholder-gray-500"
                       />
                     </div>
 
@@ -523,11 +520,11 @@ function App() {
                       <select
                         value={petDetails.sex}
                         onChange={(e) => setPetDetails(prev => ({ ...prev, sex: e.target.value as 'macho' | 'fêmea' }))}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                       >
-                        <option value="">Selecione o sexo</option>
-                        <option value="macho">Macho</option>
-                        <option value="fêmea">Fêmea</option>
+                        <option value="" className="text-gray-500">Selecione o sexo</option>
+                        <option value="macho" className="text-gray-900">Macho</option>
+                        <option value="fêmea" className="text-gray-900">Fêmea</option>
                       </select>
                     </div>
 
@@ -541,7 +538,7 @@ function App() {
                         value={petDetails.age}
                         onChange={(e) => setPetDetails(prev => ({ ...prev, age: e.target.value }))}
                         placeholder="Ex: 3 anos, 6 meses, 45 dias..."
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 placeholder-gray-500"
                       />
                     </div>
 

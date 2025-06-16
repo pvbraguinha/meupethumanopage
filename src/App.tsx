@@ -8,8 +8,10 @@ import {
   Clock,
   Brain,
   Globe,
-  Gift,
-  Zap
+  Award,
+  Zap,
+  Target,
+  Shield
 } from 'lucide-react';
 
 interface RoadmapPhase {
@@ -22,8 +24,8 @@ interface RoadmapPhase {
     text: string;
     status: 'completed' | 'in-progress' | 'upcoming';
   }>;
-  characterColor: string;
-  characterExpression: string;
+  icon: React.ReactNode;
+  color: string;
 }
 
 function App() {
@@ -59,7 +61,7 @@ function App() {
         clearInterval(timer);
         return prev;
       });
-    }, 800);
+    }, 600);
 
     return () => clearInterval(timer);
   }, []);
@@ -67,58 +69,58 @@ function App() {
   const roadmapPhases: RoadmapPhase[] = [
     {
       id: 1,
-      title: "Resgate o Futuro dos Pets",
-      subtitle: "Coleta pública de imagens da comunidade",
-      description: "Uploads feitos por tutores e ONGs",
+      title: "Coleta de Dados",
+      subtitle: "Construção da base de dados de imagens",
+      description: "Coleta pública de imagens da comunidade para treinamento da IA",
       status: 'completed',
-      characterColor: 'bg-blue-400',
-      characterExpression: '😊',
+      icon: <Camera className="w-8 h-8" />,
+      color: 'from-blue-500 to-blue-600',
       items: [
-        { text: "Website Launch", status: 'completed' },
-        { text: "Social Media Presence", status: 'completed' },
-        { text: "Community Growth", status: 'completed' }
+        { text: "Plataforma de upload desenvolvida", status: 'completed' },
+        { text: "Sistema de validação implementado", status: 'completed' },
+        { text: "Parcerias com ONGs estabelecidas", status: 'completed' }
       ]
     },
     {
       id: 2,
-      title: "Treine a Inteligência",
-      subtitle: "Lançamento do MVP com tecnologia de reconhecimento",
-      description: "Backend Laravel + API funcional",
+      title: "Desenvolvimento da IA",
+      subtitle: "Treinamento do modelo de reconhecimento",
+      description: "Desenvolvimento e treinamento do algoritmo de reconhecimento facial",
       status: 'in-progress',
-      characterColor: 'bg-pink-400',
-      characterExpression: '😄',
+      icon: <Brain className="w-8 h-8" />,
+      color: 'from-purple-500 to-purple-600',
       items: [
-        { text: "Smart Contract Audit", status: 'in-progress' },
-        { text: "Exchange Listings", status: 'in-progress' },
-        { text: "Strategic Partnerships", status: 'upcoming' }
+        { text: "Arquitetura do modelo definida", status: 'completed' },
+        { text: "Treinamento inicial em andamento", status: 'in-progress' },
+        { text: "Testes de acurácia", status: 'in-progress' }
       ]
     },
     {
       id: 3,
-      title: "Conexão Global",
-      subtitle: "Expansão da tecnologia para prefeituras e ONGs",
-      description: "Sistema aberto ao público",
+      title: "Expansão e Parcerias",
+      subtitle: "Integração com organizações",
+      description: "Expansão para prefeituras, clínicas veterinárias e ONGs",
       status: 'upcoming',
-      characterColor: 'bg-green-400',
-      characterExpression: '😎',
+      icon: <Globe className="w-8 h-8" />,
+      color: 'from-green-500 to-green-600',
       items: [
-        { text: "NFT Collection", status: 'upcoming' },
-        { text: "Governance Token", status: 'upcoming' },
-        { text: "Community DAO", status: 'upcoming' }
+        { text: "API pública disponível", status: 'upcoming' },
+        { text: "Integração com sistemas existentes", status: 'upcoming' },
+        { text: "Programa de certificação", status: 'upcoming' }
       ]
     },
     {
       id: 4,
-      title: "SmartDog DAO",
-      subtitle: "Sistema de recompensa para ONGs e tutores",
-      description: "Recompensas por imagens úteis",
+      title: "Sistema de Reconhecimento",
+      subtitle: "Programa de incentivos para contribuidores",
+      description: "Sistema de recompensas para ONGs e tutores que contribuem",
       status: 'upcoming',
-      characterColor: 'bg-yellow-400',
-      characterExpression: '🤗',
+      icon: <Award className="w-8 h-8" />,
+      color: 'from-yellow-500 to-orange-500',
       items: [
-        { text: "Global Expansion", status: 'upcoming' },
-        { text: "Mobile App", status: 'upcoming' },
-        { text: "Ecosystem Growth", status: 'upcoming' }
+        { text: "Certificados digitais", status: 'upcoming' },
+        { text: "Ranking de contribuidores", status: 'upcoming' },
+        { text: "Benefícios para parceiros", status: 'upcoming' }
       ]
     }
   ];
@@ -127,23 +129,23 @@ function App() {
     switch (status) {
       case 'completed':
         return (
-          <div className="flex items-center space-x-2 px-4 py-2 bg-green-100 text-green-700 rounded-full text-sm font-bold">
+          <div className="flex items-center space-x-2 px-4 py-2 bg-green-100 text-green-800 rounded-full text-sm font-semibold">
             <CheckCircle className="w-4 h-4" />
-            <span>Completed!</span>
+            <span>Concluído</span>
           </div>
         );
       case 'in-progress':
         return (
-          <div className="flex items-center space-x-2 px-4 py-2 bg-yellow-100 text-yellow-700 rounded-full text-sm font-bold">
-            <Zap className="w-4 h-4 animate-pulse" />
-            <span>In progress!</span>
+          <div className="flex items-center space-x-2 px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-semibold">
+            <Zap className="w-4 h-4" />
+            <span>Em Andamento</span>
           </div>
         );
       default:
         return (
-          <div className="flex items-center space-x-2 px-4 py-2 bg-gray-100 text-gray-600 rounded-full text-sm font-bold">
+          <div className="flex items-center space-x-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-full text-sm font-semibold">
             <Clock className="w-4 h-4" />
-            <span>Upcoming..</span>
+            <span>Planejado</span>
           </div>
         );
     }
@@ -155,89 +157,102 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-600 via-purple-700 to-purple-800 text-white overflow-hidden">
-      {/* Decorative elements */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-20 left-10 w-32 h-32 bg-yellow-300 rounded-full blur-xl"></div>
-        <div className="absolute top-40 right-20 w-24 h-24 bg-pink-300 rounded-full blur-lg"></div>
-        <div className="absolute bottom-40 left-20 w-40 h-40 bg-blue-300 rounded-full blur-2xl"></div>
-        <div className="absolute bottom-20 right-10 w-28 h-28 bg-green-300 rounded-full blur-lg"></div>
-      </div>
-
-      <div className="relative z-10 container mx-auto px-4 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+      <div className="container mx-auto px-4 py-12">
         {/* Header */}
         <header className="text-center mb-16">
           <div className="mb-8">
-            <p className="text-yellow-300 text-lg font-bold mb-4">Story Timeline</p>
-            <h1 className="text-6xl md:text-8xl font-black text-white mb-8 tracking-tight">
-              ROADMAP
+            <div className="inline-flex items-center space-x-2 bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-semibold mb-6">
+              <Target className="w-4 h-4" />
+              <span>Roadmap de Desenvolvimento</span>
+            </div>
+            
+            <h1 className="text-5xl md:text-7xl font-black text-gray-900 mb-6 tracking-tight">
+              SmartDog
             </h1>
-          </div>
-          
-          <div className="flex items-center justify-center mb-8">
-            <h2 className="text-2xl md:text-3xl font-bold">
-              O seu pet pode salvar um animal perdido
+            
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-700 mb-6">
+              Tecnologia que Reúne Famílias
             </h2>
           </div>
           
-          <p className="text-xl text-purple-200 max-w-2xl mx-auto mb-8">
-            Crie esperança com uma simples foto.
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8 leading-relaxed">
+            Desenvolvemos inteligência artificial avançada para reconhecimento facial de pets, 
+            ajudando animais perdidos a encontrarem o caminho de volta para casa.
           </p>
 
           {/* Stats */}
-          <div className="flex justify-center mb-8">
-            <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-6 py-4 border border-white/20">
+          <div className="flex flex-wrap justify-center gap-6 mb-8">
+            <div className="bg-white rounded-2xl px-6 py-4 shadow-lg border border-gray-200">
               <div className="flex items-center space-x-3">
-                <Camera className="w-6 h-6 text-yellow-300" />
-                <span className="text-2xl font-black">{petCount.toLocaleString()}</span>
-                <span className="text-purple-200">pets contribuindo!</span>
+                <Camera className="w-6 h-6 text-blue-600" />
+                <div className="text-left">
+                  <div className="text-2xl font-bold text-gray-900">{petCount.toLocaleString()}</div>
+                  <div className="text-sm text-gray-600">Pets Contribuindo</div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-white rounded-2xl px-6 py-4 shadow-lg border border-gray-200">
+              <div className="flex items-center space-x-3">
+                <Target className="w-6 h-6 text-green-600" />
+                <div className="text-left">
+                  <div className="text-2xl font-bold text-gray-900">98%</div>
+                  <div className="text-sm text-gray-600">Meta de Acurácia</div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-white rounded-2xl px-6 py-4 shadow-lg border border-gray-200">
+              <div className="flex items-center space-x-3">
+                <Shield className="w-6 h-6 text-purple-600" />
+                <div className="text-left">
+                  <div className="text-2xl font-bold text-gray-900">100%</div>
+                  <div className="text-sm text-gray-600">Seguro e Privado</div>
+                </div>
               </div>
             </div>
           </div>
         </header>
 
         {/* Roadmap Phases */}
-        <section className="max-w-6xl mx-auto space-y-12">
+        <section className="max-w-6xl mx-auto space-y-8">
           {roadmapPhases.map((phase, index) => (
             <div
               key={phase.id}
-              className={`roadmap-phase-memecoin ${visiblePhases.includes(index) ? 'visible' : ''}`}
-              style={{ animationDelay: `${index * 0.2}s` }}
+              className={`roadmap-phase ${visiblePhases.includes(index) ? 'visible' : ''}`}
+              style={{ animationDelay: `${index * 0.15}s` }}
             >
-              <div className="flex flex-col lg:flex-row items-center gap-8">
-                {/* Character */}
-                <div className="flex-shrink-0 relative">
-                  <div className={`memecoin-character ${phase.characterColor} w-32 h-32 rounded-full flex items-center justify-center shadow-2xl border-4 border-white/30`}>
-                    <div className="text-4xl">{phase.characterExpression}</div>
-                    {/* Character arms */}
-                    <div className="absolute -left-4 top-1/2 transform -translate-y-1/2 w-8 h-2 bg-current rounded-full opacity-80"></div>
-                    <div className="absolute -right-4 top-1/2 transform -translate-y-1/2 w-8 h-2 bg-current rounded-full opacity-80"></div>
-                    {/* Character legs */}
-                    <div className="absolute -bottom-2 left-1/3 w-2 h-6 bg-current rounded-full opacity-80"></div>
-                    <div className="absolute -bottom-2 right-1/3 w-2 h-6 bg-current rounded-full opacity-80"></div>
+              <div className="bg-white rounded-3xl p-8 shadow-xl border border-gray-200 hover:shadow-2xl transition-all duration-300">
+                <div className="flex flex-col lg:flex-row items-start gap-8">
+                  {/* Phase Icon */}
+                  <div className="flex-shrink-0">
+                    <div className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${phase.color} flex items-center justify-center text-white shadow-lg`}>
+                      {phase.icon}
+                    </div>
+                    <div className="text-center mt-3">
+                      <span className="text-sm font-bold text-gray-500">Fase {phase.id}</span>
+                    </div>
                   </div>
-                  
-                  {/* Phase number */}
-                  <div className="absolute -top-2 -right-2 bg-yellow-400 text-purple-800 w-12 h-12 rounded-full flex items-center justify-center font-black text-lg shadow-lg">
-                    Phase #{phase.id}
-                  </div>
-                </div>
 
-                {/* Phase Content */}
-                <div className="flex-1">
-                  <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-8 border border-white/20 shadow-2xl">
+                  {/* Phase Content */}
+                  <div className="flex-1">
                     <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between mb-6">
                       <div className="mb-4 lg:mb-0">
                         {getStatusBadge(phase.status)}
                       </div>
                     </div>
                     
-                    <h3 className="text-3xl font-black text-yellow-300 mb-4">
+                    <h3 className="text-3xl font-bold text-gray-900 mb-3">
                       {phase.title}
                     </h3>
                     
-                    <p className="text-lg text-purple-100 mb-6 leading-relaxed">
+                    <p className="text-lg text-gray-600 mb-4 font-medium">
                       {phase.subtitle}
+                    </p>
+                    
+                    <p className="text-gray-600 mb-6 leading-relaxed">
+                      {phase.description}
                     </p>
 
                     {/* Phase Items */}
@@ -245,10 +260,13 @@ function App() {
                       {phase.items.map((item, itemIndex) => (
                         <div
                           key={itemIndex}
-                          className="flex items-center space-x-3 text-purple-100"
+                          className="flex items-center space-x-3"
                         >
-                          <div className="w-2 h-2 bg-yellow-300 rounded-full"></div>
-                          <span className="font-medium">{item.text}</span>
+                          <div className={`w-2 h-2 rounded-full ${
+                            item.status === 'completed' ? 'bg-green-500' :
+                            item.status === 'in-progress' ? 'bg-blue-500' : 'bg-gray-400'
+                          }`}></div>
+                          <span className="text-gray-700 font-medium">{item.text}</span>
                         </div>
                       ))}
                     </div>
@@ -261,48 +279,48 @@ function App() {
 
         {/* Call to Action */}
         <section className="text-center mt-20">
-          <div className="max-w-4xl mx-auto bg-white/10 backdrop-blur-sm rounded-3xl p-12 border border-white/20 shadow-2xl">
-            <h2 className="text-4xl font-black text-yellow-300 mb-6">
-              O futuro dos animais perdidos começa com você.
+          <div className="max-w-4xl mx-auto bg-gradient-to-br from-blue-600 to-purple-700 rounded-3xl p-12 text-white shadow-2xl">
+            <h2 className="text-4xl font-bold mb-6">
+              Faça Parte desta Revolução Tecnológica
             </h2>
             
-            <p className="text-xl text-purple-100 mb-10 leading-relaxed">
-              Cada foto que você contribui treina nossa IA para salvar mais vidas. 
-              Seja parte desta revolução tecnológica com propósito social!
+            <p className="text-xl mb-10 leading-relaxed opacity-90">
+              Cada imagem contribuída ajuda a treinar nossa IA para salvar mais vidas. 
+              Junte-se a milhares de pessoas que já estão fazendo a diferença.
             </p>
 
             <button
               onClick={handleContributeClick}
-              className="memecoin-cta-button group"
+              className="professional-cta-button group"
             >
               <div className="flex items-center justify-center space-x-3">
-                <Camera className="w-6 h-6 group-hover:animate-pulse" />
-                <span className="text-xl font-black">Contribuir com Imagens</span>
+                <Camera className="w-6 h-6 group-hover:scale-110 transition-transform" />
+                <span className="text-xl font-bold">Contribuir com Imagens</span>
                 <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
               </div>
             </button>
 
-            <div className="flex items-center justify-center mt-8 space-x-2">
-              <Users className="w-5 h-5 text-purple-200" />
-              <span className="text-purple-200 font-medium">
-                Junte-se a {petCount.toLocaleString()} pets que já contribuíram!
+            <div className="flex items-center justify-center mt-8 space-x-2 opacity-80">
+              <Users className="w-5 h-5" />
+              <span className="font-medium">
+                {petCount.toLocaleString()} pets já contribuíram para esta causa
               </span>
             </div>
           </div>
         </section>
 
         {/* Footer */}
-        <footer className="text-center mt-16">
-          <div className="flex items-center justify-center space-x-3 mb-6">
-            <Heart className="w-6 h-6 text-pink-400 animate-pulse" />
-            <span className="text-lg text-purple-200 font-semibold">
-              Feito com amor para reunir famílias
+        <footer className="text-center mt-16 pt-8 border-t border-gray-200">
+          <div className="flex items-center justify-center space-x-3 mb-4">
+            <Heart className="w-5 h-5 text-red-500" />
+            <span className="text-gray-600 font-medium">
+              Tecnologia desenvolvida com propósito social
             </span>
-            <Heart className="w-6 h-6 text-pink-400 animate-pulse" />
+            <Heart className="w-5 h-5 text-red-500" />
           </div>
           
-          <p className="text-purple-300">
-            © 2024 SmartDog. Tecnologia que salva vidas.
+          <p className="text-gray-500">
+            © 2024 SmartDog. Reunindo famílias através da tecnologia.
           </p>
         </footer>
       </div>

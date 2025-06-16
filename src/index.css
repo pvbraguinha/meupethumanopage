@@ -10,193 +10,214 @@
 }
 
 body {
-  font-family: 'Nunito', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  background: #f8fafc;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Nunito', 'Inter', sans-serif;
-  font-weight: 900;
-  line-height: 1.1;
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  line-height: 1.2;
 }
 
-/* 🎯 MEMECOIN ANIMATIONS */
-@keyframes float-memecoin {
-  0%, 100% { 
-    transform: translateY(0px) rotate(0deg);
-  }
-  33% { 
-    transform: translateY(-8px) rotate(2deg);
-  }
-  66% { 
-    transform: translateY(-4px) rotate(-1deg);
-  }
-}
-
-@keyframes slide-in-memecoin {
+/* 🎯 PROFESSIONAL ANIMATIONS */
+@keyframes slide-in-professional {
   0% {
     opacity: 0;
-    transform: translateX(-50px) scale(0.8);
+    transform: translateY(30px);
   }
   100% {
     opacity: 1;
-    transform: translateX(0) scale(1);
+    transform: translateY(0);
   }
 }
 
-@keyframes bounce-character {
+@keyframes fade-in-up {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes subtle-glow {
   0%, 100% { 
-    transform: translateY(0px) scale(1);
+    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.15);
   }
   50% { 
-    transform: translateY(-10px) scale(1.05);
+    box-shadow: 0 8px 30px rgba(59, 130, 246, 0.25);
   }
 }
 
-@keyframes rainbow-glow {
+@keyframes gradient-shift {
   0% { 
-    box-shadow: 0 0 30px rgba(255, 255, 0, 0.6);
-  }
-  25% { 
-    box-shadow: 0 0 30px rgba(255, 105, 180, 0.6);
+    background-position: 0% 50%;
   }
   50% { 
-    box-shadow: 0 0 30px rgba(0, 191, 255, 0.6);
-  }
-  75% { 
-    box-shadow: 0 0 30px rgba(50, 205, 50, 0.6);
+    background-position: 100% 50%;
   }
   100% { 
-    box-shadow: 0 0 30px rgba(255, 255, 0, 0.6);
+    background-position: 0% 50%;
   }
-}
-
-@keyframes pulse-glow {
-  0%, 100% { 
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
-  }
-  50% { 
-    box-shadow: 0 0 40px rgba(255, 255, 255, 0.6);
-  }
-}
-
-/* 🎪 MEMECOIN CHARACTER */
-.memecoin-character {
-  animation: bounce-character 3s ease-in-out infinite;
-  position: relative;
-  transition: all 0.3s ease;
-}
-
-.memecoin-character:hover {
-  animation: bounce-character 1s ease-in-out infinite;
-  transform: scale(1.1);
 }
 
 /* 🗺️ ROADMAP PHASES */
-.roadmap-phase-memecoin {
+.roadmap-phase {
   opacity: 0;
-  transform: translateX(-50px) scale(0.8);
-  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateY(30px);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.roadmap-phase-memecoin.visible {
+.roadmap-phase.visible {
   opacity: 1;
-  transform: translateX(0) scale(1);
-  animation: slide-in-memecoin 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateY(0);
+  animation: slide-in-professional 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* 🚀 MEMECOIN CTA BUTTON */
-.memecoin-cta-button {
-  @apply relative inline-flex items-center justify-center px-12 py-6 text-white font-black rounded-2xl overflow-hidden shadow-2xl;
-  background: linear-gradient(135deg, 
-    #FFD700 0%,   /* Gold */
-    #FF69B4 25%,  /* Hot Pink */
-    #00BFFF 50%,  /* Deep Sky Blue */
-    #32CD32 75%,  /* Lime Green */
-    #FFD700 100%  /* Gold */
-  );
-  background-size: 300% 300%;
-  animation: rainbow-glow 3s ease-in-out infinite;
+/* 🚀 PROFESSIONAL CTA BUTTON */
+.professional-cta-button {
+  @apply relative inline-flex items-center justify-center px-10 py-4 text-white font-bold rounded-xl overflow-hidden shadow-lg;
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  background-size: 200% 200%;
+  animation: gradient-shift 3s ease-in-out infinite;
   transition: all 0.3s ease;
-  border: 3px solid rgba(255, 255, 255, 0.8);
+  border: 2px solid rgba(255, 255, 255, 0.2);
 }
 
-.memecoin-cta-button:hover {
-  transform: translateY(-3px) scale(1.05);
-  animation: rainbow-glow 1.5s ease-in-out infinite;
+.professional-cta-button:hover {
+  transform: translateY(-2px);
   box-shadow: 
-    0 15px 35px rgba(255, 215, 0, 0.4),
-    0 5px 15px rgba(255, 105, 180, 0.3);
+    0 10px 25px rgba(59, 130, 246, 0.3),
+    0 5px 10px rgba(139, 92, 246, 0.2);
+  animation: gradient-shift 1.5s ease-in-out infinite;
 }
 
-.memecoin-cta-button:active {
-  transform: translateY(-1px) scale(1.02);
+.professional-cta-button:active {
+  transform: translateY(0);
 }
 
-/* 🌟 MEMECOIN GLOW EFFECT */
-.memecoin-cta-button::before {
+/* 🌟 SUBTLE GLOW EFFECT */
+.professional-cta-button::before {
   content: '';
   position: absolute;
-  top: -3px;
-  left: -3px;
-  right: -3px;
-  bottom: -3px;
-  background: linear-gradient(135deg, 
-    #FFD700, #FF69B4, #00BFFF, #32CD32, #FFD700
-  );
-  background-size: 400% 400%;
-  animation: rainbow-glow 2s ease-in-out infinite;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  background-size: 200% 200%;
+  animation: gradient-shift 2s ease-in-out infinite;
   border-radius: inherit;
   z-index: -1;
-  filter: blur(10px);
-  opacity: 0.7;
+  filter: blur(8px);
+  opacity: 0.6;
+}
+
+/* 📊 STATS CARDS */
+.stats-card {
+  @apply bg-white rounded-2xl p-6 shadow-lg border border-gray-200;
+  transition: all 0.3s ease;
+}
+
+.stats-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* 🎨 PHASE CARDS */
+.phase-card {
+  @apply bg-white rounded-3xl p-8 shadow-xl border border-gray-200;
+  transition: all 0.3s ease;
+}
+
+.phase-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* 🔄 LOADING STATES */
+.loading-shimmer {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 /* 📱 RESPONSIVE ADJUSTMENTS */
 @media (max-width: 768px) {
-  .memecoin-character {
-    width: 100px;
-    height: 100px;
-  }
-  
-  .memecoin-cta-button {
-    @apply px-8 py-4 text-lg;
+  .professional-cta-button {
+    @apply px-8 py-3 text-lg;
   }
   
   h1 {
     font-size: 3rem !important;
   }
+  
+  .stats-card {
+    @apply p-4;
+  }
+  
+  .phase-card {
+    @apply p-6;
+  }
+}
+
+@media (max-width: 640px) {
+  h1 {
+    font-size: 2.5rem !important;
+  }
+  
+  .professional-cta-button {
+    @apply px-6 py-3 text-base;
+  }
 }
 
 /* ♿ ACCESSIBILITY - REDUCED MOTION */
 @media (prefers-reduced-motion: reduce) {
-  .memecoin-character,
-  .memecoin-cta-button,
-  .memecoin-cta-button::before {
+  .professional-cta-button,
+  .professional-cta-button::before,
+  .roadmap-phase {
     animation: none !important;
   }
   
-  .roadmap-phase-memecoin.visible {
-    animation: none !important;
-  }
-  
-  .memecoin-character:hover,
-  .memecoin-cta-button:hover {
+  .professional-cta-button:hover,
+  .stats-card:hover,
+  .phase-card:hover {
     transform: none !important;
+  }
+  
+  .roadmap-phase.visible {
+    animation: none !important;
   }
 }
 
 /* 🎨 HIGH CONTRAST MODE */
 @media (prefers-contrast: high) {
-  .memecoin-cta-button {
-    border: 4px solid #000000;
+  .professional-cta-button {
+    border: 3px solid #000000;
   }
   
-  .bg-white\/10 {
-    background: rgba(255, 255, 255, 0.2) !important;
-    border: 2px solid rgba(255, 255, 255, 0.5) !important;
+  .stats-card,
+  .phase-card {
+    border: 2px solid #333333;
+  }
+  
+  .bg-white {
+    background: #ffffff !important;
   }
 }
 
@@ -206,73 +227,84 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(139, 92, 246, 0.1);
+  background: #f1f5f9;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(45deg, #FFD700, #FF69B4);
+  background: linear-gradient(45deg, #3b82f6, #8b5cf6);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(45deg, #FFC700, #FF1493);
+  background: linear-gradient(45deg, #2563eb, #7c3aed);
 }
 
-/* 🎪 SUBTLE EFFECTS */
+/* 🎪 UTILITY CLASSES */
 .soft-shadow {
   box-shadow: 
-    0 4px 15px rgba(139, 92, 246, 0.15),
-    0 2px 4px rgba(139, 92, 246, 0.1);
+    0 4px 15px rgba(0, 0, 0, 0.08),
+    0 2px 4px rgba(0, 0, 0, 0.04);
 }
 
 .glass-effect {
   backdrop-filter: blur(10px);
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-/* 🌈 GRADIENT TEXT */
 .gradient-text {
-  background: linear-gradient(45deg, #FFD700, #FF69B4, #00BFFF);
-  background-size: 200% 200%;
-  animation: rainbow-glow 3s ease-in-out infinite;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* 💫 SPARKLE EFFECT */
-.sparkle-effect {
-  position: relative;
-}
-
-.sparkle-effect::after {
-  content: '✨';
-  position: absolute;
-  top: -8px;
-  right: -8px;
-  font-size: 1.2em;
-  opacity: 0.8;
-  animation: float-memecoin 2s ease-in-out infinite;
-}
-
-/* 🎈 GENTLE HOVER */
-.gentle-hover {
-  transition: all 0.3s ease;
-}
-
-.gentle-hover:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 25px rgba(139, 92, 246, 0.2);
-}
-
 /* 🌸 CLEAN BORDERS */
 .clean-border {
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(229, 231, 235, 0.8);
   border-radius: 16px;
 }
 
 .clean-border:hover {
-  border-color: rgba(255, 255, 255, 0.4);
+  border-color: rgba(156, 163, 175, 0.6);
+}
+
+/* 💫 FOCUS STATES */
+.professional-cta-button:focus {
+  outline: none;
+  ring: 2px;
+  ring-color: rgba(59, 130, 246, 0.5);
+  ring-offset: 2px;
+}
+
+/* 🎈 GENTLE ANIMATIONS */
+.gentle-bounce {
+  animation: gentle-bounce 2s ease-in-out infinite;
+}
+
+@keyframes gentle-bounce {
+  0%, 100% { 
+    transform: translateY(0);
+  }
+  50% { 
+    transform: translateY(-5px);
+  }
+}
+
+/* 🌟 PROFESSIONAL GRADIENTS */
+.gradient-blue {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+}
+
+.gradient-purple {
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+}
+
+.gradient-green {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.gradient-orange {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
 }

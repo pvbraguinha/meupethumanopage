@@ -265,11 +265,6 @@ function App() {
         {/* Header */}
         <header className="text-center mb-16">
           <div className="mb-8">
-            <div className="inline-flex items-center space-x-2 bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-semibold mb-6">
-              <Target className="w-4 h-4" />
-              <span>Roadmap de Desenvolvimento</span>
-            </div>
-            
             <h1 className="text-3xl md:text-4xl font-black text-gray-900 mb-6 tracking-tight">
               Smartdog
             </h1>
@@ -461,7 +456,7 @@ function App() {
                   >
                     <div className="flex items-center space-x-3">
                       <Heart className="w-6 h-6" />
-                      <span>Continuar</span>
+                      <span>Contribuir com as imagens</span>
                       <ArrowRight className="w-6 h-6" />
                     </div>
                   </button>

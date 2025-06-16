@@ -329,7 +329,7 @@ function App() {
                     </p>
                     
                     {phase.description && (
-                      <p className="text-sm text-blue-800 opacity-70 mb-6 leading-relaxed">
+                      <p className="text-sm text-gray-600 opacity-70 mb-6 leading-relaxed">
                         {phase.description}
                       </p>
                     )}

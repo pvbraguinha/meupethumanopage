@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Nunito:wght@300;400;500;600;700;800;900&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -10,56 +10,45 @@
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family: 'Nunito', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
-  background: #000000;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Space Grotesk', 'Inter', sans-serif;
-  font-weight: 900;
+  font-family: 'Nunito', 'Inter', sans-serif;
+  font-weight: 800;
   line-height: 1.2;
 }
 
-/* 🌟 CRYPTO/MEMECOIN STYLE ANIMATIONS 🌟 */
-@keyframes neon-pulse {
+/* 🌈 HAPPY MEMECOIN ANIMATIONS 🌈 */
+@keyframes happy-bounce {
   0%, 100% { 
-    text-shadow: 
-      0 0 10px rgba(0, 255, 255, 0.8),
-      0 0 20px rgba(0, 255, 255, 0.6),
-      0 0 30px rgba(0, 255, 255, 0.4),
-      0 0 40px rgba(0, 255, 255, 0.2);
+    transform: translateY(0px) scale(1);
   }
   50% { 
-    text-shadow: 
-      0 0 15px rgba(0, 255, 255, 1),
-      0 0 30px rgba(0, 255, 255, 0.8),
-      0 0 45px rgba(0, 255, 255, 0.6),
-      0 0 60px rgba(0, 255, 255, 0.4);
+    transform: translateY(-10px) scale(1.05);
   }
 }
 
-@keyframes crypto-glow {
+@keyframes gentle-glow {
   0%, 100% { 
     box-shadow: 
-      0 0 20px rgba(0, 255, 255, 0.3),
-      0 0 40px rgba(0, 255, 255, 0.2),
-      inset 0 0 20px rgba(0, 255, 255, 0.1);
+      0 10px 30px rgba(59, 130, 246, 0.2),
+      0 0 20px rgba(147, 51, 234, 0.1);
   }
   50% { 
     box-shadow: 
-      0 0 30px rgba(0, 255, 255, 0.5),
-      0 0 60px rgba(0, 255, 255, 0.3),
-      inset 0 0 30px rgba(0, 255, 255, 0.15);
+      0 15px 40px rgba(59, 130, 246, 0.3),
+      0 0 30px rgba(147, 51, 234, 0.2);
   }
 }
 
-@keyframes slide-up {
+@keyframes slide-up-happy {
   0% {
     opacity: 0;
-    transform: translateY(50px);
+    transform: translateY(30px);
   }
   100% {
     opacity: 1;
@@ -67,232 +56,308 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-@keyframes float-gentle {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
+@keyframes rainbow-shift {
+  0% { 
+    background-position: 0% 50%; 
+  }
+  50% { 
+    background-position: 100% 50%; 
+  }
+  100% { 
+    background-position: 0% 50%; 
+  }
 }
 
-@keyframes grid-move {
-  0% { transform: translate(0, 0); }
-  100% { transform: translate(20px, 20px); }
+@keyframes float-soft {
+  0%, 100% { 
+    transform: translateY(0px) rotate(0deg); 
+  }
+  33% { 
+    transform: translateY(-5px) rotate(1deg); 
+  }
+  66% { 
+    transform: translateY(-3px) rotate(-1deg); 
+  }
 }
 
-/* 🎨 NEON GLOW TEXT */
-.neon-glow {
-  animation: neon-pulse 2s ease-in-out infinite;
-}
-
-/* 📊 CRYPTO STAT CARDS */
-.crypto-stat-card {
-  @apply bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 text-center;
-  animation: crypto-glow 3s ease-in-out infinite;
+/* 📊 HAPPY STAT CARDS */
+.happy-stat-card {
+  @apply rounded-3xl p-8 text-center shadow-xl border-2 border-white/50;
+  animation: gentle-glow 3s ease-in-out infinite;
   transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
 }
 
-.crypto-stat-card:hover {
-  @apply bg-white/10 border-white/20;
-  transform: translateY(-5px);
+.happy-stat-card:hover {
+  transform: translateY(-8px) scale(1.05);
+  animation: happy-bounce 0.6s ease-in-out;
 }
 
 /* 🗺️ ROADMAP PHASES */
-.roadmap-phase {
-  @apply relative mb-16;
+.roadmap-phase-happy {
   opacity: 0;
-  transform: translateY(50px);
+  transform: translateY(30px);
   transition: all 0.6s ease-out;
 }
 
-.roadmap-phase.visible {
+.roadmap-phase-happy.visible {
   opacity: 1;
   transform: translateY(0);
-  animation: slide-up 0.6s ease-out;
+  animation: slide-up-happy 0.6s ease-out;
 }
 
-.phase-icon {
-  @apply relative w-20 h-20 rounded-2xl flex items-center justify-center shadow-2xl;
-  animation: float-gentle 3s ease-in-out infinite;
+.happy-phase-card {
+  @apply rounded-3xl p-8 shadow-2xl;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
 }
 
-.crypto-card {
-  @apply bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm border border-white/20 rounded-3xl p-8;
-  box-shadow: 
-    0 20px 40px rgba(0, 0, 0, 0.3),
-    0 0 30px rgba(0, 255, 255, 0.1);
+.happy-phase-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+}
+
+.happy-phase-icon {
+  @apply w-24 h-24 rounded-2xl flex flex-col items-center justify-center;
+  animation: float-soft 4s ease-in-out infinite;
   transition: all 0.3s ease;
 }
 
-.crypto-card:hover {
-  @apply border-white/30;
-  transform: translateY(-5px);
-  box-shadow: 
-    0 30px 60px rgba(0, 0, 0, 0.4),
-    0 0 50px rgba(0, 255, 255, 0.2);
+.happy-phase-icon:hover {
+  transform: scale(1.1) rotate(5deg);
 }
 
-/* 🏷️ STATUS BADGES */
-.status-badge {
-  @apply flex items-center space-x-2 px-4 py-2 rounded-full text-sm font-bold;
+/* 🏷️ HAPPY STATUS BADGES */
+.happy-status-badge {
+  @apply flex items-center space-x-2 px-4 py-2 rounded-full text-sm font-bold shadow-lg;
 }
 
-.status-badge.completed {
-  @apply bg-green-500/20 text-green-400 border border-green-500/30;
+.happy-status-badge.completed {
+  @apply bg-green-200 text-green-800 border-2 border-green-300;
 }
 
-.status-badge.in-progress {
-  @apply bg-yellow-500/20 text-yellow-400 border border-yellow-500/30;
+.happy-status-badge.in-progress {
+  @apply bg-yellow-200 text-yellow-800 border-2 border-yellow-300;
 }
 
-.status-badge.upcoming {
-  @apply bg-gray-500/20 text-gray-400 border border-gray-500/30;
+.happy-status-badge.upcoming {
+  @apply bg-gray-200 text-gray-700 border-2 border-gray-300;
 }
 
-/* 🔗 ROADMAP CONNECTOR */
-.roadmap-connector {
-  @apply absolute left-10 top-24 w-0.5 h-16 bg-gradient-to-b from-cyan-400 to-transparent;
-  margin-left: -1px;
-}
-
-/* 🚀 CRYPTO CTA BUTTON */
-.crypto-cta-button {
-  @apply relative inline-flex items-center justify-center px-12 py-6 text-white font-black rounded-2xl overflow-hidden;
+/* 🚀 HAPPY CTA BUTTON */
+.happy-cta-button {
+  @apply relative inline-flex items-center justify-center px-12 py-6 text-white font-black rounded-2xl overflow-hidden shadow-2xl;
   background: linear-gradient(135deg, 
-    #0066FF 0%, 
-    #00CCFF 25%, 
-    #0099FF 50%, 
-    #00FFFF 75%, 
-    #0066FF 100%
+    #3B82F6 0%,   /* Blue */
+    #8B5CF6 25%,  /* Purple */
+    #EC4899 50%,  /* Pink */
+    #F59E0B 75%,  /* Yellow */
+    #10B981 100%  /* Green */
   );
   background-size: 300% 300%;
-  animation: 
-    crypto-glow 2s ease-in-out infinite,
-    gradient-shift 3s ease-in-out infinite;
-  box-shadow: 
-    0 20px 40px rgba(0, 102, 255, 0.3),
-    0 0 60px rgba(0, 204, 255, 0.2);
+  animation: rainbow-shift 4s ease-in-out infinite;
   transition: all 0.3s ease;
+  border: 3px solid white;
 }
 
-.crypto-cta-button:hover {
-  transform: translateY(-3px) scale(1.05);
+.happy-cta-button:hover {
+  transform: translateY(-5px) scale(1.08);
   box-shadow: 
-    0 30px 60px rgba(0, 102, 255, 0.4),
-    0 0 80px rgba(0, 204, 255, 0.3);
+    0 20px 40px rgba(59, 130, 246, 0.3),
+    0 0 30px rgba(236, 72, 153, 0.2);
+  animation: rainbow-shift 2s ease-in-out infinite;
 }
 
-.crypto-cta-button:active {
-  transform: translateY(-1px) scale(1.02);
+.happy-cta-button:active {
+  transform: translateY(-2px) scale(1.05);
 }
 
-@keyframes gradient-shift {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
-
-/* 🌐 GRID BACKGROUND PATTERN */
-.grid-pattern {
-  background-image: 
-    linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
-  background-size: 50px 50px;
-  width: 100%;
-  height: 100%;
-  animation: grid-move 20s linear infinite;
+/* 🌟 HAPPY GLOW EFFECT */
+.happy-cta-button::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  background: linear-gradient(135deg, 
+    #3B82F6, #8B5CF6, #EC4899, #F59E0B, #10B981
+  );
+  background-size: 400% 400%;
+  animation: rainbow-shift 3s ease-in-out infinite;
+  border-radius: inherit;
+  z-index: -1;
+  filter: blur(15px);
+  opacity: 0.7;
 }
 
 /* 📱 RESPONSIVE ADJUSTMENTS */
 @media (max-width: 768px) {
-  .roadmap-phase {
-    @apply mb-12;
-  }
-  
-  .phase-icon {
-    @apply w-16 h-16;
-  }
-  
-  .crypto-card {
+  .happy-stat-card {
     @apply p-6;
   }
   
-  .crypto-cta-button {
+  .happy-phase-card {
+    @apply p-6;
+  }
+  
+  .happy-phase-icon {
+    @apply w-20 h-20;
+  }
+  
+  .happy-cta-button {
     @apply px-8 py-4 text-lg;
   }
 }
 
-/* ♿ ACCESSIBILITY */
+/* ♿ ACCESSIBILITY - REDUCED MOTION */
 @media (prefers-reduced-motion: reduce) {
-  .neon-glow,
-  .crypto-stat-card,
-  .phase-icon,
-  .crypto-cta-button,
-  .grid-pattern {
+  .happy-stat-card,
+  .happy-phase-icon,
+  .happy-cta-button,
+  .happy-cta-button::before {
     animation: none !important;
   }
   
-  .roadmap-phase.visible {
+  .roadmap-phase-happy.visible {
     animation: none !important;
+  }
+  
+  .happy-stat-card:hover,
+  .happy-phase-card:hover,
+  .happy-cta-button:hover {
+    transform: none !important;
   }
 }
 
 /* 🎨 HIGH CONTRAST MODE */
 @media (prefers-contrast: high) {
-  .crypto-card {
-    @apply border-white/50 bg-white/20;
+  .happy-phase-card {
+    @apply border-4 border-gray-800;
   }
   
-  .crypto-stat-card {
-    @apply border-white/50 bg-white/20;
+  .happy-stat-card {
+    @apply border-4 border-gray-800;
+  }
+  
+  .happy-cta-button {
+    @apply border-4 border-gray-800;
   }
 }
 
-/* 📜 SCROLLBAR STYLING */
+/* 📜 CUSTOM SCROLLBAR */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 12px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.3);
+  background: linear-gradient(45deg, #f3f4f6, #e5e7eb);
+  border-radius: 6px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(45deg, #00CCFF, #0066FF);
-  border-radius: 4px;
+  background: linear-gradient(45deg, #3B82F6, #8B5CF6);
+  border-radius: 6px;
+  border: 2px solid #f3f4f6;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(45deg, #00FFFF, #0099FF);
+  background: linear-gradient(45deg, #2563EB, #7C3AED);
 }
 
-/* 🔥 ADDITIONAL CRYPTO VIBES */
-.crypto-accent {
-  background: linear-gradient(45deg, #00CCFF, #0066FF, #9933FF);
+/* 🎪 EXTRA HAPPY EFFECTS */
+.wiggle {
+  animation: wiggle 1s ease-in-out infinite;
+}
+
+@keyframes wiggle {
+  0%, 7% { transform: rotateZ(0); }
+  15% { transform: rotateZ(-15deg); }
+  20% { transform: rotateZ(10deg); }
+  25% { transform: rotateZ(-10deg); }
+  30% { transform: rotateZ(6deg); }
+  35% { transform: rotateZ(-4deg); }
+  40%, 100% { transform: rotateZ(0); }
+}
+
+/* 🌈 RAINBOW TEXT */
+.rainbow-text {
+  background: linear-gradient(45deg, 
+    #3B82F6, #8B5CF6, #EC4899, #F59E0B, #10B981, #3B82F6
+  );
   background-size: 300% 300%;
-  animation: gradient-shift 2s ease-in-out infinite;
+  animation: rainbow-shift 3s ease-in-out infinite;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* 💎 DIAMOND HANDS EFFECT */
-.diamond-hands {
+/* 💫 SPARKLE EFFECT */
+.sparkle {
   position: relative;
 }
 
-.diamond-hands::before {
-  content: '💎';
+.sparkle::before {
+  content: '✨';
   position: absolute;
   top: -10px;
   right: -10px;
-  font-size: 1.2em;
-  animation: float-gentle 2s ease-in-out infinite;
+  font-size: 1.5em;
+  animation: float-soft 2s ease-in-out infinite;
 }
 
-/* 🌙 TO THE MOON GRADIENT */
-.moon-gradient {
-  background: linear-gradient(135deg, 
-    #1a1a2e 0%, 
-    #16213e 25%, 
-    #0f3460 50%, 
-    #533483 75%, 
-    #e94560 100%
-  );
+/* 🎈 BALLOON FLOAT */
+.balloon-float {
+  animation: balloon-float 6s ease-in-out infinite;
+}
+
+@keyframes balloon-float {
+  0%, 100% { 
+    transform: translateY(0px) translateX(0px); 
+  }
+  25% { 
+    transform: translateY(-10px) translateX(5px); 
+  }
+  50% { 
+    transform: translateY(-5px) translateX(-5px); 
+  }
+  75% { 
+    transform: translateY(-15px) translateX(3px); 
+  }
+}
+
+/* 🌸 SOFT SHADOWS */
+.soft-shadow {
+  box-shadow: 
+    0 10px 25px rgba(0, 0, 0, 0.1),
+    0 20px 48px rgba(0, 0, 0, 0.1),
+    0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 🎊 CELEBRATION EFFECT */
+.celebrate {
+  position: relative;
+  overflow: hidden;
+}
+
+.celebrate::after {
+  content: '🎉';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2em;
+  opacity: 0;
+  animation: celebrate-pop 2s ease-in-out infinite;
+}
+
+@keyframes celebrate-pop {
+  0%, 90%, 100% { 
+    opacity: 0; 
+    transform: translate(-50%, -50%) scale(0.5); 
+  }
+  5%, 85% { 
+    opacity: 1; 
+    transform: translate(-50%, -50%) scale(1.2); 
+  }
 }

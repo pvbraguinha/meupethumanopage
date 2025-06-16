@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  Rocket, 
-  Brain, 
-  Globe, 
-  Sparkles, 
-  CheckCircle, 
-  Clock, 
-  Heart,
-  Camera,
-  Shield,
-  Zap,
-  Users,
-  Trophy,
+  Camera, 
+  Heart, 
+  Users, 
+  Trophy, 
   ArrowRight,
-  Star
+  CheckCircle,
+  Clock,
+  Star,
+  Rocket,
+  Brain,
+  Globe,
+  Gift,
+  Sparkles,
+  MapPin,
+  Shield
 } from 'lucide-react';
 
 interface RoadmapPhase {
@@ -27,7 +28,8 @@ interface RoadmapPhase {
     text: string;
     status: 'completed' | 'in-progress' | 'upcoming';
   }>;
-  color: string;
+  bgColor: string;
+  iconColor: string;
 }
 
 function App() {
@@ -63,7 +65,7 @@ function App() {
         clearInterval(timer);
         return prev;
       });
-    }, 300);
+    }, 400);
 
     return () => clearInterval(timer);
   }, []);
@@ -72,56 +74,59 @@ function App() {
     {
       id: 1,
       title: "Resgate o Futuro dos Pets",
-      subtitle: "Coleta pública de imagens da comunidade",
-      description: "Construindo a maior base de dados de focinhos da Europa e América Latina",
-      icon: <Rocket className="w-8 h-8" />,
+      subtitle: "Uploads feitos por tutores e ONGs",
+      description: "Criação da maior base de focinhos da Europa e América Latina",
+      icon: <span className="text-3xl">🐾</span>,
       status: 'in-progress',
-      color: 'from-blue-500 to-cyan-400',
+      bgColor: 'bg-gradient-to-br from-blue-100 to-blue-200',
+      iconColor: 'text-blue-600',
       items: [
         { text: "Uploads feitos por tutores e ONGs", status: 'completed' },
         { text: "Criação da maior base de focinhos da Europa e América Latina", status: 'in-progress' },
-        { text: "Treinamento do modelo de IA", status: 'in-progress' },
-        { text: "Acurácia de 98% no reconhecimento facial e de focinho", status: 'upcoming' }
+        { text: "Treinamento do modelo de IA", status: 'in-progress' }
       ]
     },
     {
       id: 2,
       title: "Treine a Inteligência",
-      subtitle: "Lançamento do MVP com tecnologia de reconhecimento",
-      description: "Sistema funcional para identificação precisa de pets perdidos",
-      icon: <Brain className="w-8 h-8" />,
+      subtitle: "Lançamento do MVP com reconhecimento de focinho",
+      description: "Backend e upload no S3 funcionando",
+      icon: <span className="text-3xl">🧠</span>,
       status: 'completed',
-      color: 'from-green-500 to-emerald-400',
+      bgColor: 'bg-gradient-to-br from-green-100 to-green-200',
+      iconColor: 'text-green-600',
       items: [
-        { text: "Backend Laravel + API funcional", status: 'completed' },
-        { text: "Upload de imagens direto no S3", status: 'completed' },
-        { text: "Primeiros testes com ONGs parceiras", status: 'completed' }
+        { text: "Backend e upload no S3 funcionando", status: 'completed' },
+        { text: "Testes com ONGs parceiras", status: 'completed' }
       ]
     },
     {
       id: 3,
       title: "Conexão Global",
-      subtitle: "Expansão para prefeituras, clínicas e ONGs",
-      description: "Democratizando o acesso à tecnologia de reconhecimento",
-      icon: <Globe className="w-8 h-8" />,
+      subtitle: "Expansão para clínicas e prefeituras",
+      description: "Cadastro massivo de pets",
+      icon: <span className="text-3xl">🌍</span>,
       status: 'upcoming',
-      color: 'from-purple-500 to-pink-400',
+      bgColor: 'bg-gradient-to-br from-purple-100 to-purple-200',
+      iconColor: 'text-purple-600',
       items: [
-        { text: "Sistema aberto ao público", status: 'upcoming' },
-        { text: "Parcerias com iniciativas públicas e privadas", status: 'upcoming' }
+        { text: "Expansão para clínicas e prefeituras", status: 'upcoming' },
+        { text: "Cadastro massivo de pets", status: 'upcoming' }
       ]
     },
     {
       id: 4,
-      title: "SmartDog DAO?",
-      subtitle: "Sistema de recompensas para a comunidade",
-      description: "Reconhecendo quem contribui para salvar vidas",
-      icon: <Sparkles className="w-8 h-8" />,
+      title: "Reconhecer e Recompensar",
+      subtitle: "Contribuintes ganham selos digitais",
+      description: "ONGs destacadas e NFT de identidade animal (opcional)",
+      icon: <span className="text-3xl">🎁</span>,
       status: 'upcoming',
-      color: 'from-yellow-500 to-orange-400',
+      bgColor: 'bg-gradient-to-br from-yellow-100 to-yellow-200',
+      iconColor: 'text-yellow-600',
       items: [
-        { text: "Recompensas por imagens úteis", status: 'upcoming' },
-        { text: "Reconhecimento via NFTs não-transferíveis", status: 'upcoming' }
+        { text: "Contribuintes ganham selos digitais", status: 'upcoming' },
+        { text: "ONGs destacadas", status: 'upcoming' },
+        { text: "NFT de identidade animal (opcional)", status: 'upcoming' }
       ]
     }
   ];
@@ -129,129 +134,132 @@ function App() {
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'completed':
-        return <CheckCircle className="w-5 h-5 text-green-400" />;
+        return <CheckCircle className="w-5 h-5 text-green-500" />;
       case 'in-progress':
-        return <Clock className="w-5 h-5 text-yellow-400 animate-pulse" />;
+        return <Clock className="w-5 h-5 text-yellow-500 animate-pulse" />;
       default:
-        return <Clock className="w-5 h-5 text-gray-400" />;
+        return <Star className="w-5 h-5 text-gray-400" />;
     }
   };
 
   const handleContributeClick = () => {
-    // Redirecionar para a página de upload (você pode ajustar a URL)
-    window.location.href = '/upload'; // ou usar React Router se tiver
+    // Redirecionar para a página de upload
+    window.location.href = '/upload';
   };
 
   return (
-    <div className="min-h-screen bg-black text-white overflow-hidden relative">
-      {/* Background Effects */}
-      <div className="absolute inset-0 opacity-30">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
-        <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute bottom-1/4 left-1/2 w-96 h-96 bg-green-500 rounded-full mix-blend-multiply filter blur-3xl animate-pulse delay-2000"></div>
-      </div>
-
-      {/* Animated Grid Background */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="grid-pattern"></div>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+      {/* Floating Elements */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 left-10 text-4xl animate-bounce delay-1000">🐕</div>
+        <div className="absolute top-40 right-20 text-3xl animate-bounce delay-2000">😺</div>
+        <div className="absolute bottom-40 left-20 text-3xl animate-bounce delay-3000">❤️</div>
+        <div className="absolute bottom-20 right-10 text-4xl animate-bounce delay-4000">🏠</div>
+        <div className="absolute top-1/2 left-1/4 text-2xl animate-bounce delay-500">⭐</div>
+        <div className="absolute top-1/3 right-1/3 text-2xl animate-bounce delay-1500">🌟</div>
       </div>
 
       <div className="relative z-10 container mx-auto px-4 py-8">
-        {/* Header */}
+        {/* Hero Section */}
         <header className="text-center mb-20">
           <div className="flex items-center justify-center mb-8">
-            <Shield className="w-12 h-12 text-cyan-400 mr-4 animate-pulse" />
-            <h1 className="text-5xl md:text-7xl font-black neon-glow bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
+            <span className="text-6xl animate-bounce mr-4">🐕</span>
+            <h1 className="text-5xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 animate-pulse">
               SmartDog
             </h1>
-            <Zap className="w-12 h-12 text-yellow-400 ml-4 animate-bounce" />
+            <span className="text-6xl animate-bounce ml-4">😺</span>
           </div>
           
-          <p className="text-2xl md:text-3xl font-bold text-gray-300 mb-6">
-            🚀 Roadmap Épico para o Futuro dos Pets
-          </p>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
+            O seu pet pode salvar um animal perdido
+          </h2>
           
-          <p className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed mb-8">
-            Tecnologia de reconhecimento facial e de focinho para reunir animais perdidos com suas famílias
+          <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed mb-12">
+            Crie esperança com uma simples foto.
           </p>
 
-          {/* Stats */}
-          <div className="flex flex-wrap justify-center gap-8 mb-12">
-            <div className="crypto-stat-card">
-              <div className="flex items-center space-x-2">
-                <Users className="w-6 h-6 text-cyan-400" />
-                <span className="text-2xl font-bold text-cyan-400">{petCount.toLocaleString()}</span>
+          {/* Stats Cards */}
+          <div className="flex flex-wrap justify-center gap-8 mb-16">
+            <div className="happy-stat-card bg-gradient-to-br from-blue-100 to-blue-200">
+              <div className="flex items-center justify-center space-x-3 mb-2">
+                <span className="text-3xl">📷</span>
+                <span className="text-3xl font-black text-blue-600">{petCount.toLocaleString()}</span>
               </div>
-              <p className="text-sm text-gray-400">Pets Contribuindo</p>
+              <p className="text-blue-700 font-semibold">Pets Contribuindo</p>
             </div>
             
-            <div className="crypto-stat-card">
-              <div className="flex items-center space-x-2">
-                <Heart className="w-6 h-6 text-pink-400 animate-pulse" />
-                <span className="text-2xl font-bold text-pink-400">98%</span>
+            <div className="happy-stat-card bg-gradient-to-br from-pink-100 to-pink-200">
+              <div className="flex items-center justify-center space-x-3 mb-2">
+                <span className="text-3xl animate-pulse">💖</span>
+                <span className="text-3xl font-black text-pink-600">98%</span>
               </div>
-              <p className="text-sm text-gray-400">Acurácia Alvo</p>
+              <p className="text-pink-700 font-semibold">Acurácia Alvo</p>
             </div>
             
-            <div className="crypto-stat-card">
-              <div className="flex items-center space-x-2">
-                <Trophy className="w-6 h-6 text-yellow-400" />
-                <span className="text-2xl font-bold text-yellow-400">∞</span>
+            <div className="happy-stat-card bg-gradient-to-br from-yellow-100 to-yellow-200">
+              <div className="flex items-center justify-center space-x-3 mb-2">
+                <span className="text-3xl">🏆</span>
+                <span className="text-3xl font-black text-yellow-600">∞</span>
               </div>
-              <p className="text-sm text-gray-400">Vidas Salvas</p>
+              <p className="text-yellow-700 font-semibold">Vidas Salvas</p>
             </div>
           </div>
         </header>
 
-        {/* Roadmap */}
+        {/* Roadmap Section */}
         <section className="mb-20">
-          <h2 className="text-4xl md:text-5xl font-black text-center mb-16 neon-glow">
-            🗺️ Roadmap to the Moon
-          </h2>
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-black text-gray-800 mb-4">
+              🗺️ Nosso Roadmap de Esperança
+            </h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Cada fase nos aproxima mais de reunir pets perdidos com suas famílias
+            </p>
+          </div>
 
-          <div className="max-w-6xl mx-auto">
+          <div className="max-w-4xl mx-auto space-y-8">
             {roadmapPhases.map((phase, index) => (
               <div
                 key={phase.id}
-                className={`roadmap-phase ${visiblePhases.includes(index) ? 'visible' : ''}`}
+                className={`roadmap-phase-happy ${visiblePhases.includes(index) ? 'visible' : ''}`}
                 style={{ animationDelay: `${index * 0.2}s` }}
               >
-                <div className="flex flex-col lg:flex-row items-start gap-8">
-                  {/* Phase Number & Icon */}
-                  <div className="flex-shrink-0">
-                    <div className={`phase-icon bg-gradient-to-br ${phase.color}`}>
-                      <span className="text-2xl font-black text-white">
-                        {phase.id}
-                      </span>
-                      <div className="absolute -bottom-2 -right-2 bg-black rounded-full p-2">
-                        {phase.icon}
+                <div className={`happy-phase-card ${phase.bgColor} border-2 border-white shadow-xl`}>
+                  <div className="flex flex-col md:flex-row items-start gap-6">
+                    {/* Phase Icon */}
+                    <div className="flex-shrink-0">
+                      <div className="happy-phase-icon bg-white shadow-lg">
+                        <div className="text-2xl font-black text-gray-700 mb-1">
+                          Fase {phase.id}
+                        </div>
+                        <div className="text-4xl">
+                          {phase.icon}
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  {/* Phase Content */}
-                  <div className="flex-1">
-                    <div className="crypto-card">
-                      <div className="flex items-start justify-between mb-6">
+                    {/* Phase Content */}
+                    <div className="flex-1">
+                      <div className="flex items-start justify-between mb-4">
                         <div>
-                          <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">
-                            🚩 Fase {phase.id} — "{phase.title}"
+                          <h3 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
+                            {phase.title}
                           </h3>
-                          <p className="text-lg text-gray-300 mb-4">
+                          <p className="text-lg text-gray-700 mb-3">
                             {phase.subtitle}
                           </p>
-                          <p className="text-gray-400">
+                          <p className="text-gray-600">
                             {phase.description}
                           </p>
                         </div>
                         
-                        <div className={`status-badge ${phase.status}`}>
+                        <div className={`happy-status-badge ${phase.status}`}>
                           {phase.status === 'completed' && <CheckCircle className="w-4 h-4" />}
                           {phase.status === 'in-progress' && <Clock className="w-4 h-4 animate-pulse" />}
                           {phase.status === 'upcoming' && <Star className="w-4 h-4" />}
-                          <span className="text-sm font-semibold capitalize">
+                          <span className="text-sm font-bold">
                             {phase.status === 'in-progress' ? 'Em Progresso' : 
-                             phase.status === 'completed' ? 'Concluído' : 'Em Breve'}
+                             phase.status === 'completed' ? 'Concluído ✅' : 'Em Breve ⭐'}
                           </span>
                         </div>
                       </div>
@@ -261,11 +269,13 @@ function App() {
                         {phase.items.map((item, itemIndex) => (
                           <div
                             key={itemIndex}
-                            className="flex items-center space-x-3 p-3 rounded-lg bg-white/5 hover:bg-white/10 transition-colors"
+                            className="flex items-center space-x-3 p-3 rounded-xl bg-white/60 hover:bg-white/80 transition-all duration-300 shadow-sm"
                           >
                             {getStatusIcon(item.status)}
-                            <span className={`${item.status === 'completed' ? 'text-green-300' : 
-                                           item.status === 'in-progress' ? 'text-yellow-300' : 'text-gray-400'}`}>
+                            <span className={`font-medium ${
+                              item.status === 'completed' ? 'text-green-700' : 
+                              item.status === 'in-progress' ? 'text-yellow-700' : 'text-gray-600'
+                            }`}>
                               {item.text}
                             </span>
                           </div>
@@ -274,11 +284,6 @@ function App() {
                     </div>
                   </div>
                 </div>
-
-                {/* Connector Line */}
-                {index < roadmapPhases.length - 1 && (
-                  <div className="roadmap-connector"></div>
-                )}
               </div>
             ))}
           </div>
@@ -286,41 +291,53 @@ function App() {
 
         {/* Call to Action */}
         <section className="text-center mb-20">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-black mb-8 neon-glow">
-              O futuro dos animais perdidos começa com você.
-            </h2>
+          <div className="max-w-4xl mx-auto bg-gradient-to-br from-white/80 to-white/60 backdrop-blur-sm rounded-3xl p-12 shadow-2xl border border-white/50">
+            <div className="flex items-center justify-center mb-6">
+              <span className="text-4xl animate-bounce mr-3">🌟</span>
+              <h2 className="text-4xl md:text-5xl font-black text-gray-800">
+                O futuro dos animais perdidos começa com você.
+              </h2>
+              <span className="text-4xl animate-bounce ml-3">🌟</span>
+            </div>
             
-            <p className="text-xl text-gray-300 mb-12 leading-relaxed">
+            <p className="text-xl text-gray-700 mb-12 leading-relaxed">
               Cada foto que você contribui treina nossa IA para salvar mais vidas. 
-              Seja parte desta revolução tecnológica com propósito social.
+              Seja parte desta revolução tecnológica com propósito social! 💝
             </p>
 
             <button
               onClick={handleContributeClick}
-              className="crypto-cta-button group"
+              className="happy-cta-button group"
             >
               <div className="flex items-center justify-center space-x-4">
-                <Camera className="w-8 h-8 group-hover:animate-pulse" />
-                <span className="text-2xl font-black">Contribuir com Imagens</span>
-                <ArrowRight className="w-8 h-8 group-hover:translate-x-2 transition-transform" />
+                <span className="text-3xl group-hover:animate-bounce">📷</span>
+                <span className="text-2xl font-black text-white">Contribuir com Imagens</span>
+                <ArrowRight className="w-8 h-8 group-hover:translate-x-2 transition-transform text-white" />
               </div>
             </button>
+
+            <div className="flex items-center justify-center mt-8 space-x-4">
+              <span className="text-2xl animate-bounce">🐕</span>
+              <span className="text-lg text-gray-600 font-semibold">
+                Junte-se a {petCount.toLocaleString()} pets que já contribuíram!
+              </span>
+              <span className="text-2xl animate-bounce delay-300">😺</span>
+            </div>
           </div>
         </section>
 
         {/* Footer */}
-        <footer className="border-t border-white/10 pt-12">
-          <div className="max-w-4xl mx-auto text-center">
+        <footer className="text-center">
+          <div className="max-w-4xl mx-auto">
             <div className="flex items-center justify-center space-x-4 mb-8">
-              <Heart className="w-6 h-6 text-pink-400 animate-pulse" />
-              <span className="text-lg text-gray-400">
+              <span className="text-3xl animate-pulse">💝</span>
+              <span className="text-xl text-gray-700 font-semibold">
                 Feito com amor para reunir famílias
               </span>
-              <Heart className="w-6 h-6 text-pink-400 animate-pulse" />
+              <span className="text-3xl animate-pulse">💝</span>
             </div>
             
-            <p className="text-gray-500 text-sm">
+            <p className="text-gray-500 text-lg">
               © 2024 SmartDog. Tecnologia que salva vidas. 🐕💙😺
             </p>
           </div>

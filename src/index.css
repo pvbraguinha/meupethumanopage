@@ -19,450 +19,232 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Space Grotesk', 'Inter', sans-serif;
-  font-weight: 700;
+  font-weight: 900;
   line-height: 1.2;
 }
 
-/* Custom animations */
-@keyframes float {
+/* 🌟 CRYPTO/MEMECOIN STYLE ANIMATIONS 🌟 */
+@keyframes neon-pulse {
+  0%, 100% { 
+    text-shadow: 
+      0 0 10px rgba(0, 255, 255, 0.8),
+      0 0 20px rgba(0, 255, 255, 0.6),
+      0 0 30px rgba(0, 255, 255, 0.4),
+      0 0 40px rgba(0, 255, 255, 0.2);
+  }
+  50% { 
+    text-shadow: 
+      0 0 15px rgba(0, 255, 255, 1),
+      0 0 30px rgba(0, 255, 255, 0.8),
+      0 0 45px rgba(0, 255, 255, 0.6),
+      0 0 60px rgba(0, 255, 255, 0.4);
+  }
+}
+
+@keyframes crypto-glow {
+  0%, 100% { 
+    box-shadow: 
+      0 0 20px rgba(0, 255, 255, 0.3),
+      0 0 40px rgba(0, 255, 255, 0.2),
+      inset 0 0 20px rgba(0, 255, 255, 0.1);
+  }
+  50% { 
+    box-shadow: 
+      0 0 30px rgba(0, 255, 255, 0.5),
+      0 0 60px rgba(0, 255, 255, 0.3),
+      inset 0 0 30px rgba(0, 255, 255, 0.15);
+  }
+}
+
+@keyframes slide-up {
+  0% {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float-gentle {
   0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
+  50% { transform: translateY(-8px); }
 }
 
-@keyframes glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(0, 191, 255, 0.4); }
-  50% { box-shadow: 0 0 40px rgba(0, 191, 255, 0.8); }
+@keyframes grid-move {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(20px, 20px); }
 }
 
-@keyframes pulse-neon {
-  0%, 100% { 
-    text-shadow: 0 0 10px rgba(0, 191, 255, 0.8), 0 0 20px rgba(0, 191, 255, 0.6), 0 0 30px rgba(0, 191, 255, 0.4);
-  }
-  50% { 
-    text-shadow: 0 0 15px rgba(0, 191, 255, 1), 0 0 30px rgba(0, 191, 255, 0.8), 0 0 45px rgba(0, 191, 255, 0.6);
-  }
+/* 🎨 NEON GLOW TEXT */
+.neon-glow {
+  animation: neon-pulse 2s ease-in-out infinite;
 }
 
-@keyframes count-up {
-  0% { transform: scale(0.8); opacity: 0; }
-  50% { transform: scale(1.1); }
-  100% { transform: scale(1); opacity: 1; }
-}
-
-/* 🔥💎 BOTÃO SUPER VIBRANTE SEM REFLEXOS OFUSCANTES! 💎🔥 */
-@keyframes super-vibrant-flow {
-  0% { 
-    background: linear-gradient(135deg, 
-      #0033CC 0%,    /* Azul escuro intenso */
-      #0066FF 20%,   /* Azul médio vibrante */
-      #0099FF 40%,   /* Azul claro brilhante */
-      #00CCFF 60%,   /* Cyan vibrante */
-      #00FFFF 80%,   /* Cyan claro */
-      #0033CC 100%   /* Volta ao início */
-    );
-    background-size: 400% 400%;
-    background-position: 0% 50%;
-  }
-  33% { 
-    background: linear-gradient(135deg, 
-      #0066FF 0%, #0099FF 20%, #00CCFF 40%, #00FFFF 60%, #0033CC 80%, #0066FF 100%
-    );
-    background-size: 400% 400%;
-    background-position: 50% 50%;
-  }
-  66% { 
-    background: linear-gradient(135deg, 
-      #0099FF 0%, #00CCFF 20%, #00FFFF 40%, #0033CC 60%, #0066FF 80%, #0099FF 100%
-    );
-    background-size: 400% 400%;
-    background-position: 100% 50%;
-  }
-  100% { 
-    background: linear-gradient(135deg, 
-      #0033CC 0%, #0066FF 20%, #0099FF 40%, #00CCFF 60%, #00FFFF 80%, #0033CC 100%
-    );
-    background-size: 400% 400%;
-    background-position: 0% 50%;
-  }
-}
-
-@keyframes super-vibrant-glow {
-  0%, 100% { 
-    box-shadow: 
-      /* Glow interno mais forte */
-      inset 0 0 40px rgba(255, 255, 255, 0.25),
-      /* Glow externo principal MUITO intenso */
-      0 0 40px rgba(0, 102, 255, 0.9),
-      0 0 80px rgba(0, 153, 255, 0.7),
-      0 0 120px rgba(0, 204, 255, 0.5),
-      /* Halo externo super vibrante */
-      0 0 160px rgba(0, 255, 255, 0.3);
-  }
-  50% { 
-    box-shadow: 
-      /* Glow interno ainda mais forte */
-      inset 0 0 50px rgba(255, 255, 255, 0.35),
-      /* Glow externo EXPLOSIVO */
-      0 0 60px rgba(0, 102, 255, 1.0),
-      0 0 120px rgba(0, 153, 255, 0.9),
-      0 0 180px rgba(0, 204, 255, 0.7),
-      /* Halo externo MEGA vibrante */
-      0 0 240px rgba(0, 255, 255, 0.5);
-  }
-}
-
-@keyframes super-text-glow {
-  0%, 100% {
-    text-shadow: 
-      0 0 15px rgba(255, 255, 255, 1.0),
-      0 0 30px rgba(0, 204, 255, 1.0),
-      0 0 45px rgba(0, 153, 255, 0.8),
-      0 0 60px rgba(0, 102, 255, 0.6),
-      0 0 75px rgba(0, 51, 204, 0.4);
-  }
-  50% {
-    text-shadow: 
-      0 0 20px rgba(255, 255, 255, 1.0),
-      0 0 40px rgba(0, 204, 255, 1.0),
-      0 0 60px rgba(0, 153, 255, 1.0),
-      0 0 80px rgba(0, 102, 255, 0.8),
-      0 0 100px rgba(0, 51, 204, 0.6);
-  }
-}
-
-/* 🌟⚡ BOTÃO SUPER VIBRANTE - SEM REFLEXOS OFUSCANTES! ⚡🌟 */
-.perfect-neon-button {
-  position: relative;
-  overflow: hidden;
-  font-weight: 900 !important;
-  
-  /* TEXTO SUPER BRILHANTE E CONTRASTANTE */
-  color: #FFFFFF !important;
-  text-shadow: 
-    0 0 15px rgba(255, 255, 255, 1.0),
-    0 0 30px rgba(0, 204, 255, 1.0),
-    0 0 45px rgba(0, 153, 255, 0.8),
-    0 0 60px rgba(0, 102, 255, 0.6),
-    0 0 75px rgba(0, 51, 204, 0.4) !important;
-  
-  /* BORDA NEON SUPER VIBRANTE */
-  border: 4px solid rgba(0, 255, 255, 1.0) !important;
-  
-  /* FUNDO GRADIENTE SUPER INTENSO */
-  background: linear-gradient(135deg, 
-    #0033CC 0%,    /* Azul escuro intenso */
-    #0066FF 20%,   /* Azul médio vibrante */
-    #0099FF 40%,   /* Azul claro brilhante */
-    #00CCFF 60%,   /* Cyan vibrante */
-    #00FFFF 80%,   /* Cyan claro */
-    #0033CC 100%   /* Volta ao início */
-  ) !important;
-  background-size: 400% 400% !important;
-  
-  /* ANIMAÇÕES SUPER VIBRANTES - SEM SHIMMER! */
-  animation: 
-    super-vibrant-flow 2s ease-in-out infinite,
-    super-vibrant-glow 1.8s ease-in-out infinite,
-    super-text-glow 2.2s ease-in-out infinite !important;
-  
-  /* FILTROS SUPER INTENSOS PARA MÁXIMO CONTRASTE */
-  filter: 
-    brightness(1.8) 
-    saturate(2.0) 
-    contrast(1.6) !important;
-  
-  /* TRANSFORMAÇÕES SUAVES */
-  transform: scale(1.0) !important;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-}
-
-.perfect-neon-button:hover {
-  /* HOVER: EXPLOSÃO DE VIBRAÇÃO E CONTRASTE */
-  animation: 
-    super-vibrant-flow 1.2s ease-in-out infinite,
-    super-vibrant-glow 1s ease-in-out infinite,
-    super-text-glow 1.3s ease-in-out infinite !important;
-  
-  filter: 
-    brightness(2.2) 
-    saturate(2.4) 
-    contrast(1.8) !important;
-  
-  transform: scale(1.08) !important;
-  border-color: rgba(0, 255, 255, 1.0) !important;
-  border-width: 5px !important;
-  
-  /* Glow hover EXPLOSIVO */
-  box-shadow: 
-    inset 0 0 60px rgba(255, 255, 255, 0.4),
-    0 0 80px rgba(0, 102, 255, 1.0),
-    0 0 160px rgba(0, 153, 255, 1.0),
-    0 0 240px rgba(0, 204, 255, 0.8),
-    0 0 320px rgba(0, 255, 255, 0.6) !important;
-  
-  /* Texto MEGA brilhante no hover */
-  text-shadow: 
-    0 0 20px rgba(255, 255, 255, 1.0),
-    0 0 40px rgba(0, 204, 255, 1.0),
-    0 0 60px rgba(0, 153, 255, 1.0),
-    0 0 80px rgba(0, 102, 255, 0.8),
-    0 0 100px rgba(0, 51, 204, 0.6),
-    0 0 120px rgba(0, 255, 255, 0.4) !important;
-}
-
-.perfect-neon-button:active {
-  transform: scale(1.04) !important;
-  filter: brightness(2.0) saturate(2.2) contrast(1.7) !important;
-}
-
-.perfect-neon-button:disabled {
-  /* DESABILITADO: AINDA AZUL MAS MAIS SUAVE */
-  background: linear-gradient(135deg, 
-    #4A90E2 0%, 
-    #5BA0F2 25%, 
-    #6BB0FF 50%, 
-    #7BC0FF 75%, 
-    #4A90E2 100%
-  ) !important;
-  
-  filter: brightness(1.2) saturate(1.2) contrast(1.1) !important;
-  opacity: 0.8 !important;
-  cursor: not-allowed !important;
-  
-  /* Animação mais lenta */
-  animation: 
-    super-vibrant-flow 4s ease-in-out infinite,
-    super-vibrant-glow 3s ease-in-out infinite !important;
-  
-  box-shadow: 
-    0 0 20px rgba(74, 144, 226, 0.5),
-    0 0 40px rgba(91, 160, 242, 0.3) !important;
-}
-
-/* HALO DE FUNDO SUPER VIBRANTE */
-.perfect-neon-button::before {
-  content: '';
-  position: absolute;
-  top: -8px;
-  left: -8px;
-  right: -8px;
-  bottom: -8px;
-  background: linear-gradient(135deg, 
-    #0033CC, #0066FF, #0099FF, #00CCFF, #00FFFF, #0033CC
-  );
-  background-size: 500% 500%;
-  animation: super-vibrant-flow 3s ease-in-out infinite;
-  border-radius: inherit;
-  z-index: -1;
-  filter: blur(20px);
-  opacity: 0.8;
-}
-
-/* ❌ SHIMMER REMOVIDO COMPLETAMENTE! ❌ */
-/* Não há mais efeito de reflexo ofuscante */
-
-/* Neon text effects */
-.neon-blue {
-  color: #00BFFF;
-  text-shadow: 0 0 10px rgba(0, 191, 255, 0.8);
-}
-
-.neon-text-glow {
-  animation: pulse-neon 2s ease-in-out infinite;
-}
-
-/* Glass morphism for cards */
-.glass-card {
-  background: rgba(0, 191, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(0, 191, 255, 0.2);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-}
-
-.glass-card:hover {
-  background: rgba(0, 191, 255, 0.08);
-  border-color: rgba(0, 191, 255, 0.4);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
-}
-
-/* Upload area styling */
-.upload-area {
-  border: 2px dashed rgba(0, 191, 255, 0.3);
-  background: rgba(0, 191, 255, 0.02);
+/* 📊 CRYPTO STAT CARDS */
+.crypto-stat-card {
+  @apply bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 text-center;
+  animation: crypto-glow 3s ease-in-out infinite;
   transition: all 0.3s ease;
 }
 
-.upload-area:hover {
-  border-color: rgba(0, 191, 255, 0.6);
-  background: rgba(0, 191, 255, 0.05);
-  box-shadow: 0 0 20px rgba(0, 191, 255, 0.1);
+.crypto-stat-card:hover {
+  @apply bg-white/10 border-white/20;
+  transform: translateY(-5px);
 }
 
-.upload-area.has-image {
-  border-color: rgba(0, 255, 127, 0.5);
-  background: rgba(0, 255, 127, 0.02);
-}
-
-/* Counter animation */
-.counter-animate {
-  animation: count-up 0.6s ease-out;
-}
-
-/* Form input styling */
-.form-input {
-  background: rgba(0, 191, 255, 0.05);
-  border: 1px solid rgba(0, 191, 255, 0.2);
-  color: #ffffff;
-  transition: all 0.3s ease;
-}
-
-.form-input:focus {
-  background: rgba(0, 191, 255, 0.08);
-  border-color: rgba(0, 191, 255, 0.6);
-  box-shadow: 0 0 20px rgba(0, 191, 255, 0.2);
-  outline: none;
-}
-
-.form-input::placeholder {
-  color: rgba(255, 255, 255, 0.4);
-}
-
-/* Select styling */
-.form-select {
-  background: rgba(0, 191, 255, 0.05);
-  border: 1px solid rgba(0, 191, 255, 0.2);
-  color: #ffffff;
-  transition: all 0.3s ease;
-}
-
-.form-select:focus {
-  background: rgba(0, 191, 255, 0.08);
-  border-color: rgba(0, 191, 255, 0.6);
-  box-shadow: 0 0 20px rgba(0, 191, 255, 0.2);
-  outline: none;
-}
-
-.form-select option {
-  background: #1a1a1a;
-  color: #ffffff;
-}
-
-/* Checkbox styling */
-.custom-checkbox {
-  position: relative;
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-}
-
-.custom-checkbox input {
+/* 🗺️ ROADMAP PHASES */
+.roadmap-phase {
+  @apply relative mb-16;
   opacity: 0;
-  position: absolute;
+  transform: translateY(50px);
+  transition: all 0.6s ease-out;
 }
 
-.custom-checkbox .checkmark {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 20px;
-  width: 20px;
-  background: rgba(0, 191, 255, 0.1);
-  border: 2px solid rgba(0, 191, 255, 0.3);
-  border-radius: 4px;
+.roadmap-phase.visible {
+  opacity: 1;
+  transform: translateY(0);
+  animation: slide-up 0.6s ease-out;
+}
+
+.phase-icon {
+  @apply relative w-20 h-20 rounded-2xl flex items-center justify-center shadow-2xl;
+  animation: float-gentle 3s ease-in-out infinite;
+}
+
+.crypto-card {
+  @apply bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm border border-white/20 rounded-3xl p-8;
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.3),
+    0 0 30px rgba(0, 255, 255, 0.1);
   transition: all 0.3s ease;
 }
 
-.custom-checkbox:hover .checkmark {
-  background: rgba(0, 191, 255, 0.2);
-  border-color: rgba(0, 191, 255, 0.6);
+.crypto-card:hover {
+  @apply border-white/30;
+  transform: translateY(-5px);
+  box-shadow: 
+    0 30px 60px rgba(0, 0, 0, 0.4),
+    0 0 50px rgba(0, 255, 255, 0.2);
 }
 
-.custom-checkbox input:checked ~ .checkmark {
-  background: linear-gradient(135deg, #00BFFF, #0080FF);
-  border-color: #00BFFF;
-  box-shadow: 0 0 15px rgba(0, 191, 255, 0.4);
+/* 🏷️ STATUS BADGES */
+.status-badge {
+  @apply flex items-center space-x-2 px-4 py-2 rounded-full text-sm font-bold;
 }
 
-.custom-checkbox .checkmark:after {
-  content: "";
-  position: absolute;
-  display: none;
+.status-badge.completed {
+  @apply bg-green-500/20 text-green-400 border border-green-500/30;
 }
 
-.custom-checkbox input:checked ~ .checkmark:after {
-  display: block;
+.status-badge.in-progress {
+  @apply bg-yellow-500/20 text-yellow-400 border border-yellow-500/30;
 }
 
-.custom-checkbox .checkmark:after {
-  left: 6px;
-  top: 2px;
-  width: 6px;
-  height: 10px;
-  border: solid white;
-  border-width: 0 2px 2px 0;
-  transform: rotate(45deg);
+.status-badge.upcoming {
+  @apply bg-gray-500/20 text-gray-400 border border-gray-500/30;
 }
 
-/* Success message styling */
-.success-message {
-  background: linear-gradient(135deg, rgba(0, 255, 127, 0.1), rgba(0, 191, 255, 0.1));
-  border: 1px solid rgba(0, 255, 127, 0.3);
-  box-shadow: 0 0 30px rgba(0, 255, 127, 0.2);
+/* 🔗 ROADMAP CONNECTOR */
+.roadmap-connector {
+  @apply absolute left-10 top-24 w-0.5 h-16 bg-gradient-to-b from-cyan-400 to-transparent;
+  margin-left: -1px;
 }
 
-/* Loading state */
-.loading-overlay {
-  background: rgba(0, 0, 0, 0.9);
-  backdrop-filter: blur(10px);
+/* 🚀 CRYPTO CTA BUTTON */
+.crypto-cta-button {
+  @apply relative inline-flex items-center justify-center px-12 py-6 text-white font-black rounded-2xl overflow-hidden;
+  background: linear-gradient(135deg, 
+    #0066FF 0%, 
+    #00CCFF 25%, 
+    #0099FF 50%, 
+    #00FFFF 75%, 
+    #0066FF 100%
+  );
+  background-size: 300% 300%;
+  animation: 
+    crypto-glow 2s ease-in-out infinite,
+    gradient-shift 3s ease-in-out infinite;
+  box-shadow: 
+    0 20px 40px rgba(0, 102, 255, 0.3),
+    0 0 60px rgba(0, 204, 255, 0.2);
+  transition: all 0.3s ease;
 }
 
-/* Responsive adjustments */
-@media (max-width: 640px) {
-  .perfect-neon-button {
-    padding: 1.5rem 2rem !important;
-    font-size: 1.1rem !important;
+.crypto-cta-button:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 
+    0 30px 60px rgba(0, 102, 255, 0.4),
+    0 0 80px rgba(0, 204, 255, 0.3);
+}
+
+.crypto-cta-button:active {
+  transform: translateY(-1px) scale(1.02);
+}
+
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* 🌐 GRID BACKGROUND PATTERN */
+.grid-pattern {
+  background-image: 
+    linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 50px 50px;
+  width: 100%;
+  height: 100%;
+  animation: grid-move 20s linear infinite;
+}
+
+/* 📱 RESPONSIVE ADJUSTMENTS */
+@media (max-width: 768px) {
+  .roadmap-phase {
+    @apply mb-12;
   }
   
-  .neon-blue {
-    font-size: clamp(1.5rem, 4vw, 2.5rem);
+  .phase-icon {
+    @apply w-16 h-16;
+  }
+  
+  .crypto-card {
+    @apply p-6;
+  }
+  
+  .crypto-cta-button {
+    @apply px-8 py-4 text-lg;
   }
 }
 
-/* Accessibility improvements */
+/* ♿ ACCESSIBILITY */
 @media (prefers-reduced-motion: reduce) {
-  .perfect-neon-button,
-  .perfect-neon-button::before {
+  .neon-glow,
+  .crypto-stat-card,
+  .phase-icon,
+  .crypto-cta-button,
+  .grid-pattern {
     animation: none !important;
   }
   
-  .perfect-neon-button {
-    /* Versão estática SUPER vibrante */
-    background: linear-gradient(135deg, #0033CC 0%, #0099FF 50%, #00FFFF 100%) !important;
-    filter: brightness(1.8) saturate(2.0) contrast(1.6) !important;
-    box-shadow: 
-      0 0 40px rgba(0, 102, 255, 0.9),
-      0 0 80px rgba(0, 204, 255, 0.7) !important;
+  .roadmap-phase.visible {
+    animation: none !important;
   }
 }
 
-/* High contrast mode */
+/* 🎨 HIGH CONTRAST MODE */
 @media (prefers-contrast: high) {
-  .glass-card {
-    background: rgba(0, 191, 255, 0.15);
-    border-color: rgba(0, 191, 255, 0.5);
+  .crypto-card {
+    @apply border-white/50 bg-white/20;
   }
   
-  .form-input, .form-select {
-    background: rgba(0, 191, 255, 0.15);
-    border-color: rgba(0, 191, 255, 0.5);
-  }
-  
-  .perfect-neon-button {
-    filter: brightness(2.2) saturate(2.4) contrast(1.8) !important;
+  .crypto-stat-card {
+    @apply border-white/50 bg-white/20;
   }
 }
 
-/* Scrollbar styling */
+/* 📜 SCROLLBAR STYLING */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -472,10 +254,45 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(45deg, #00BFFF, #0080FF);
+  background: linear-gradient(45deg, #00CCFF, #0066FF);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(45deg, #00DFFF, #00AFFF);
+  background: linear-gradient(45deg, #00FFFF, #0099FF);
+}
+
+/* 🔥 ADDITIONAL CRYPTO VIBES */
+.crypto-accent {
+  background: linear-gradient(45deg, #00CCFF, #0066FF, #9933FF);
+  background-size: 300% 300%;
+  animation: gradient-shift 2s ease-in-out infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* 💎 DIAMOND HANDS EFFECT */
+.diamond-hands {
+  position: relative;
+}
+
+.diamond-hands::before {
+  content: '💎';
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  font-size: 1.2em;
+  animation: float-gentle 2s ease-in-out infinite;
+}
+
+/* 🌙 TO THE MOON GRADIENT */
+.moon-gradient {
+  background: linear-gradient(135deg, 
+    #1a1a2e 0%, 
+    #16213e 25%, 
+    #0f3460 50%, 
+    #533483 75%, 
+    #e94560 100%
+  );
 }

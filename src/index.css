@@ -54,127 +54,133 @@ h1, h2, h3, h4, h5, h6 {
   100% { transform: scale(1); opacity: 1; }
 }
 
-/* 🌟💙 BOTÃO NEON EQUILIBRADO - VIBRANTE MAS ELEGANTE! 💙🌟 */
-@keyframes balanced-neon-flow {
+/* 🌟💙 BOTÃO NEON VIBRANTE - MAIS CONTRASTE E VIDA! 💙🌟 */
+@keyframes vibrant-neon-flow {
   0% { 
     background: linear-gradient(135deg, 
-      #0066FF 0%,    /* Azul vibrante */
-      #0080FF 25%,   /* Azul médio */
-      #00AAFF 50%,   /* Azul claro */
-      #00CCFF 75%,   /* Azul cyan */
-      #0066FF 100%   /* Volta ao início */
+      #0055FF 0%,    /* Azul mais intenso */
+      #0077FF 25%,   /* Azul vibrante */
+      #00AAFF 50%,   /* Azul claro brilhante */
+      #00DDFF 75%,   /* Cyan vibrante */
+      #0055FF 100%   /* Volta ao início */
     );
-    background-size: 200% 200%;
+    background-size: 250% 250%;
     background-position: 0% 50%;
   }
   50% { 
     background: linear-gradient(135deg, 
-      #0080FF 0%, #00AAFF 25%, #00CCFF 50%, #0066FF 75%, #0080FF 100%
+      #0077FF 0%, #00AAFF 25%, #00DDFF 50%, #0055FF 75%, #0077FF 100%
     );
-    background-size: 200% 200%;
+    background-size: 250% 250%;
     background-position: 100% 50%;
   }
   100% { 
     background: linear-gradient(135deg, 
-      #0066FF 0%, #0080FF 25%, #00AAFF 50%, #00CCFF 75%, #0066FF 100%
+      #0055FF 0%, #0077FF 25%, #00AAFF 50%, #00DDFF 75%, #0055FF 100%
     );
-    background-size: 200% 200%;
+    background-size: 250% 250%;
     background-position: 0% 50%;
   }
 }
 
-@keyframes balanced-glow {
+@keyframes vibrant-glow {
   0%, 100% { 
     box-shadow: 
-      /* Glow interno suave */
-      inset 0 0 20px rgba(255, 255, 255, 0.1),
-      /* Glow externo principal */
-      0 0 25px rgba(0, 102, 255, 0.6),
-      0 0 50px rgba(0, 128, 255, 0.4),
-      /* Halo suave */
-      0 0 75px rgba(0, 170, 255, 0.2);
+      /* Glow interno mais forte */
+      inset 0 0 25px rgba(255, 255, 255, 0.15),
+      /* Glow externo principal intensificado */
+      0 0 30px rgba(0, 85, 255, 0.7),
+      0 0 60px rgba(0, 119, 255, 0.5),
+      /* Halo mais visível */
+      0 0 90px rgba(0, 170, 255, 0.3);
   }
   50% { 
     box-shadow: 
-      /* Glow interno suave */
-      inset 0 0 30px rgba(255, 255, 255, 0.15),
+      /* Glow interno mais forte */
+      inset 0 0 35px rgba(255, 255, 255, 0.2),
       /* Glow externo intensificado */
-      0 0 35px rgba(0, 102, 255, 0.8),
-      0 0 70px rgba(0, 128, 255, 0.6),
-      /* Halo mais visível */
-      0 0 100px rgba(0, 170, 255, 0.3);
+      0 0 45px rgba(0, 85, 255, 0.9),
+      0 0 90px rgba(0, 119, 255, 0.7),
+      /* Halo mais brilhante */
+      0 0 120px rgba(0, 170, 255, 0.4);
   }
 }
 
-@keyframes elegant-shimmer {
+@keyframes enhanced-shimmer {
   0% { 
-    transform: translateX(-120%) skewX(-12deg); 
+    transform: translateX(-130%) skewX(-15deg); 
     opacity: 0; 
   }
-  30% { 
-    opacity: 0.6; 
+  25% { 
+    opacity: 0.4; 
   }
-  70% { 
-    opacity: 0.6; 
+  50% { 
+    opacity: 0.8; 
+  }
+  75% { 
+    opacity: 0.4; 
   }
   100% { 
-    transform: translateX(120%) skewX(-12deg); 
+    transform: translateX(130%) skewX(-15deg); 
     opacity: 0; 
   }
 }
 
-@keyframes text-neon-pulse {
+@keyframes vibrant-text-pulse {
   0%, 100% {
     text-shadow: 
-      0 0 8px rgba(255, 255, 255, 0.9),
-      0 0 16px rgba(0, 170, 255, 0.6),
-      0 0 24px rgba(0, 128, 255, 0.4);
+      0 0 10px rgba(255, 255, 255, 1.0),
+      0 0 20px rgba(0, 170, 255, 0.8),
+      0 0 30px rgba(0, 128, 255, 0.6),
+      0 0 40px rgba(0, 85, 255, 0.4);
   }
   50% {
     text-shadow: 
-      0 0 12px rgba(255, 255, 255, 1.0),
-      0 0 24px rgba(0, 170, 255, 0.8),
-      0 0 36px rgba(0, 128, 255, 0.6);
+      0 0 15px rgba(255, 255, 255, 1.0),
+      0 0 30px rgba(0, 170, 255, 1.0),
+      0 0 45px rgba(0, 128, 255, 0.8),
+      0 0 60px rgba(0, 85, 255, 0.6);
   }
 }
 
-/* 💎✨ BOTÃO NEON PERFEITO - VIBRANTE E ELEGANTE! ✨💎 */
+/* 💎✨ BOTÃO NEON VIBRANTE - MAIS CONTRASTE E VIDA! ✨💎 */
 .perfect-neon-button {
   position: relative;
   overflow: hidden;
   font-weight: 900 !important;
   
-  /* TEXTO BRILHANTE MAS LEGÍVEL */
+  /* TEXTO MAIS BRILHANTE E CONTRASTANTE */
   color: #FFFFFF !important;
   text-shadow: 
-    0 0 8px rgba(255, 255, 255, 0.9),
-    0 0 16px rgba(0, 170, 255, 0.6),
-    0 0 24px rgba(0, 128, 255, 0.4) !important;
+    0 0 10px rgba(255, 255, 255, 1.0),
+    0 0 20px rgba(0, 170, 255, 0.8),
+    0 0 30px rgba(0, 128, 255, 0.6),
+    0 0 40px rgba(0, 85, 255, 0.4) !important;
   
-  /* BORDA NEON ELEGANTE */
-  border: 3px solid rgba(0, 170, 255, 0.8) !important;
+  /* BORDA NEON MAIS VIBRANTE */
+  border: 3px solid rgba(0, 170, 255, 1.0) !important;
   
-  /* FUNDO GRADIENTE VIBRANTE */
+  /* FUNDO GRADIENTE MAIS INTENSO */
   background: linear-gradient(135deg, 
-    #0066FF 0%,    /* Azul vibrante */
-    #0080FF 25%,   /* Azul médio */
-    #00AAFF 50%,   /* Azul claro */
-    #00CCFF 75%,   /* Azul cyan */
-    #0066FF 100%   /* Volta ao início */
+    #0055FF 0%,    /* Azul mais intenso */
+    #0077FF 25%,   /* Azul vibrante */
+    #00AAFF 50%,   /* Azul claro brilhante */
+    #00DDFF 75%,   /* Cyan vibrante */
+    #0055FF 100%   /* Volta ao início */
   ) !important;
-  background-size: 200% 200% !important;
+  background-size: 250% 250% !important;
   
-  /* ANIMAÇÕES EQUILIBRADAS */
+  /* ANIMAÇÕES MAIS VIBRANTES */
   animation: 
-    balanced-neon-flow 3s ease-in-out infinite,
-    balanced-glow 2s ease-in-out infinite,
-    text-neon-pulse 2.5s ease-in-out infinite !important;
+    vibrant-neon-flow 2.5s ease-in-out infinite,
+    vibrant-glow 2s ease-in-out infinite,
+    vibrant-text-pulse 2.2s ease-in-out infinite !important;
   
-  /* FILTROS MODERADOS */
+  /* FILTROS MAIS INTENSOS PARA MAIS CONTRASTE */
   filter: 
-    brightness(1.3) 
-    saturate(1.4) 
-    contrast(1.2) !important;
+    brightness(1.4) 
+    saturate(1.6) 
+    contrast(1.3) !important;
   
   /* TRANSFORMAÇÕES SUAVES */
   transform: scale(1.0) !important;
@@ -182,31 +188,38 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .perfect-neon-button:hover {
-  /* HOVER: MAIS BRILHO MAS CONTROLADO */
+  /* HOVER: AINDA MAIS VIBRANTE E CONTRASTANTE */
   animation: 
-    balanced-neon-flow 2s ease-in-out infinite,
-    balanced-glow 1.5s ease-in-out infinite,
-    text-neon-pulse 1.8s ease-in-out infinite !important;
+    vibrant-neon-flow 1.8s ease-in-out infinite,
+    vibrant-glow 1.3s ease-in-out infinite,
+    vibrant-text-pulse 1.5s ease-in-out infinite !important;
   
   filter: 
-    brightness(1.5) 
-    saturate(1.6) 
-    contrast(1.3) !important;
+    brightness(1.6) 
+    saturate(1.8) 
+    contrast(1.4) !important;
   
   transform: scale(1.05) !important;
-  border-color: rgba(0, 204, 255, 1.0) !important;
+  border-color: rgba(0, 221, 255, 1.0) !important;
   
-  /* Glow hover mais intenso mas elegante */
+  /* Glow hover mais intenso e vibrante */
   box-shadow: 
-    inset 0 0 25px rgba(255, 255, 255, 0.2),
-    0 0 40px rgba(0, 102, 255, 0.8),
-    0 0 80px rgba(0, 128, 255, 0.6),
-    0 0 120px rgba(0, 170, 255, 0.4) !important;
+    inset 0 0 30px rgba(255, 255, 255, 0.25),
+    0 0 50px rgba(0, 85, 255, 1.0),
+    0 0 100px rgba(0, 119, 255, 0.8),
+    0 0 150px rgba(0, 170, 255, 0.5) !important;
+  
+  /* Texto ainda mais brilhante no hover */
+  text-shadow: 
+    0 0 12px rgba(255, 255, 255, 1.0),
+    0 0 24px rgba(0, 170, 255, 1.0),
+    0 0 36px rgba(0, 128, 255, 0.8),
+    0 0 48px rgba(0, 85, 255, 0.6) !important;
 }
 
 .perfect-neon-button:active {
   transform: scale(1.02) !important;
-  filter: brightness(1.2) saturate(1.3) !important;
+  filter: brightness(1.3) saturate(1.5) !important;
 }
 
 .perfect-neon-button:disabled {
@@ -225,54 +238,54 @@ h1, h2, h3, h4, h5, h6 {
   
   /* Animação mais lenta */
   animation: 
-    balanced-neon-flow 5s ease-in-out infinite,
-    balanced-glow 4s ease-in-out infinite !important;
+    vibrant-neon-flow 5s ease-in-out infinite,
+    vibrant-glow 4s ease-in-out infinite !important;
   
   box-shadow: 
     0 0 15px rgba(74, 144, 226, 0.4),
     0 0 30px rgba(91, 160, 242, 0.2) !important;
 }
 
-/* HALO DE FUNDO SUAVE */
+/* HALO DE FUNDO MAIS VIBRANTE */
 .perfect-neon-button::before {
   content: '';
   position: absolute;
-  top: -4px;
-  left: -4px;
-  right: -4px;
-  bottom: -4px;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
   background: linear-gradient(135deg, 
-    #0066FF, #0080FF, #00AAFF, #00CCFF, #0066FF
+    #0055FF, #0077FF, #00AAFF, #00DDFF, #0055FF
   );
   background-size: 300% 300%;
-  animation: balanced-neon-flow 4s ease-in-out infinite;
+  animation: vibrant-neon-flow 3.5s ease-in-out infinite;
   border-radius: inherit;
   z-index: -1;
-  filter: blur(12px);
-  opacity: 0.6;
+  filter: blur(15px);
+  opacity: 0.7;
 }
 
-/* SHIMMER ELEGANTE */
+/* SHIMMER MAIS VIBRANTE */
 .perfect-neon-button .shimmer-overlay {
   position: absolute;
   top: 0;
-  left: -120%;
-  width: 120%;
+  left: -130%;
+  width: 130%;
   height: 100%;
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(255, 255, 255, 0.1) 25%,
-    rgba(0, 170, 255, 0.3) 45%,
-    rgba(255, 255, 255, 0.6) 50%,
-    rgba(0, 170, 255, 0.3) 55%,
-    rgba(255, 255, 255, 0.1) 75%,
+    rgba(255, 255, 255, 0.15) 20%,
+    rgba(0, 170, 255, 0.4) 40%,
+    rgba(255, 255, 255, 0.8) 50%,
+    rgba(0, 170, 255, 0.4) 60%,
+    rgba(255, 255, 255, 0.15) 80%,
     transparent 100%
   );
-  animation: elegant-shimmer 3s ease-in-out infinite;
+  animation: enhanced-shimmer 2.8s ease-in-out infinite;
   z-index: 5;
   pointer-events: none;
-  transform: skewX(-12deg);
+  transform: skewX(-15deg);
 }
 
 /* Neon text effects */
@@ -451,12 +464,12 @@ h1, h2, h3, h4, h5, h6 {
   }
   
   .perfect-neon-button {
-    /* Versão estática ainda vibrante */
-    background: linear-gradient(135deg, #0066FF 0%, #00AAFF 50%, #00CCFF 100%) !important;
-    filter: brightness(1.3) saturate(1.4) !important;
+    /* Versão estática ainda mais vibrante */
+    background: linear-gradient(135deg, #0055FF 0%, #00AAFF 50%, #00DDFF 100%) !important;
+    filter: brightness(1.4) saturate(1.6) contrast(1.3) !important;
     box-shadow: 
-      0 0 25px rgba(0, 102, 255, 0.6),
-      0 0 50px rgba(0, 170, 255, 0.4) !important;
+      0 0 30px rgba(0, 85, 255, 0.7),
+      0 0 60px rgba(0, 170, 255, 0.5) !important;
   }
 }
 
@@ -473,7 +486,7 @@ h1, h2, h3, h4, h5, h6 {
   }
   
   .perfect-neon-button {
-    filter: brightness(1.5) saturate(1.6) contrast(1.4) !important;
+    filter: brightness(1.6) saturate(1.8) contrast(1.5) !important;
   }
 }
 

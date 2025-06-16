@@ -123,7 +123,7 @@ function App() {
   
   const fileInputRefs = useRef<{ [key: string]: HTMLInputElement | null }>({});
 
-  // Buscar contador de pets transformados
+  // Buscar contador de pets que contribuíram
   useEffect(() => {
     const fetchPetCount = async () => {
       try {
@@ -198,7 +198,7 @@ function App() {
     };
   };
 
-  // Nova função para enviar formulário usando DALL·E API
+  // Nova função para enviar formulário - agora apenas upload de imagens
   const handleSubmitPetForm = async () => {
     if (!petDetails.especie || !petDetails.sex || !petDetails.breed.trim() || !petDetails.age.trim() || !petDetails.pelagem) {
       setError('Por favor, preencha todos os campos obrigatórios.');
@@ -238,8 +238,8 @@ function App() {
       formData.append('especie', mappedData.especie);
       formData.append('pelagem', mappedData.pelagem); // ✅ Valores corretos
 
-      console.log('=== ENVIANDO PARA DALL·E API ===');
-      console.log('Endpoint:', 'https://smartdog-backend-vlm0.onrender.com/api/transform-pet');
+      console.log('=== ENVIANDO PARA UPLOAD S3 ===');
+      console.log('Endpoint:', 'https://smartdog-backend-vlm0.onrender.com/upload-pet-images');
       console.log('Dados ORIGINAIS do usuário:', {
         especie: petDetails.especie,
         breed: petDetails.breed,
@@ -257,29 +257,24 @@ function App() {
         frontal: frontalPhoto.file.name
       });
 
-      const response = await fetch('https://smartdog-backend-vlm0.onrender.com/api/transform-pet', {
+      const response = await fetch('https://smartdog-backend-vlm0.onrender.com/upload-pet-images', {
         method: 'POST',
         body: formData,
       });
 
       const data = await response.json();
-      console.log('=== RESPOSTA DALL·E API ===');
+      console.log('=== RESPOSTA UPLOAD S3 ===');
       console.log('Resposta completa:', data);
-      console.log('success:', data.success);
-      console.log('composite_image:', data.composite_image);
-      console.log('transformed_image:', data.transformed_image);
-      console.log('prompt_used:', data.prompt_used);
-      console.log('idade_humana:', data.idade_humana);
 
       if (response.ok && data.success) {
-        setResult(data);
+        setResult({ success: true, message: 'Pet contribuiu com sucesso!' });
         // Atualizar contador
         setPetCount(prev => prev + 1);
       } else {
-        setError(data.error || data.message || 'Erro ao processar a transformação. Tente novamente.');
+        setError(data.error || data.message || 'Erro ao enviar as fotos. Tente novamente.');
       }
     } catch (error) {
-      console.error('Erro na requisição DALL·E:', error);
+      console.error('Erro na requisição de upload:', error);
       setError('Erro de conexão. Verifique sua internet e tente novamente.');
     } finally {
       setIsProcessing(false);
@@ -350,13 +345,13 @@ function App() {
   const handleImageLoad = () => {
     setImageLoaded(true);
     setImageError(false);
-    console.log('Imagem DALL·E carregada com sucesso!');
+    console.log('Imagem carregada com sucesso!');
   };
 
   const handleImageError = () => {
     setImageLoaded(false);
     setImageError(true);
-    console.error('Erro ao carregar imagem DALL·E:', getImageUrl());
+    console.error('Erro ao carregar imagem:', getImageUrl());
   };
 
   const hasRequiredPhotos = photos.find(p => p.id === 'frontal')?.file !== null;
@@ -370,17 +365,13 @@ function App() {
     return [{ value: '', label: 'Selecione primeiro a espécie' }];
   };
 
-  // Debug: Log da resposta da API DALL·E
+  // Debug: Log da resposta da API
   useEffect(() => {
     if (result) {
-      console.log('=== DEBUG RESPOSTA DALL·E ===');
+      console.log('=== DEBUG RESPOSTA UPLOAD ===');
       console.log('Resposta completa:', result);
       console.log('success:', result.success);
-      console.log('composite_image:', result.composite_image);
-      console.log('transformed_image:', result.transformed_image);
-      console.log('prompt_used:', result.prompt_used);
-      console.log('idade_humana:', result.idade_humana);
-      console.log('URL escolhida:', getImageUrl());
+      console.log('message:', result.message);
       console.log('============================');
     }
   }, [result]);
@@ -409,17 +400,13 @@ function App() {
           </p>
           <div className="mt-8 flex items-center justify-center space-x-6">
             <div className="flex items-center space-x-2">
-              <Dna className="w-6 h-6 text-cyan-400 animate-spin" />
-              <span className="text-cyan-400 font-semibold">Tecnologia DALL·E Avançada</span>
-            </div>
-            <div className="flex items-center space-x-2">
               {/* Ícones fofos de cachorro e gato */}
               <div className="flex items-center space-x-1">
                 <span className="text-2xl animate-bounce">🐕</span>
                 <Heart className="w-4 h-4 text-pink-400 animate-pulse" />
                 <span className="text-2xl animate-bounce delay-150">😺</span>
               </div>
-              <span className="text-cyan-400 font-semibold">{petCount.toLocaleString()} pets já transformados!</span>
+              <span className="text-cyan-400 font-semibold">{petCount.toLocaleString()} pets já contribuíram!</span>
             </div>
           </div>
         </header>
@@ -508,9 +495,9 @@ function App() {
                   className="social-button group relative inline-flex items-center justify-center px-16 py-8 text-2xl font-black rounded-full transition-all duration-500 transform hover:scale-110 active:scale-95 overflow-hidden shadow-2xl"
                 >
                   <div className="relative flex items-center z-10">
-                    <Sparkles className="w-10 h-10 mr-4 animate-spin text-white drop-shadow-lg" />
+                    <Heart className="w-10 h-10 mr-4 animate-pulse text-white drop-shadow-lg" />
                     <span className="font-black tracking-wide text-white drop-shadow-lg">
-                      ✨ Transformar em Humano ✨
+                      🐾 Ajudar uma Família
                     </span>
                   </div>
                 </button>
@@ -670,11 +657,11 @@ function App() {
                       >
                         {isProcessing ? (
                           <>
-                            <Dna className="w-6 h-6 mr-3 animate-spin inline" />
-                            Transformando com DALL·E...
+                            <Heart className="w-6 h-6 mr-3 animate-pulse inline" />
+                            Enviando contribuição...
                           </>
                         ) : (
-                          'Finalizar e Transformar em Humano'
+                          'Finalizar'
                         )}
                       </button>
                     </div>
@@ -688,11 +675,11 @@ function App() {
               <div className="loading-overlay fixed inset-0 flex items-center justify-center z-50">
                 <div className="glass-card rounded-2xl p-8 max-w-md mx-4 text-center">
                   <div className="relative mb-6">
-                    <Dna className="w-16 h-16 text-cyan-400 mx-auto animate-spin" />
+                    <Heart className="w-16 h-16 text-cyan-400 mx-auto animate-pulse" />
                     <div className="absolute inset-0 bg-cyan-400/20 rounded-full blur-xl animate-pulse"></div>
                   </div>
-                  <h3 className="text-2xl font-bold mb-4 neon-blue">Transformando em humano</h3>
-                  <p className="text-gray-300 mb-6">Pode demorar aproximadamente 2 minutos.</p>
+                  <h3 className="text-2xl font-bold mb-4 neon-blue">Enviando contribuição</h3>
+                  <p className="text-gray-300 mb-6">Seu pet está ajudando uma família!</p>
                   <div className="w-full bg-gray-700 rounded-full h-2 overflow-hidden">
                     <div className="bg-gradient-to-r from-cyan-400 to-blue-500 h-full rounded-full animate-pulse w-3/4"></div>
                   </div>
@@ -704,161 +691,40 @@ function App() {
           /* Result Section */
           <section className="max-w-2xl mx-auto text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-8 neon-blue">
-              🎉 Transformação realizada!
+              💚 Obrigado pela contribuição!
             </h2>
             
-            <div className="glass-card rounded-2xl p-8 mb-8">
-              {imageUrl ? (
-                <div className="relative">
-                  <img 
-                    src={imageUrl} 
-                    alt="Pet transformado em humano pelo DALL·E"
-                    className="w-full max-w-md mx-auto rounded-xl shadow-2xl shadow-cyan-500/20"
-                    onLoad={handleImageLoad}
-                    onError={handleImageError}
-                    style={{ display: imageError ? 'none' : 'block' }}
-                  />
-                  {imageError && (
-                    <div className="w-full max-w-md mx-auto h-64 flex items-center justify-center">
-                      <div className="text-center">
-                        <AlertCircle className="w-16 h-16 text-red-400 mx-auto mb-4" />
-                        <p className="text-red-300 text-lg font-semibold">
-                          Ocorreu um erro ao transformar a imagem. Por favor, tente novamente.
-                        </p>
-                        <button
-                          onClick={resetApp}
-                          className="mt-4 px-6 py-2 bg-red-500 hover:bg-red-400 rounded-lg transition-colors"
-                        >
-                          Tentar Novamente
-                        </button>
-                      </div>
-                    </div>
-                  )}
+            <div className="success-message rounded-2xl p-8 mb-8">
+              <div className="relative mb-6">
+                <div className="w-24 h-24 mx-auto bg-gradient-to-r from-green-400 to-cyan-400 rounded-full flex items-center justify-center">
+                  <Heart className="w-12 h-12 text-white animate-pulse" />
                 </div>
-              ) : (
-                <div className="w-full max-w-md mx-auto h-64 flex items-center justify-center">
-                  <div className="text-center">
-                    <AlertCircle className="w-16 h-16 text-red-400 mx-auto mb-4" />
-                    <p className="text-red-300 text-lg font-semibold">
-                      Ocorreu um erro ao transformar a imagem. Por favor, tente novamente.
-                    </p>
-                    <button
-                      onClick={resetApp}
-                      className="mt-4 px-6 py-2 bg-red-500 hover:bg-red-400 rounded-lg transition-colors"
-                    >
-                      Tentar Novamente
-                    </button>
-                  </div>
-                </div>
-              )}
+              </div>
               
-              {/* Informações adicionais - só aparece se imagem carregou */}
-              {canShowButtons && (
-                <div className="mt-6 space-y-4">
-                  {/* Idade humana estimada */}
-                  {result.idade_humana && (
-                    <div className="p-4 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 rounded-xl border border-blue-400/20">
-                      <div className="flex items-center justify-center space-x-2">
-                        <User className="w-6 h-6 text-blue-400" />
-                        <span className="text-lg font-semibold text-blue-300">
-                          Idade humana estimada: {result.idade_humana} anos
-                        </span>
-                      </div>
-                    </div>
-                  )}
-                  
-                  {/* Prompt usado pelo DALL·E */}
-                  {result.prompt_used && (
-                    <div className="p-4 glass-card rounded-xl">
-                      <h4 className="text-sm font-semibold neon-blue mb-2 flex items-center">
-                        <Sparkles className="w-4 h-4 mr-2" />
-                        Prompt DALL·E usado:
-                      </h4>
-                      <p className="text-sm text-gray-300 italic">{result.prompt_used}</p>
-                    </div>
-                  )}
-                </div>
-              )}
+              <h3 className="text-2xl font-bold mb-4 text-green-400">
+                Seu pet acaba de contribuir para ajudar uma família!
+              </h3>
+              
+              <p className="text-lg text-gray-300 mb-6">
+                As fotos enviadas serão usadas para treinar uma inteligência artificial capaz de identificar animais perdidos. 
+                Nenhuma imagem será usada sem seu consentimento.
+              </p>
+              
+              <div className="flex items-center justify-center space-x-2 mb-6">
+                <span className="text-2xl animate-bounce">🐕</span>
+                <Heart className="w-6 h-6 text-pink-400 animate-pulse" />
+                <span className="text-2xl animate-bounce delay-150">😺</span>
+                <span className="text-cyan-400 font-semibold text-lg ml-4">
+                  {petCount.toLocaleString()} pets já contribuíram!
+                </span>
+              </div>
             </div>
-
-            {/* Download Button - só aparece se imagem carregou */}
-            {canShowButtons && (
-              <div className="mb-8">
-                <button
-                  onClick={handleDownload}
-                  className="social-button flex items-center justify-center px-8 py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 mx-auto"
-                >
-                  <Download className="w-5 h-5 mr-2" />
-                  Baixar Imagem DALL·E
-                </button>
-              </div>
-            )}
-
-            {/* Social Sharing Section - só aparece se imagem carregou */}
-            {canShowButtons && (
-              <div className="mb-8">
-                <h3 className="text-xl font-bold mb-6 neon-blue">
-                  🚀 Compartilhe sua transformação DALL·E!
-                </h3>
-                
-                <div className="grid grid-cols-2 md:grid-cols-5 gap-4 max-w-lg mx-auto">
-                  {/* WhatsApp */}
-                  <button
-                    onClick={() => handleShare('whatsapp')}
-                    className="group flex flex-col items-center justify-center p-4 bg-gradient-to-br from-green-500 to-green-600 hover:from-green-400 hover:to-green-500 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-green-500/30"
-                  >
-                    <MessageCircle className="w-8 h-8 text-white mb-2 group-hover:animate-bounce" />
-                    <span className="text-xs font-semibold text-white">WhatsApp</span>
-                  </button>
-
-                  {/* Facebook */}
-                  <button
-                    onClick={() => handleShare('facebook')}
-                    className="group flex flex-col items-center justify-center p-4 bg-gradient-to-br from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-blue-500/30"
-                  >
-                    <Facebook className="w-8 h-8 text-white mb-2 group-hover:animate-bounce" />
-                    <span className="text-xs font-semibold text-white">Facebook</span>
-                  </button>
-
-                  {/* Twitter/X */}
-                  <button
-                    onClick={() => handleShare('twitter')}
-                    className="group flex flex-col items-center justify-center p-4 bg-gradient-to-br from-gray-800 to-black hover:from-gray-700 hover:to-gray-900 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-gray-500/30"
-                  >
-                    <Twitter className="w-8 h-8 text-white mb-2 group-hover:animate-bounce" />
-                    <span className="text-xs font-semibold text-white">X</span>
-                  </button>
-
-                  {/* Instagram */}
-                  <button
-                    onClick={() => handleShare('instagram')}
-                    className="group flex flex-col items-center justify-center p-4 bg-gradient-to-br from-pink-500 via-red-500 to-yellow-500 hover:from-pink-400 hover:via-red-400 hover:to-yellow-400 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-pink-500/30"
-                  >
-                    <Instagram className="w-8 h-8 text-white mb-2 group-hover:animate-bounce" />
-                    <span className="text-xs font-semibold text-white">Instagram</span>
-                  </button>
-
-                  {/* TikTok */}
-                  <button
-                    onClick={() => handleShare('tiktok')}
-                    className="group flex flex-col items-center justify-center p-4 bg-gradient-to-br from-black via-red-600 to-cyan-400 hover:from-gray-900 hover:via-red-500 hover:to-cyan-300 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-red-500/30"
-                  >
-                    <Share2 className="w-8 h-8 text-white mb-2 group-hover:animate-bounce" />
-                    <span className="text-xs font-semibold text-white">TikTok</span>
-                  </button>
-                </div>
-
-                <p className="text-sm text-gray-400 mt-4 max-w-md mx-auto">
-                  💡 Para Instagram e TikTok: baixe a imagem e compartilhe manualmente no app
-                </p>
-              </div>
-            )}
 
             <button
               onClick={resetApp}
               className="text-cyan-400 hover:text-cyan-300 font-semibold transition-colors underline"
             >
-              Transformar outro pet
+              Contribuir com outro pet
             </button>
           </section>
         )}
@@ -886,7 +752,7 @@ function App() {
             </div>
             
             <p className="text-gray-500 text-sm">
-              © 2024 Pet AI Transform. {petCount.toLocaleString()} pets já transformados!
+              © 2024 Pet AI Transform. {petCount.toLocaleString()} pets já contribuíram!
             </p>
           </div>
         </footer>

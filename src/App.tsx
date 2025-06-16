@@ -108,9 +108,9 @@ function App() {
   const roadmapPhases: RoadmapPhase[] = [
     {
       id: 1,
-      title: "Resgate o Futuro dos Pets perdidos",
-      subtitle: "Contribua enviando foto do seu pet",
-      description: "As imagens enviadas serão utilizadas para treinar IA a reconhecer focinhos. O projeto via disponibilizar de forma gratuita a tecnologia para ONGs e usuarios registrarem e reconhecerem com 99% de precisão cães e gatos perdidos.",
+      title: "Participe da campanha",
+      subtitle: "",
+      description: "As imagens enviadas serão utilizadas para treinar inteligência artificial a reconhecer focinhos de animais perdidos e abandonados. O projeto visa disponibilizar de forma gratuita a tecnologia para a sociedade.",
       status: 'in-progress',
       icon: <Camera className="w-8 h-8" />,
       color: 'from-blue-500 to-blue-600',
@@ -270,12 +270,8 @@ function App() {
             </h1>
             
             <h2 className="text-xl md:text-2xl font-bold text-gray-700 mb-4">
-              O seu pet pode salvar um animal perdido
+              O focinho do seu pet pode salvar uma família
             </h2>
-            
-            <p className="text-lg text-gray-600 mb-8">
-              Crie esperança com uma simples foto.
-            </p>
           </div>
 
           {/* Stats */}
@@ -324,17 +320,18 @@ function App() {
                       {phase.title}
                     </h3>
                     
-                    <p className="text-lg text-gray-600 mb-4 font-medium">
-                      {phase.subtitle}
-                    </p>
+                    {phase.subtitle && (
+                      <p className="text-lg text-gray-600 mb-4 font-medium">
+                        {phase.subtitle}
+                      </p>
+                    )}
                     
                     {phase.description && (
-                      <p className="text-sm text-gray-600 opacity-70 mb-6 leading-relaxed">
-                        As imagens enviadas serão utilizadas para treinar IA a reconhecer focinhos. O projeto via disponibilizar de forma gratuita a{' '}
-                        <span className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded-md font-medium">
-                          tecnologia para ONGs e usuários registrarem e reconhecerem com 99% de precisão cães e gatos perdidos.
+                      <div className="mb-6">
+                        <span className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded-md font-medium text-sm leading-relaxed inline-block">
+                          {phase.description}
                         </span>
-                      </p>
+                      </div>
                     )}
 
                     {/* Phase Items */}

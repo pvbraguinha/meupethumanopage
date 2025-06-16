@@ -18,210 +18,185 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Nunito', 'Inter', sans-serif;
-  font-weight: 800;
-  line-height: 1.2;
+  font-weight: 900;
+  line-height: 1.1;
 }
 
-/* 🎯 CLEAN ANIMATIONS */
-@keyframes gentle-float {
+/* 🎯 MEMECOIN ANIMATIONS */
+@keyframes float-memecoin {
   0%, 100% { 
-    transform: translateY(0px);
+    transform: translateY(0px) rotate(0deg);
   }
-  50% { 
-    transform: translateY(-5px);
+  33% { 
+    transform: translateY(-8px) rotate(2deg);
+  }
+  66% { 
+    transform: translateY(-4px) rotate(-1deg);
   }
 }
 
-@keyframes slide-up-clean {
+@keyframes slide-in-memecoin {
   0% {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateX(-50px) scale(0.8);
   }
   100% {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateX(0) scale(1);
   }
 }
 
-@keyframes soft-glow {
+@keyframes bounce-character {
   0%, 100% { 
-    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.15);
+    transform: translateY(0px) scale(1);
   }
   50% { 
-    box-shadow: 0 8px 30px rgba(59, 130, 246, 0.25);
+    transform: translateY(-10px) scale(1.05);
   }
 }
 
-@keyframes rainbow-clean {
+@keyframes rainbow-glow {
   0% { 
-    background-position: 0% 50%; 
+    box-shadow: 0 0 30px rgba(255, 255, 0, 0.6);
+  }
+  25% { 
+    box-shadow: 0 0 30px rgba(255, 105, 180, 0.6);
   }
   50% { 
-    background-position: 100% 50%; 
+    box-shadow: 0 0 30px rgba(0, 191, 255, 0.6);
+  }
+  75% { 
+    box-shadow: 0 0 30px rgba(50, 205, 50, 0.6);
   }
   100% { 
-    background-position: 0% 50%; 
+    box-shadow: 0 0 30px rgba(255, 255, 0, 0.6);
   }
 }
 
-/* 📊 CLEAN STAT CARDS */
-.clean-stat-card {
-  @apply rounded-xl p-6 text-center shadow-md border-2;
+@keyframes pulse-glow {
+  0%, 100% { 
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+  }
+  50% { 
+    box-shadow: 0 0 40px rgba(255, 255, 255, 0.6);
+  }
+}
+
+/* 🎪 MEMECOIN CHARACTER */
+.memecoin-character {
+  animation: bounce-character 3s ease-in-out infinite;
+  position: relative;
   transition: all 0.3s ease;
-  backdrop-filter: blur(5px);
 }
 
-.clean-stat-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+.memecoin-character:hover {
+  animation: bounce-character 1s ease-in-out infinite;
+  transform: scale(1.1);
 }
 
-/* 🗺️ CLEAN ROADMAP PHASES */
-.roadmap-phase-clean {
+/* 🗺️ ROADMAP PHASES */
+.roadmap-phase-memecoin {
   opacity: 0;
-  transform: translateY(20px);
-  transition: all 0.5s ease-out;
+  transform: translateX(-50px) scale(0.8);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.roadmap-phase-clean.visible {
+.roadmap-phase-memecoin.visible {
   opacity: 1;
-  transform: translateY(0);
-  animation: slide-up-clean 0.5s ease-out;
+  transform: translateX(0) scale(1);
+  animation: slide-in-memecoin 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.clean-phase-card {
-  @apply rounded-xl p-6 shadow-lg;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(5px);
-}
-
-.clean-phase-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
-}
-
-.clean-phase-icon {
-  @apply w-16 h-16 rounded-lg flex flex-col items-center justify-center;
-  transition: all 0.3s ease;
-}
-
-.clean-phase-icon:hover {
-  transform: scale(1.05);
-}
-
-/* 🏷️ CLEAN STATUS BADGES */
-.clean-status-badge {
-  @apply flex items-center space-x-2 px-3 py-1 rounded-full text-xs font-bold shadow-sm;
-}
-
-.clean-status-badge.completed {
-  @apply bg-green-100 text-green-700 border border-green-200;
-}
-
-.clean-status-badge.in-progress {
-  @apply bg-yellow-100 text-yellow-700 border border-yellow-200;
-}
-
-.clean-status-badge.upcoming {
-  @apply bg-gray-100 text-gray-600 border border-gray-200;
-}
-
-/* 🚀 CLEAN CTA BUTTON */
-.clean-cta-button {
-  @apply relative inline-flex items-center justify-center px-8 py-4 text-white font-black rounded-xl overflow-hidden shadow-lg;
+/* 🚀 MEMECOIN CTA BUTTON */
+.memecoin-cta-button {
+  @apply relative inline-flex items-center justify-center px-12 py-6 text-white font-black rounded-2xl overflow-hidden shadow-2xl;
   background: linear-gradient(135deg, 
-    #3B82F6 0%,   /* Blue */
-    #8B5CF6 25%,  /* Purple */
-    #EC4899 50%,  /* Pink */
-    #F59E0B 75%,  /* Yellow */
-    #10B981 100%  /* Green */
-  );
-  background-size: 200% 200%;
-  animation: rainbow-clean 3s ease-in-out infinite;
-  transition: all 0.3s ease;
-  border: 2px solid white;
-}
-
-.clean-cta-button:hover {
-  transform: translateY(-2px) scale(1.05);
-  box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
-  animation: rainbow-clean 1.5s ease-in-out infinite;
-}
-
-.clean-cta-button:active {
-  transform: translateY(0) scale(1.02);
-}
-
-/* 🌟 CLEAN GLOW EFFECT */
-.clean-cta-button::before {
-  content: '';
-  position: absolute;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
-  background: linear-gradient(135deg, 
-    #3B82F6, #8B5CF6, #EC4899, #F59E0B, #10B981
+    #FFD700 0%,   /* Gold */
+    #FF69B4 25%,  /* Hot Pink */
+    #00BFFF 50%,  /* Deep Sky Blue */
+    #32CD32 75%,  /* Lime Green */
+    #FFD700 100%  /* Gold */
   );
   background-size: 300% 300%;
-  animation: rainbow-clean 2s ease-in-out infinite;
+  animation: rainbow-glow 3s ease-in-out infinite;
+  transition: all 0.3s ease;
+  border: 3px solid rgba(255, 255, 255, 0.8);
+}
+
+.memecoin-cta-button:hover {
+  transform: translateY(-3px) scale(1.05);
+  animation: rainbow-glow 1.5s ease-in-out infinite;
+  box-shadow: 
+    0 15px 35px rgba(255, 215, 0, 0.4),
+    0 5px 15px rgba(255, 105, 180, 0.3);
+}
+
+.memecoin-cta-button:active {
+  transform: translateY(-1px) scale(1.02);
+}
+
+/* 🌟 MEMECOIN GLOW EFFECT */
+.memecoin-cta-button::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  background: linear-gradient(135deg, 
+    #FFD700, #FF69B4, #00BFFF, #32CD32, #FFD700
+  );
+  background-size: 400% 400%;
+  animation: rainbow-glow 2s ease-in-out infinite;
   border-radius: inherit;
   z-index: -1;
-  filter: blur(8px);
-  opacity: 0.5;
+  filter: blur(10px);
+  opacity: 0.7;
 }
 
 /* 📱 RESPONSIVE ADJUSTMENTS */
 @media (max-width: 768px) {
-  .clean-stat-card {
-    @apply p-4;
+  .memecoin-character {
+    width: 100px;
+    height: 100px;
   }
   
-  .clean-phase-card {
-    @apply p-4;
+  .memecoin-cta-button {
+    @apply px-8 py-4 text-lg;
   }
   
-  .clean-phase-icon {
-    @apply w-12 h-12;
-  }
-  
-  .clean-cta-button {
-    @apply px-6 py-3 text-lg;
+  h1 {
+    font-size: 3rem !important;
   }
 }
 
 /* ♿ ACCESSIBILITY - REDUCED MOTION */
 @media (prefers-reduced-motion: reduce) {
-  .clean-stat-card,
-  .clean-phase-icon,
-  .clean-cta-button,
-  .clean-cta-button::before {
+  .memecoin-character,
+  .memecoin-cta-button,
+  .memecoin-cta-button::before {
     animation: none !important;
   }
   
-  .roadmap-phase-clean.visible {
+  .roadmap-phase-memecoin.visible {
     animation: none !important;
   }
   
-  .clean-stat-card:hover,
-  .clean-phase-card:hover,
-  .clean-cta-button:hover {
+  .memecoin-character:hover,
+  .memecoin-cta-button:hover {
     transform: none !important;
   }
 }
 
 /* 🎨 HIGH CONTRAST MODE */
 @media (prefers-contrast: high) {
-  .clean-phase-card {
-    @apply border-2 border-gray-800;
+  .memecoin-cta-button {
+    border: 4px solid #000000;
   }
   
-  .clean-stat-card {
-    @apply border-2 border-gray-800;
-  }
-  
-  .clean-cta-button {
-    @apply border-2 border-gray-800;
+  .bg-white\/10 {
+    background: rgba(255, 255, 255, 0.2) !important;
+    border: 2px solid rgba(255, 255, 255, 0.5) !important;
   }
 }
 
@@ -231,55 +206,55 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: rgba(139, 92, 246, 0.1);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(45deg, #3B82F6, #8B5CF6);
+  background: linear-gradient(45deg, #FFD700, #FF69B4);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(45deg, #2563EB, #7C3AED);
+  background: linear-gradient(45deg, #FFC700, #FF1493);
 }
 
 /* 🎪 SUBTLE EFFECTS */
 .soft-shadow {
   box-shadow: 
-    0 4px 15px rgba(0, 0, 0, 0.08),
-    0 2px 4px rgba(0, 0, 0, 0.06);
+    0 4px 15px rgba(139, 92, 246, 0.15),
+    0 2px 4px rgba(139, 92, 246, 0.1);
 }
 
 .glass-effect {
   backdrop-filter: blur(10px);
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* 🌈 CLEAN GRADIENT TEXT */
+/* 🌈 GRADIENT TEXT */
 .gradient-text {
-  background: linear-gradient(45deg, #3B82F6, #8B5CF6, #EC4899);
+  background: linear-gradient(45deg, #FFD700, #FF69B4, #00BFFF);
   background-size: 200% 200%;
-  animation: rainbow-clean 3s ease-in-out infinite;
+  animation: rainbow-glow 3s ease-in-out infinite;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* 💫 MINIMAL SPARKLE */
-.minimal-sparkle {
+/* 💫 SPARKLE EFFECT */
+.sparkle-effect {
   position: relative;
 }
 
-.minimal-sparkle::after {
+.sparkle-effect::after {
   content: '✨';
   position: absolute;
-  top: -5px;
-  right: -5px;
-  font-size: 0.8em;
-  opacity: 0.7;
-  animation: gentle-float 3s ease-in-out infinite;
+  top: -8px;
+  right: -8px;
+  font-size: 1.2em;
+  opacity: 0.8;
+  animation: float-memecoin 2s ease-in-out infinite;
 }
 
 /* 🎈 GENTLE HOVER */
@@ -288,46 +263,16 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .gentle-hover:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(139, 92, 246, 0.2);
 }
 
 /* 🌸 CLEAN BORDERS */
 .clean-border {
-  border: 1px solid rgba(59, 130, 246, 0.2);
-  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
 }
 
 .clean-border:hover {
-  border-color: rgba(59, 130, 246, 0.4);
-}
-
-/* 🎊 SUBTLE CELEBRATION */
-.subtle-celebrate {
-  position: relative;
-}
-
-.subtle-celebrate:hover::after {
-  content: '🎉';
-  position: absolute;
-  top: -10px;
-  right: -10px;
-  font-size: 1em;
-  opacity: 0;
-  animation: gentle-pop 0.6s ease-out;
-}
-
-@keyframes gentle-pop {
-  0% { 
-    opacity: 0; 
-    transform: scale(0.5); 
-  }
-  50% { 
-    opacity: 1; 
-    transform: scale(1.1); 
-  }
-  100% { 
-    opacity: 0; 
-    transform: scale(0.8); 
-  }
+  border-color: rgba(255, 255, 255, 0.4);
 }

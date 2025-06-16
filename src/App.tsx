@@ -3,12 +3,9 @@ import {
   Camera, 
   Heart, 
   Users, 
-  Trophy, 
   ArrowRight,
   CheckCircle,
   Clock,
-  Star,
-  Target,
   Brain,
   Globe,
   Gift,
@@ -20,7 +17,6 @@ interface RoadmapPhase {
   title: string;
   subtitle: string;
   description: string;
-  icon: React.ReactNode;
   status: 'completed' | 'in-progress' | 'upcoming';
   items: Array<{
     text: string;
@@ -74,7 +70,6 @@ function App() {
       title: "Resgate o Futuro dos Pets",
       subtitle: "Coleta pública de imagens da comunidade",
       description: "Uploads feitos por tutores e ONGs",
-      icon: <Heart className="w-6 h-6" />,
       status: 'completed',
       characterColor: 'bg-blue-400',
       characterExpression: '😊',
@@ -89,7 +84,6 @@ function App() {
       title: "Treine a Inteligência",
       subtitle: "Lançamento do MVP com tecnologia de reconhecimento",
       description: "Backend Laravel + API funcional",
-      icon: <Brain className="w-6 h-6" />,
       status: 'in-progress',
       characterColor: 'bg-pink-400',
       characterExpression: '😄',
@@ -104,7 +98,6 @@ function App() {
       title: "Conexão Global",
       subtitle: "Expansão da tecnologia para prefeituras e ONGs",
       description: "Sistema aberto ao público",
-      icon: <Globe className="w-6 h-6" />,
       status: 'upcoming',
       characterColor: 'bg-green-400',
       characterExpression: '😎',
@@ -119,7 +112,6 @@ function App() {
       title: "SmartDog DAO",
       subtitle: "Sistema de recompensa para ONGs e tutores",
       description: "Recompensas por imagens úteis",
-      icon: <Gift className="w-6 h-6" />,
       status: 'upcoming',
       characterColor: 'bg-yellow-400',
       characterExpression: '🤗',
@@ -183,11 +175,9 @@ function App() {
           </div>
           
           <div className="flex items-center justify-center mb-8">
-            <div className="text-4xl mr-4">🐕</div>
             <h2 className="text-2xl md:text-3xl font-bold">
               O seu pet pode salvar um animal perdido
             </h2>
-            <div className="text-4xl ml-4">🐱</div>
           </div>
           
           <p className="text-xl text-purple-200 max-w-2xl mx-auto mb-8">

@@ -54,26 +54,31 @@ h1, h2, h3, h4, h5, h6 {
   100% { transform: scale(1); opacity: 1; }
 }
 
-/* 🌟✨ BOTÃO NEON PERFEITO - ESTILO ORIGINAL APRIMORADO ✨🌟 */
+/* 🌟✨ BOTÃO NEON PERFEITO - AZUL VIBRANTE COM TEXTO NEON ✨🌟 */
 @keyframes perfect-neon-flow {
   0% { 
-    background: linear-gradient(135deg, #001F3F 0%, #00BFFF 50%, #87CEEB 100%);
-    background-size: 300% 300%;
+    background: linear-gradient(135deg, #001F3F 0%, #0066FF 30%, #00BFFF 70%, #87CEEB 100%);
+    background-size: 400% 400%;
     background-position: 0% 50%;
   }
-  33% { 
-    background: linear-gradient(135deg, #00BFFF 0%, #87CEEB 50%, #001F3F 100%);
-    background-size: 300% 300%;
+  25% { 
+    background: linear-gradient(135deg, #0066FF 0%, #00BFFF 30%, #87CEEB 70%, #001F3F 100%);
+    background-size: 400% 400%;
+    background-position: 25% 50%;
+  }
+  50% { 
+    background: linear-gradient(135deg, #00BFFF 0%, #87CEEB 30%, #001F3F 70%, #0066FF 100%);
+    background-size: 400% 400%;
     background-position: 50% 50%;
   }
-  66% { 
-    background: linear-gradient(135deg, #87CEEB 0%, #001F3F 50%, #00BFFF 100%);
-    background-size: 300% 300%;
-    background-position: 100% 50%;
+  75% { 
+    background: linear-gradient(135deg, #87CEEB 0%, #001F3F 30%, #0066FF 70%, #00BFFF 100%);
+    background-size: 400% 400%;
+    background-position: 75% 50%;
   }
   100% { 
-    background: linear-gradient(135deg, #001F3F 0%, #00BFFF 50%, #87CEEB 100%);
-    background-size: 300% 300%;
+    background: linear-gradient(135deg, #001F3F 0%, #0066FF 30%, #00BFFF 70%, #87CEEB 100%);
+    background-size: 400% 400%;
     background-position: 0% 50%;
   }
 }
@@ -81,17 +86,19 @@ h1, h2, h3, h4, h5, h6 {
 @keyframes perfect-neon-glow {
   0%, 100% { 
     box-shadow: 
-      0 0 20px rgba(0, 191, 255, 0.6),
-      0 0 40px rgba(0, 191, 255, 0.4),
-      0 0 60px rgba(135, 206, 235, 0.3),
-      inset 0 0 20px rgba(255, 255, 255, 0.1);
-  }
-  50% { 
-    box-shadow: 
       0 0 30px rgba(0, 191, 255, 0.8),
       0 0 60px rgba(0, 191, 255, 0.6),
       0 0 90px rgba(135, 206, 235, 0.4),
-      inset 0 0 30px rgba(255, 255, 255, 0.2);
+      0 0 120px rgba(0, 102, 255, 0.3),
+      inset 0 0 30px rgba(255, 255, 255, 0.1);
+  }
+  50% { 
+    box-shadow: 
+      0 0 40px rgba(0, 191, 255, 1.0),
+      0 0 80px rgba(0, 191, 255, 0.8),
+      0 0 120px rgba(135, 206, 235, 0.6),
+      0 0 160px rgba(0, 102, 255, 0.4),
+      inset 0 0 40px rgba(255, 255, 255, 0.2);
   }
 }
 
@@ -101,30 +108,83 @@ h1, h2, h3, h4, h5, h6 {
   100% { transform: translateX(100%); opacity: 0; }
 }
 
+@keyframes neon-text-pulse {
+  0%, 100% { 
+    color: #00FFFF;
+    text-shadow: 
+      0 0 10px rgba(0, 255, 255, 1),
+      0 0 20px rgba(0, 255, 255, 0.8),
+      0 0 30px rgba(0, 255, 255, 0.6),
+      0 0 40px rgba(0, 191, 255, 0.4);
+  }
+  50% { 
+    color: #87CEEB;
+    text-shadow: 
+      0 0 15px rgba(135, 206, 235, 1),
+      0 0 30px rgba(135, 206, 235, 0.9),
+      0 0 45px rgba(135, 206, 235, 0.7),
+      0 0 60px rgba(0, 191, 255, 0.5);
+  }
+}
+
 .perfect-neon-button {
   position: relative;
   overflow: hidden;
   font-weight: 900 !important;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-  border: 3px solid rgba(0, 191, 255, 0.6) !important;
+  border: 3px solid rgba(0, 255, 255, 0.8) !important;
   
-  /* FUNDO SEMPRE AZUL NEON - NUNCA CINZA! */
-  background: linear-gradient(135deg, #001F3F 0%, #00BFFF 50%, #87CEEB 100%) !important;
-  background-size: 300% 300% !important;
+  /* FUNDO SEMPRE AZUL VIBRANTE - NUNCA CINZA! */
+  background: linear-gradient(135deg, #001F3F 0%, #0066FF 30%, #00BFFF 70%, #87CEEB 100%) !important;
+  background-size: 400% 400% !important;
   
   /* ANIMAÇÕES SEMPRE ATIVAS */
   animation: 
-    perfect-neon-flow 3s ease-in-out infinite,
+    perfect-neon-flow 4s ease-in-out infinite,
     perfect-neon-glow 2s ease-in-out infinite !important;
+}
+
+/* TEXTO AZUL NEON CLARO COM ANIMAÇÃO */
+.perfect-neon-button span {
+  color: #00FFFF !important;
+  text-shadow: 
+    0 0 10px rgba(0, 255, 255, 1),
+    0 0 20px rgba(0, 255, 255, 0.8),
+    0 0 30px rgba(0, 255, 255, 0.6),
+    0 0 40px rgba(0, 191, 255, 0.4) !important;
+  animation: neon-text-pulse 3s ease-in-out infinite !important;
+  font-weight: 900 !important;
+  letter-spacing: 1px !important;
+}
+
+/* ÍCONE TAMBÉM AZUL NEON */
+.perfect-neon-button svg {
+  color: #00FFFF !important;
+  filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.8)) !important;
+  animation: neon-text-pulse 3s ease-in-out infinite !important;
 }
 
 .perfect-neon-button:hover {
   /* NO HOVER: MAIS BRILHO E MOVIMENTO */
   animation: 
-    perfect-neon-flow 1.5s ease-in-out infinite,
+    perfect-neon-flow 2s ease-in-out infinite,
     perfect-neon-glow 1s ease-in-out infinite !important;
-  filter: brightness(1.3) saturate(1.4) !important;
-  border-color: rgba(0, 191, 255, 0.9) !important;
+  filter: brightness(1.4) saturate(1.5) !important;
+  border-color: rgba(0, 255, 255, 1.0) !important;
+  transform: scale(1.05) !important;
+}
+
+.perfect-neon-button:hover span {
+  color: #FFFFFF !important;
+  text-shadow: 
+    0 0 15px rgba(255, 255, 255, 1),
+    0 0 30px rgba(0, 255, 255, 1),
+    0 0 45px rgba(0, 255, 255, 0.8),
+    0 0 60px rgba(0, 191, 255, 0.6) !important;
+}
+
+.perfect-neon-button:hover svg {
+  color: #FFFFFF !important;
+  filter: drop-shadow(0 0 15px rgba(255, 255, 255, 1)) drop-shadow(0 0 30px rgba(0, 255, 255, 0.8)) !important;
 }
 
 .perfect-neon-button:disabled {
@@ -136,22 +196,35 @@ h1, h2, h3, h4, h5, h6 {
   border-color: rgba(0, 191, 255, 0.3) !important;
 }
 
+.perfect-neon-button:disabled span {
+  color: #4A90E2 !important;
+  text-shadow: 0 0 5px rgba(74, 144, 226, 0.5) !important;
+  animation: none !important;
+}
+
+.perfect-neon-button:disabled svg {
+  color: #4A90E2 !important;
+  filter: drop-shadow(0 0 5px rgba(74, 144, 226, 0.5)) !important;
+  animation: none !important;
+}
+
 .perfect-neon-button::before {
   content: '';
   position: absolute;
-  top: -3px;
-  left: -3px;
-  right: -3px;
-  bottom: -3px;
-  background: linear-gradient(45deg, #00BFFF, #87CEEB, #001F3F, #00BFFF);
-  background-size: 400% 400%;
-  animation: perfect-neon-flow 4s ease-in-out infinite;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  background: linear-gradient(45deg, #00FFFF, #00BFFF, #0066FF, #87CEEB, #00FFFF);
+  background-size: 500% 500%;
+  animation: perfect-neon-flow 5s ease-in-out infinite;
   border-radius: inherit;
   z-index: -1;
-  filter: blur(10px);
+  filter: blur(15px);
+  opacity: 0.8;
 }
 
-/* SHIMMER EFFECT SEMPRE AZUL */
+/* SHIMMER EFFECT SEMPRE AZUL NEON */
 .perfect-neon-button .shimmer-overlay {
   position: absolute;
   top: 0;
@@ -161,10 +234,12 @@ h1, h2, h3, h4, h5, h6 {
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(135, 206, 235, 0.8),
+    rgba(0, 255, 255, 0.9),
+    rgba(255, 255, 255, 0.7),
+    rgba(0, 255, 255, 0.9),
     transparent
   );
-  animation: perfect-shimmer 2.5s ease-in-out infinite;
+  animation: perfect-shimmer 3s ease-in-out infinite;
   z-index: 5;
   pointer-events: none;
 }
@@ -386,7 +461,9 @@ h1, h2, h3, h4, h5, h6 {
 @media (prefers-reduced-motion: reduce) {
   .perfect-neon-button,
   .perfect-neon-button::before,
-  .perfect-neon-button .shimmer-overlay {
+  .perfect-neon-button .shimmer-overlay,
+  .perfect-neon-button span,
+  .perfect-neon-button svg {
     animation: none !important;
   }
   
@@ -407,6 +484,11 @@ h1, h2, h3, h4, h5, h6 {
   .form-input, .form-select {
     background: rgba(0, 191, 255, 0.15);
     border-color: rgba(0, 191, 255, 0.5);
+  }
+  
+  .perfect-neon-button span {
+    color: #FFFFFF !important;
+    text-shadow: 0 0 20px rgba(0, 255, 255, 1) !important;
   }
 }
 

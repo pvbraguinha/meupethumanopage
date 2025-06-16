@@ -54,126 +54,274 @@ h1, h2, h3, h4, h5, h6 {
   100% { transform: scale(1); opacity: 1; }
 }
 
-/* 🌟✨ BOTÃO SUPER BRILHANTE E VIBRANTE - COMO ANTES! ✨🌟 */
-@keyframes perfect-rainbow-flow {
+/* 🔥💎 BOTÃO ULTRA BRILHANTE - MÁXIMO BRILHO POSSÍVEL! 💎🔥 */
+@keyframes ultra-bright-flow {
   0% { 
-    background: linear-gradient(45deg, #00E0FF 0%, #0080FF 25%, #00BFFF 50%, #87CEEB 75%, #00E0FF 100%);
-    background-size: 300% 300%;
+    background: linear-gradient(45deg, 
+      #00FFFF 0%,    /* Cyan puro */
+      #00E0FF 15%,   /* Azul neon */
+      #40E0D0 30%,   /* Turquesa */
+      #00BFFF 45%,   /* Azul céu */
+      #87CEEB 60%,   /* Azul claro */
+      #ADD8E6 75%,   /* Azul bebê */
+      #E0FFFF 90%,   /* Azul gelo */
+      #00FFFF 100%   /* Cyan puro */
+    );
+    background-size: 400% 400%;
     background-position: 0% 50%;
   }
-  33% { 
-    background: linear-gradient(45deg, #0080FF 0%, #00BFFF 25%, #87CEEB 50%, #00E0FF 75%, #0080FF 100%);
-    background-size: 300% 300%;
+  25% { 
+    background: linear-gradient(45deg, 
+      #00E0FF 0%, #40E0D0 15%, #00BFFF 30%, #87CEEB 45%, 
+      #ADD8E6 60%, #E0FFFF 75%, #00FFFF 90%, #00E0FF 100%
+    );
+    background-size: 400% 400%;
+    background-position: 25% 50%;
+  }
+  50% { 
+    background: linear-gradient(45deg, 
+      #40E0D0 0%, #00BFFF 15%, #87CEEB 30%, #ADD8E6 45%, 
+      #E0FFFF 60%, #00FFFF 75%, #00E0FF 90%, #40E0D0 100%
+    );
+    background-size: 400% 400%;
     background-position: 50% 50%;
   }
-  66% { 
-    background: linear-gradient(45deg, #00BFFF 0%, #87CEEB 25%, #00E0FF 50%, #0080FF 75%, #00BFFF 100%);
-    background-size: 300% 300%;
-    background-position: 100% 50%;
+  75% { 
+    background: linear-gradient(45deg, 
+      #00BFFF 0%, #87CEEB 15%, #ADD8E6 30%, #E0FFFF 45%, 
+      #00FFFF 60%, #00E0FF 75%, #40E0D0 90%, #00BFFF 100%
+    );
+    background-size: 400% 400%;
+    background-position: 75% 50%;
   }
   100% { 
-    background: linear-gradient(45deg, #00E0FF 0%, #0080FF 25%, #00BFFF 50%, #87CEEB 75%, #00E0FF 100%);
-    background-size: 300% 300%;
+    background: linear-gradient(45deg, 
+      #00FFFF 0%, #00E0FF 15%, #40E0D0 30%, #00BFFF 45%, 
+      #87CEEB 60%, #ADD8E6 75%, #E0FFFF 90%, #00FFFF 100%
+    );
+    background-size: 400% 400%;
     background-position: 0% 50%;
   }
 }
 
-@keyframes perfect-neon-glow {
+@keyframes ultra-mega-glow {
   0%, 100% { 
     box-shadow: 
-      0 0 30px rgba(0, 224, 255, 1.0),
-      0 0 60px rgba(0, 191, 255, 0.8),
-      0 0 90px rgba(135, 206, 235, 0.6),
-      0 0 120px rgba(0, 128, 255, 0.4),
-      inset 0 0 20px rgba(255, 255, 255, 0.2);
+      /* Camada 1: Glow interno */
+      inset 0 0 30px rgba(255, 255, 255, 0.8),
+      inset 0 0 60px rgba(0, 255, 255, 0.6),
+      /* Camada 2: Glow próximo */
+      0 0 40px rgba(0, 255, 255, 1.0),
+      0 0 80px rgba(0, 224, 255, 0.9),
+      /* Camada 3: Glow médio */
+      0 0 120px rgba(64, 224, 208, 0.8),
+      0 0 160px rgba(0, 191, 255, 0.7),
+      /* Camada 4: Glow distante */
+      0 0 200px rgba(135, 206, 235, 0.6),
+      0 0 240px rgba(173, 216, 230, 0.5),
+      /* Camada 5: Halo gigante */
+      0 0 300px rgba(224, 255, 255, 0.4);
   }
   50% { 
     box-shadow: 
-      0 0 50px rgba(0, 224, 255, 1.2),
-      0 0 100px rgba(0, 191, 255, 1.0),
-      0 0 150px rgba(135, 206, 235, 0.8),
-      0 0 200px rgba(0, 128, 255, 0.6),
-      inset 0 0 30px rgba(255, 255, 255, 0.3);
+      /* Camada 1: Glow interno INTENSO */
+      inset 0 0 50px rgba(255, 255, 255, 1.0),
+      inset 0 0 100px rgba(0, 255, 255, 0.8),
+      /* Camada 2: Glow próximo INTENSO */
+      0 0 60px rgba(0, 255, 255, 1.2),
+      0 0 120px rgba(0, 224, 255, 1.1),
+      /* Camada 3: Glow médio INTENSO */
+      0 0 180px rgba(64, 224, 208, 1.0),
+      0 0 240px rgba(0, 191, 255, 0.9),
+      /* Camada 4: Glow distante INTENSO */
+      0 0 300px rgba(135, 206, 235, 0.8),
+      0 0 360px rgba(173, 216, 230, 0.7),
+      /* Camada 5: Halo gigante INTENSO */
+      0 0 450px rgba(224, 255, 255, 0.6);
   }
 }
 
-@keyframes perfect-shimmer {
-  0% { transform: translateX(-100%); opacity: 0; }
-  50% { opacity: 1; }
-  100% { transform: translateX(100%); opacity: 0; }
+@keyframes ultra-shimmer {
+  0% { 
+    transform: translateX(-150%) skewX(-15deg); 
+    opacity: 0; 
+  }
+  20% { 
+    opacity: 1; 
+  }
+  80% { 
+    opacity: 1; 
+  }
+  100% { 
+    transform: translateX(150%) skewX(-15deg); 
+    opacity: 0; 
+  }
 }
 
+@keyframes text-glow-pulse {
+  0%, 100% {
+    text-shadow: 
+      0 0 10px rgba(255, 255, 255, 1.0),
+      0 0 20px rgba(0, 255, 255, 0.8),
+      0 0 30px rgba(0, 224, 255, 0.6),
+      0 0 40px rgba(64, 224, 208, 0.4);
+  }
+  50% {
+    text-shadow: 
+      0 0 20px rgba(255, 255, 255, 1.2),
+      0 0 40px rgba(0, 255, 255, 1.0),
+      0 0 60px rgba(0, 224, 255, 0.8),
+      0 0 80px rgba(64, 224, 208, 0.6);
+  }
+}
+
+/* 🌟💫 BOTÃO ULTRA MEGA BRILHANTE - IMPOSSÍVEL FICAR ESCURO! 💫🌟 */
 .perfect-neon-button {
   position: relative;
   overflow: hidden;
   font-weight: 900 !important;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-  border: 3px solid rgba(0, 224, 255, 1.0) !important;
   
-  /* FUNDO SUPER BRILHANTE E COLORIDO - NUNCA ESCURO! */
-  background: linear-gradient(45deg, #00E0FF 0%, #0080FF 25%, #00BFFF 50%, #87CEEB 75%, #00E0FF 100%) !important;
-  background-size: 300% 300% !important;
+  /* TEXTO SUPER BRILHANTE */
+  color: #FFFFFF !important;
+  text-shadow: 
+    0 0 10px rgba(255, 255, 255, 1.0),
+    0 0 20px rgba(0, 255, 255, 0.8),
+    0 0 30px rgba(0, 224, 255, 0.6) !important;
   
-  /* ANIMAÇÕES SEMPRE ATIVAS E VIBRANTES */
+  /* BORDA ULTRA BRILHANTE */
+  border: 4px solid rgba(0, 255, 255, 1.0) !important;
+  
+  /* FUNDO ULTRA VIBRANTE - NUNCA ESCURO! */
+  background: linear-gradient(45deg, 
+    #00FFFF 0%,    /* Cyan puro */
+    #00E0FF 20%,   /* Azul neon */
+    #40E0D0 40%,   /* Turquesa */
+    #00BFFF 60%,   /* Azul céu */
+    #87CEEB 80%,   /* Azul claro */
+    #00FFFF 100%   /* Cyan puro */
+  ) !important;
+  background-size: 400% 400% !important;
+  
+  /* ANIMAÇÕES ULTRA INTENSAS */
   animation: 
-    perfect-rainbow-flow 3s ease-in-out infinite,
-    perfect-neon-glow 2s ease-in-out infinite !important;
+    ultra-bright-flow 2s ease-in-out infinite,
+    ultra-mega-glow 1.5s ease-in-out infinite,
+    text-glow-pulse 2s ease-in-out infinite !important;
   
-  /* BRILHO EXTRA */
-  filter: brightness(1.3) saturate(1.4) !important;
+  /* FILTROS DE MÁXIMO BRILHO */
+  filter: 
+    brightness(2.0) 
+    saturate(2.0) 
+    contrast(1.5) 
+    hue-rotate(0deg) !important;
+  
+  /* TRANSFORMAÇÕES */
+  transform: scale(1.02) !important;
+  transition: all 0.3s ease !important;
 }
 
 .perfect-neon-button:hover {
-  /* NO HOVER: AINDA MAIS BRILHO! */
+  /* HOVER: BRILHO EXTREMO! */
   animation: 
-    perfect-rainbow-flow 1.5s ease-in-out infinite,
-    perfect-neon-glow 1s ease-in-out infinite !important;
-  filter: brightness(1.5) saturate(1.6) !important;
+    ultra-bright-flow 1s ease-in-out infinite,
+    ultra-mega-glow 0.8s ease-in-out infinite,
+    text-glow-pulse 1s ease-in-out infinite !important;
+  
+  filter: 
+    brightness(2.5) 
+    saturate(2.5) 
+    contrast(2.0) 
+    hue-rotate(10deg) !important;
+  
+  transform: scale(1.08) !important;
   border-color: rgba(255, 255, 255, 1.0) !important;
 }
 
-.perfect-neon-button:disabled {
-  /* MESMO DESABILITADO: AZUL CLARO VISÍVEL! */
-  background: linear-gradient(45deg, #4A90E2 0%, #5BA0F2 50%, #6BB0FF 100%) !important;
-  animation: none !important;
-  opacity: 0.7 !important;
-  cursor: not-allowed !important;
-  filter: brightness(0.8) !important;
+.perfect-neon-button:active {
+  transform: scale(1.05) !important;
 }
 
+.perfect-neon-button:disabled {
+  /* MESMO DESABILITADO: AINDA BRILHANTE! */
+  background: linear-gradient(45deg, 
+    #4A90E2 0%, 
+    #5BA0F2 25%, 
+    #6BB0FF 50%, 
+    #7BC0FF 75%, 
+    #8BD0FF 100%
+  ) !important;
+  
+  filter: brightness(1.2) saturate(1.2) !important;
+  opacity: 0.8 !important;
+  cursor: not-allowed !important;
+  
+  /* Animação mais lenta mas ainda visível */
+  animation: 
+    ultra-bright-flow 4s ease-in-out infinite,
+    ultra-mega-glow 3s ease-in-out infinite !important;
+}
+
+/* HALO DE FUNDO ULTRA BRILHANTE */
 .perfect-neon-button::before {
   content: '';
   position: absolute;
-  top: -4px;
-  left: -4px;
-  right: -4px;
-  bottom: -4px;
-  background: linear-gradient(45deg, #00E0FF, #0080FF, #00BFFF, #87CEEB, #00E0FF);
-  background-size: 400% 400%;
-  animation: perfect-rainbow-flow 4s ease-in-out infinite;
+  top: -8px;
+  left: -8px;
+  right: -8px;
+  bottom: -8px;
+  background: linear-gradient(45deg, 
+    #00FFFF, #00E0FF, #40E0D0, #00BFFF, 
+    #87CEEB, #ADD8E6, #E0FFFF, #00FFFF
+  );
+  background-size: 600% 600%;
+  animation: ultra-bright-flow 3s ease-in-out infinite;
   border-radius: inherit;
   z-index: -1;
-  filter: blur(15px);
-  opacity: 0.9;
+  filter: blur(20px);
+  opacity: 0.8;
 }
 
-/* SHIMMER EFFECT SUPER BRILHANTE */
+/* SHIMMER ULTRA BRILHANTE */
 .perfect-neon-button .shimmer-overlay {
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 150%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.3) 20%,
+    rgba(0, 255, 255, 0.8) 40%,
+    rgba(255, 255, 255, 1.0) 50%,
+    rgba(0, 255, 255, 0.8) 60%,
+    rgba(255, 255, 255, 0.3) 80%,
+    transparent 100%
+  );
+  animation: ultra-shimmer 2s ease-in-out infinite;
+  z-index: 10;
+  pointer-events: none;
+  transform: skewX(-15deg);
+}
+
+/* SEGUNDO SHIMMER PARA MAIS BRILHO */
+.perfect-neon-button::after {
+  content: '';
   position: absolute;
   top: 0;
   left: -100%;
   width: 100%;
   height: 100%;
   background: linear-gradient(
-    90deg,
+    45deg,
     transparent,
-    rgba(255, 255, 255, 1.0),
-    rgba(0, 224, 255, 0.8),
-    rgba(255, 255, 255, 1.0),
+    rgba(255, 255, 255, 0.6),
+    rgba(0, 255, 255, 0.4),
+    rgba(255, 255, 255, 0.6),
     transparent
   );
-  animation: perfect-shimmer 2.5s ease-in-out infinite;
-  z-index: 5;
+  animation: ultra-shimmer 3s ease-in-out infinite reverse;
+  z-index: 8;
   pointer-events: none;
 }
 
@@ -348,14 +496,15 @@ h1, h2, h3, h4, h5, h6 {
 @media (prefers-reduced-motion: reduce) {
   .perfect-neon-button,
   .perfect-neon-button::before,
-  .perfect-neon-button .shimmer-overlay {
+  .perfect-neon-button .shimmer-overlay,
+  .perfect-neon-button::after {
     animation: none !important;
   }
   
-  * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+  .perfect-neon-button {
+    /* Versão estática ainda brilhante */
+    background: linear-gradient(45deg, #00FFFF 0%, #00E0FF 50%, #40E0D0 100%) !important;
+    filter: brightness(2.0) saturate(2.0) !important;
   }
 }
 
@@ -369,6 +518,10 @@ h1, h2, h3, h4, h5, h6 {
   .form-input, .form-select {
     background: rgba(0, 191, 255, 0.15);
     border-color: rgba(0, 191, 255, 0.5);
+  }
+  
+  .perfect-neon-button {
+    filter: brightness(2.5) saturate(2.5) contrast(2.0) !important;
   }
 }
 

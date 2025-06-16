@@ -71,41 +71,31 @@ function App() {
       title: "Resgate o Futuro dos Pets perdidos",
       subtitle: "Contribua enviando foto do seu pet",
       description: "As imagens enviadas serão utilizadas para treinar IA a reconhecer focinhos.",
-      status: 'completed',
+      status: 'in-progress',
       icon: <Camera className="w-8 h-8" />,
       color: 'from-blue-500 to-blue-600',
-      items: [
-        { text: "Plataforma de upload desenvolvida", status: 'completed' },
-        { text: "Sistema de validação implementado", status: 'completed' },
-        { text: "Parcerias com ONGs estabelecidas", status: 'completed' }
-      ]
+      items: []
     },
     {
       id: 2,
       title: "Lançamento MVP",
-      subtitle: "Disponibilização gratuita de IA para reconhecimento facial e focinho de cães e gatos com acurácia de 99%",
+      subtitle: "Disponibilização gratuita de IA para ONGs registrarem e reconhecerem com 99% de precisão cães e gatos perdidos.",
       description: "Redução do número de animais nas ruas no mundo todo",
-      status: 'in-progress',
+      status: 'upcoming',
       icon: <Brain className="w-8 h-8" />,
       color: 'from-purple-500 to-purple-600',
-      items: [
-        { text: "Arquitetura do modelo definida", status: 'completed' },
-        { text: "Treinamento inicial em andamento", status: 'in-progress' },
-        { text: "Testes de acurácia", status: 'in-progress' }
-      ]
+      items: []
     },
     {
       id: 3,
       title: "Conexão Global",
       subtitle: "Criação de medidas e prevenção de risco à saúde pública",
-      description: "Diminuição do número de zoonoses. Zero animais nas ruas",
+      description: "Diminuição do número de zoonoses",
       status: 'upcoming',
       icon: <Globe className="w-8 h-8" />,
       color: 'from-green-500 to-green-600',
       items: [
-        { text: "API pública disponível", status: 'upcoming' },
-        { text: "Integração com sistemas existentes", status: 'upcoming' },
-        { text: "Programa de certificação", status: 'upcoming' }
+        { text: "Diminuir a zero os animais das ruas", status: 'upcoming' }
       ]
     }
   ];
@@ -123,7 +113,7 @@ function App() {
         return (
           <div className="flex items-center space-x-2 px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-semibold">
             <Zap className="w-4 h-4" />
-            <span>Em Andamento</span>
+            <span>Em andamento</span>
           </div>
         );
       default:
@@ -152,15 +142,15 @@ function App() {
               <span>Roadmap de Desenvolvimento</span>
             </div>
             
-            <h1 className="text-5xl md:text-7xl font-black text-gray-900 mb-6 tracking-tight">
+            <h1 className="text-4xl md:text-5xl font-black text-gray-900 mb-6 tracking-tight">
               Smartdog
             </h1>
             
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-700 mb-4">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-700 mb-4">
               O seu pet pode salvar um animal perdido
             </h2>
             
-            <p className="text-xl md:text-2xl text-gray-600 mb-8">
+            <p className="text-lg md:text-xl text-gray-600 mb-8">
               Crie esperança com uma simples foto.
             </p>
           </div>
@@ -220,20 +210,22 @@ function App() {
                     </p>
 
                     {/* Phase Items */}
-                    <div className="space-y-3">
-                      {phase.items.map((item, itemIndex) => (
-                        <div
-                          key={itemIndex}
-                          className="flex items-center space-x-3"
-                        >
-                          <div className={`w-2 h-2 rounded-full ${
-                            item.status === 'completed' ? 'bg-green-500' :
-                            item.status === 'in-progress' ? 'bg-blue-500' : 'bg-gray-400'
-                          }`}></div>
-                          <span className="text-gray-700 font-medium">{item.text}</span>
-                        </div>
-                      ))}
-                    </div>
+                    {phase.items.length > 0 && (
+                      <div className="space-y-3">
+                        {phase.items.map((item, itemIndex) => (
+                          <div
+                            key={itemIndex}
+                            className="flex items-center space-x-3"
+                          >
+                            <div className={`w-2 h-2 rounded-full ${
+                              item.status === 'completed' ? 'bg-green-500' :
+                              item.status === 'in-progress' ? 'bg-blue-500' : 'bg-gray-400'
+                            }`}></div>
+                            <span className="text-gray-700 font-medium">{item.text}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

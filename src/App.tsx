@@ -330,7 +330,10 @@ function App() {
                     
                     {phase.description && (
                       <p className="text-sm text-gray-600 opacity-70 mb-6 leading-relaxed">
-                        {phase.description}
+                        As imagens enviadas serão utilizadas para treinar IA a reconhecer focinhos. O projeto via disponibilizar de forma gratuita a{' '}
+                        <span className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded-md font-medium">
+                          tecnologia para ONGs e usuários registrarem e reconhecerem com 99% de precisão cães e gatos perdidos.
+                        </span>
                       </p>
                     )}
 
@@ -370,13 +373,6 @@ function App() {
                 <p className="text-xl mb-10 leading-relaxed opacity-90">
                   A sua ajuda pode salvar um animal perdido.
                 </p>
-
-                <div className="flex items-center justify-center mt-8 space-x-2 opacity-80">
-                  <Users className="w-5 h-5" />
-                  <span className="font-medium">
-                    {petCount.toLocaleString()} pets já contribuíram para esta causa
-                  </span>
-                </div>
               </div>
 
               {/* Error Message */}

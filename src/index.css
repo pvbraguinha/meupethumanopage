@@ -43,18 +43,13 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-@keyframes shimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
-}
-
 @keyframes count-up {
   0% { transform: scale(0.8); opacity: 0; }
   50% { transform: scale(1.1); }
   100% { transform: scale(1); opacity: 1; }
 }
 
-/* 🔥💎 BOTÃO SUPER VIBRANTE COM MAIS CONTRASTE! 💎🔥 */
+/* 🔥💎 BOTÃO SUPER VIBRANTE SEM REFLEXOS OFUSCANTES! 💎🔥 */
 @keyframes super-vibrant-flow {
   0% { 
     background: linear-gradient(135deg, 
@@ -116,26 +111,6 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-@keyframes super-shimmer {
-  0% { 
-    transform: translateX(-150%) skewX(-20deg); 
-    opacity: 0; 
-  }
-  20% { 
-    opacity: 0.6; 
-  }
-  50% { 
-    opacity: 1.0; 
-  }
-  80% { 
-    opacity: 0.6; 
-  }
-  100% { 
-    transform: translateX(150%) skewX(-20deg); 
-    opacity: 0; 
-  }
-}
-
 @keyframes super-text-glow {
   0%, 100% {
     text-shadow: 
@@ -155,7 +130,7 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-/* 🌟⚡ BOTÃO SUPER VIBRANTE - MÁXIMO CONTRASTE E VIDA! ⚡🌟 */
+/* 🌟⚡ BOTÃO SUPER VIBRANTE - SEM REFLEXOS OFUSCANTES! ⚡🌟 */
 .perfect-neon-button {
   position: relative;
   overflow: hidden;
@@ -184,7 +159,7 @@ h1, h2, h3, h4, h5, h6 {
   ) !important;
   background-size: 400% 400% !important;
   
-  /* ANIMAÇÕES SUPER VIBRANTES */
+  /* ANIMAÇÕES SUPER VIBRANTES - SEM SHIMMER! */
   animation: 
     super-vibrant-flow 2s ease-in-out infinite,
     super-vibrant-glow 1.8s ease-in-out infinite,
@@ -283,28 +258,8 @@ h1, h2, h3, h4, h5, h6 {
   opacity: 0.8;
 }
 
-/* SHIMMER SUPER VIBRANTE */
-.perfect-neon-button .shimmer-overlay {
-  position: absolute;
-  top: 0;
-  left: -150%;
-  width: 150%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.2) 15%,
-    rgba(0, 204, 255, 0.6) 30%,
-    rgba(255, 255, 255, 1.0) 50%,
-    rgba(0, 204, 255, 0.6) 70%,
-    rgba(255, 255, 255, 0.2) 85%,
-    transparent 100%
-  );
-  animation: super-shimmer 2.5s ease-in-out infinite;
-  z-index: 5;
-  pointer-events: none;
-  transform: skewX(-20deg);
-}
+/* ❌ SHIMMER REMOVIDO COMPLETAMENTE! ❌ */
+/* Não há mais efeito de reflexo ofuscante */
 
 /* Neon text effects */
 .neon-blue {
@@ -476,8 +431,7 @@ h1, h2, h3, h4, h5, h6 {
 /* Accessibility improvements */
 @media (prefers-reduced-motion: reduce) {
   .perfect-neon-button,
-  .perfect-neon-button::before,
-  .perfect-neon-button .shimmer-overlay {
+  .perfect-neon-button::before {
     animation: none !important;
   }
   

@@ -314,7 +314,7 @@ function App() {
               </div>
             </section>
 
-            {/* Help Button - ESTILO APRIMORADO COM NEON AZUL */}
+            {/* Help Button - SEM SHIMMER OFUSCANTE! */}
             {!showPetDetails && (
               <div className="text-center mb-16">
                 <button
@@ -322,9 +322,6 @@ function App() {
                   disabled={!hasRequiredPhotos}
                   className="perfect-neon-button group relative inline-flex items-center justify-center px-16 py-8 text-2xl font-black rounded-full transition-all duration-500 transform hover:scale-110 active:scale-95 overflow-hidden shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {/* Shimmer overlay sempre ativo */}
-                  <div className="shimmer-overlay"></div>
-                  
                   <div className="relative flex items-center z-10">
                     <Heart className="w-10 h-10 mr-4 animate-pulse text-white drop-shadow-lg" />
                     <span className="font-black tracking-wide text-white drop-shadow-lg">
@@ -468,7 +465,7 @@ function App() {
                       </label>
                     </div>
 
-                    {/* Submit Button */}
+                    {/* Submit Button - SEM SHIMMER OFUSCANTE! */}
                     <div className="pt-6">
                       <button
                         onClick={handleSubmitPetForm}

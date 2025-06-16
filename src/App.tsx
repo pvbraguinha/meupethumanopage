@@ -110,7 +110,7 @@ function App() {
       id: 1,
       title: "Participe da campanha",
       subtitle: "",
-      description: "As imagens enviadas serão utilizadas para treinar inteligência artificial a reconhecer focinhos de animais perdidos e abandonados. O projeto visa disponibilizar de forma gratuita a tecnologia para a sociedade.",
+      description: "Ao fotografar o seu pet, você estará ajudando a resgatar o futuro de animais perdidos. As imagens enviadas serão usadas para treinar uma inteligência artificial capaz de reconhecer focinhos com alta precisão. Nosso objetivo é tornar essa tecnologia acessível e gratuita para ONGs, facilitando o reencontro entre cães, gatos e suas famílias.",
       status: 'in-progress',
       icon: <Camera className="w-8 h-8" />,
       color: 'from-blue-500 to-blue-600',

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Camera, Upload, Download, Share2, Sparkles, Dna, Instagram, AlertCircle, Heart, MessageCircle, Facebook, Twitter, User } from 'lucide-react';
+import { Camera, Upload, AlertCircle, Heart, User } from 'lucide-react';
 
 interface PhotoSlot {
   id: string;
@@ -11,115 +11,40 @@ interface PhotoSlot {
 }
 
 interface PetDetails {
+  name: string;
   especie: 'cachorro' | 'gato' | '';
   breed: string;
   sex: 'macho' | 'fêmea' | '';
   age: string;
-  pelagem: string;
 }
 
-interface TransformResult {
+interface UploadResult {
   success?: boolean;
-  composite_image?: string;
-  transformed_image?: string;
-  prompt_used?: string;
-  idade_humana?: number;
   message?: string;
   error?: string;
 }
 
-// Opções de raças por espécie
-const DOG_BREEDS = [
-  { value: '', label: 'Selecione a raça' },
-  { value: 'husky', label: 'Husky' },
-  { value: 'shih-tzu', label: 'Shih-tzu' },
-  { value: 'pitbull', label: 'Pitbull' },
-  { value: 'poodle', label: 'Poodle' },
-  { value: 'pinscher', label: 'Pinscher' },
-  { value: 'maltes', label: 'Maltês' },
-  { value: 'srd', label: 'SRD' },
-  { value: 'sem-raca-definida', label: 'Sem raça definida' },
-  { value: 'golden-retriever', label: 'Golden Retriever' },
-  { value: 'labrador', label: 'Labrador' },
-  { value: 'chihuahua', label: 'Chihuahua' },
-  { value: 'dachshund', label: 'Dachshund (Salsicha)' },
-  { value: 'pug', label: 'Pug' },
-  { value: 'bulldog-frances', label: 'Bulldog Francês' },
-  { value: 'pastor-alemao', label: 'Pastor Alemão' },
-  { value: 'outro', label: 'Outro' }
-];
-
-const CAT_BREEDS = [
-  { value: '', label: 'Selecione a raça' },
-  { value: 'sem-raca-definida', label: 'Sem raça definida (SRD)' },
-  { value: 'siames', label: 'Siamês (Siamese)' },
-  { value: 'persa', label: 'Persa (Persian)' },
-  { value: 'maine-coon', label: 'Maine Coon' },
-  { value: 'sphynx', label: 'Sphynx (gato sem pelo)' },
-  { value: 'british-shorthair', label: 'British Shorthair' },
-  { value: 'scottish-fold', label: 'Scottish Fold' },
-  { value: 'bengal', label: 'Bengal' },
-  { value: 'ragdoll', label: 'Ragdoll' },
-  { value: 'abissinio', label: 'Abissínio (Abyssinian)' },
-  { value: 'noruegues-floresta', label: 'Norueguês da Floresta (Norwegian Forest)' },
-  { value: 'himalaio', label: 'Himalaio (Himalayan)' },
-  { value: 'birmanes', label: 'Birmanês (Burmese)' },
-  { value: 'oriental-shorthair', label: 'Oriental Shorthair' },
-  { value: 'american-shorthair', label: 'American Shorthair' },
-  { value: 'savannah', label: 'Savannah' },
-  { value: 'devon-rex', label: 'Devon Rex' },
-  { value: 'cornish-rex', label: 'Cornish Rex' },
-  { value: 'exotic-shorthair', label: 'Exotic Shorthair' },
-  { value: 'manx', label: 'Manx' },
-  { value: 'turkish-angora', label: 'Turkish Angora' },
-  { value: 'turkish-van', label: 'Turkish Van' },
-  { value: 'tonquines', label: 'Tonquinês (Tonkinese)' },
-  { value: 'selkirk-rex', label: 'Selkirk Rex' },
-  { value: 'balinese', label: 'Balinese' },
-  { value: 'chartreux', label: 'Chartreux' },
-  { value: 'bombay', label: 'Bombay' },
-  { value: 'laperm', label: 'LaPerm' },
-  { value: 'singapura', label: 'Singapura' },
-  { value: 'snowshoe', label: 'Snowshoe' },
-  { value: 'munchkin', label: 'Munchkin' }
-];
-
-// Opções de cor da pelagem - VALORES PARA EXIBIÇÃO AO USUÁRIO
-const PELAGEM_OPTIONS = [
-  { value: '', label: 'Selecione a cor da pelagem' },
-  { value: 'Branco ou creme', label: 'Branco ou creme' },
-  { value: 'Preto ou marrom escuro', label: 'Preto ou marrom escuro' },
-  { value: 'Alaranjado ou dourado', label: 'Alaranjado ou dourado' },
-  { value: 'Preto e branco (bicolor)', label: 'Preto e branco (bicolor)' },
-  { value: 'Cinza', label: 'Cinza' },
-  { value: 'Tigrado (listrado)', label: 'Tigrado (listrado)' },
-  { value: 'Malhado (manchas grandes)', label: 'Malhado (manchas grandes)' },
-  { value: 'Tricolor (3 cores)', label: 'Tricolor (3 cores)' }
-];
-
 function App() {
   const [photos, setPhotos] = useState<PhotoSlot[]>([
-    { id: 'frontal', label: 'Foto Frontal', description: 'Rosto de frente (obrigatória)', file: null, preview: null, required: true },
-    { id: 'focinho', label: 'Foto do Focinho', description: 'Close-up do nariz (opcional)', file: null, preview: null, required: false },
-    { id: 'angulo', label: 'Foto em Ângulo', description: 'Rosto de lado (opcional)', file: null, preview: null, required: false }
+    { id: 'frontal', label: 'Foto Frontal', description: 'Foto de frente (obrigatória)', file: null, preview: null, required: true },
+    { id: 'focinho', label: 'Foto do Focinho', description: 'Close do focinho (opcional)', file: null, preview: null, required: false },
+    { id: 'angulo', label: 'Foto em Ângulo', description: 'Foto de lado (opcional)', file: null, preview: null, required: false }
   ]);
   
   const [showPetDetails, setShowPetDetails] = useState(false);
   const [petDetails, setPetDetails] = useState<PetDetails>({
+    name: '',
     especie: '',
     breed: '',
     sex: '',
-    age: '',
-    pelagem: ''
+    age: ''
   });
   
   const [isProcessing, setIsProcessing] = useState(false);
-  const [result, setResult] = useState<TransformResult | null>(null);
+  const [result, setResult] = useState<UploadResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [petCount, setPetCount] = useState<number>(0);
   const [termsAccepted, setTermsAccepted] = useState(false);
-  const [imageLoaded, setImageLoaded] = useState(false);
-  const [imageError, setImageError] = useState(false);
   
   const fileInputRefs = useRef<{ [key: string]: HTMLInputElement | null }>({});
 
@@ -134,6 +59,9 @@ function App() {
         }
       } catch (error) {
         console.error('Erro ao buscar contador:', error);
+        // Usar localStorage como fallback
+        const savedCount = localStorage.getItem('petContributionCount');
+        setPetCount(savedCount ? parseInt(savedCount) : 0);
       }
     };
 
@@ -169,38 +97,15 @@ function App() {
     return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
   };
 
-  // 🔄 FUNÇÃO PARA MAPEAR DADOS ANTES DE ENVIAR - CORRIGIDA!
-  const mapDataForBackend = (petDetails: PetDetails) => {
-    // ✅ Mapear sexo: "fêmea" → "female", "macho" → "male"
-    const sexMapping: { [key: string]: string } = {
-      'fêmea': 'female',
-      'macho': 'male'
-    };
-
-    // ✅ Mapear cor da pelagem: valores exibidos → valores do backend
-    const pelagemMapping: { [key: string]: string } = {
-      'Branco ou creme': 'clara',
-      'Preto ou marrom escuro': 'escura',
-      'Alaranjado ou dourado': 'laranja',
-      'Preto e branco (bicolor)': 'preto_branco',
-      'Cinza': 'cinza',
-      'Tigrado (listrado)': 'tigrado',
-      'Malhado (manchas grandes)': 'malhado',
-      'Tricolor (3 cores)': 'tricolor'
-    };
-
-    return {
-      especie: petDetails.especie,
-      breed: petDetails.breed,
-      sex: sexMapping[petDetails.sex] || petDetails.sex, // ✅ Mapear sexo
-      pelagem: pelagemMapping[petDetails.pelagem] || petDetails.pelagem, // ✅ Mapear pelagem
-      age: petDetails.age
-    };
-  };
-
-  // Nova função para enviar formulário - agora apenas upload de imagens
+  // Função para enviar formulário - APENAS UPLOAD PARA S3
   const handleSubmitPetForm = async () => {
-    if (!petDetails.especie || !petDetails.sex || !petDetails.breed.trim() || !petDetails.age.trim() || !petDetails.pelagem) {
+    // Validação dos campos obrigatórios
+    if (!petDetails.name.trim()) {
+      setError('O nome do pet é obrigatório.');
+      return;
+    }
+    
+    if (!petDetails.especie || !petDetails.sex || !petDetails.breed.trim() || !petDetails.age.trim()) {
       setError('Por favor, preencha todos os campos obrigatórios.');
       return;
     }
@@ -218,43 +123,42 @@ function App() {
 
     setIsProcessing(true);
     setError(null);
-    setImageLoaded(false);
-    setImageError(false);
 
     try {
       const formData = new FormData();
       
-      // Adicionar apenas a imagem frontal (obrigatória)
+      // Adicionar imagens (frontal obrigatória, outras opcionais)
       formData.append('frontal', frontalPhoto.file);
       
-      // 🔄 MAPEAR DADOS ANTES DE ENVIAR - CORRIGIDO!
-      const mappedData = mapDataForBackend(petDetails);
+      const focinhoPhoto = photos.find(p => p.id === 'focinho');
+      if (focinhoPhoto?.file) {
+        formData.append('focinho', focinhoPhoto.file);
+      }
       
-      // Adicionar dados do pet MAPEADOS
+      const anguloPhoto = photos.find(p => p.id === 'angulo');
+      if (anguloPhoto?.file) {
+        formData.append('angulo', anguloPhoto.file);
+      }
+      
+      // Adicionar dados do pet
+      formData.append('name', petDetails.name.trim());
       formData.append('session', generateSessionId());
-      formData.append('breed', mappedData.breed);
-      formData.append('sex', mappedData.sex); // ✅ "female" ou "male"
-      formData.append('age', mappedData.age);
-      formData.append('especie', mappedData.especie);
-      formData.append('pelagem', mappedData.pelagem); // ✅ Valores corretos
+      formData.append('breed', petDetails.breed.trim());
+      formData.append('sex', petDetails.sex === 'fêmea' ? 'female' : 'male');
+      formData.append('age', petDetails.age.trim());
+      formData.append('especie', petDetails.especie);
 
       console.log('=== ENVIANDO PARA UPLOAD S3 ===');
       console.log('Endpoint:', 'https://smartdog-backend-vlm0.onrender.com/upload-pet-images');
-      console.log('Dados ORIGINAIS do usuário:', {
+      console.log('Dados enviados:', {
+        name: petDetails.name.trim(),
         especie: petDetails.especie,
-        breed: petDetails.breed,
-        sex: petDetails.sex, // "fêmea" ou "macho"
-        age: petDetails.age,
-        pelagem: petDetails.pelagem, // "Branco ou creme", etc.
-        frontal: frontalPhoto.file.name
-      });
-      console.log('Dados MAPEADOS enviados:', {
-        especie: mappedData.especie,
-        breed: mappedData.breed,
-        sex: mappedData.sex, // ✅ "female" ou "male"
-        age: mappedData.age,
-        pelagem: mappedData.pelagem, // ✅ "clara", "escura", etc.
-        frontal: frontalPhoto.file.name
+        breed: petDetails.breed.trim(),
+        sex: petDetails.sex,
+        age: petDetails.age.trim(),
+        frontal: frontalPhoto.file.name,
+        focinho: focinhoPhoto?.file?.name || 'não enviado',
+        angulo: anguloPhoto?.file?.name || 'não enviado'
       });
 
       const response = await fetch('https://smartdog-backend-vlm0.onrender.com/upload-pet-images', {
@@ -267,9 +171,17 @@ function App() {
       console.log('Resposta completa:', data);
 
       if (response.ok && data.success) {
-        setResult({ success: true, message: 'Pet contribuiu com sucesso!' });
+        setResult({ 
+          success: true, 
+          message: petDetails.name.trim() 
+            ? `${petDetails.name} acabou de contribuir para ajudar uma família!`
+            : 'Seu pet acabou de contribuir para ajudar uma família!'
+        });
+        
         // Atualizar contador
-        setPetCount(prev => prev + 1);
+        const newCount = petCount + 1;
+        setPetCount(newCount);
+        localStorage.setItem('petContributionCount', newCount.toString());
       } else {
         setError(data.error || data.message || 'Erro ao enviar as fotos. Tente novamente.');
       }
@@ -281,100 +193,16 @@ function App() {
     }
   };
 
-  const handleDownload = () => {
-    const imageUrl = getImageUrl();
-    if (imageUrl) {
-      const link = document.createElement('a');
-      link.href = imageUrl;
-      link.download = 'meu-pet-humano.jpg';
-      link.target = '_blank';
-      link.click();
-    }
-  };
-
-  const handleShare = (platform: string) => {
-    const imageUrl = getImageUrl();
-    if (!imageUrl) {
-      setError('Não há imagem para compartilhar. Transforme seu pet primeiro!');
-      return;
-    }
-
-    const shareText = 'Veja como meu pet ficaria na versão humana! 🧬 Teste grátis em meupethumano.com';
-    const encodedText = encodeURIComponent(shareText);
-    const currentUrl = encodeURIComponent(window.location.href);
-    const encodedImageUrl = encodeURIComponent(imageUrl);
-    
-    switch (platform) {
-      case 'whatsapp':
-        window.open(`https://wa.me/?text=${encodedText}%20${encodedImageUrl}`, '_blank');
-        break;
-      case 'facebook':
-        window.open(`https://www.facebook.com/sharer/sharer.php?u=${currentUrl}&quote=${encodedText}`, '_blank');
-        break;
-      case 'twitter':
-        window.open(`https://twitter.com/intent/tweet?text=${encodedText}&url=${currentUrl}`, '_blank');
-        break;
-      case 'instagram':
-        alert('📸 Para compartilhar no Instagram:\n\n1. Baixe a imagem usando o botão "Baixar Imagem"\n2. Abra o Instagram\n3. Crie um novo post ou story\n4. Adicione a imagem baixada\n5. Use o texto: "' + shareText + '"');
-        break;
-      case 'tiktok':
-        alert('🎵 Para compartilhar no TikTok:\n\n1. Baixe a imagem usando o botão "Baixar Imagem"\n2. Abra o TikTok\n3. Crie um novo vídeo\n4. Adicione a imagem como fundo\n5. Use o texto: "' + shareText + '"');
-        break;
-    }
-  };
-
   const resetApp = () => {
     setResult(null);
     setPhotos(photos.map(photo => ({ ...photo, file: null, preview: null })));
-    setPetDetails({ especie: '', breed: '', sex: '', age: '', pelagem: '' });
+    setPetDetails({ name: '', especie: '', breed: '', sex: '', age: '' });
     setShowPetDetails(false);
     setTermsAccepted(false);
     setError(null);
-    setImageLoaded(false);
-    setImageError(false);
-  };
-
-  // Função para obter a URL da imagem transformada - DALL·E API
-  const getImageUrl = (): string | null => {
-    if (!result) return null;
-    
-    // Prioridade: composite_image ou transformed_image (campos do DALL·E)
-    return result.composite_image || result.transformed_image || null;
-  };
-
-  const handleImageLoad = () => {
-    setImageLoaded(true);
-    setImageError(false);
-    console.log('Imagem carregada com sucesso!');
-  };
-
-  const handleImageError = () => {
-    setImageLoaded(false);
-    setImageError(true);
-    console.error('Erro ao carregar imagem:', getImageUrl());
   };
 
   const hasRequiredPhotos = photos.find(p => p.id === 'frontal')?.file !== null;
-  const imageUrl = getImageUrl();
-  const canShowButtons = imageUrl && imageLoaded && !imageError;
-
-  // Obter opções de raça baseado na espécie selecionada
-  const getBreedOptions = () => {
-    if (petDetails.especie === 'cachorro') return DOG_BREEDS;
-    if (petDetails.especie === 'gato') return CAT_BREEDS;
-    return [{ value: '', label: 'Selecione primeiro a espécie' }];
-  };
-
-  // Debug: Log da resposta da API
-  useEffect(() => {
-    if (result) {
-      console.log('=== DEBUG RESPOSTA UPLOAD ===');
-      console.log('Resposta completa:', result);
-      console.log('success:', result.success);
-      console.log('message:', result.message);
-      console.log('============================');
-    }
-  }, [result]);
 
   return (
     <div className="min-h-screen bg-black text-white overflow-hidden">
@@ -486,13 +314,13 @@ function App() {
               </div>
             </section>
 
-            {/* Transform Button */}
+            {/* Help Button */}
             {!showPetDetails && (
               <div className="text-center mb-16">
                 <button
                   onClick={handleShowPetDetails}
                   disabled={!hasRequiredPhotos}
-                  className="social-button group relative inline-flex items-center justify-center px-16 py-8 text-2xl font-black rounded-full transition-all duration-500 transform hover:scale-110 active:scale-95 overflow-hidden shadow-2xl"
+                  className="social-button group relative inline-flex items-center justify-center px-16 py-8 text-2xl font-black rounded-full transition-all duration-500 transform hover:scale-110 active:scale-95 overflow-hidden shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <div className="relative flex items-center z-10">
                     <Heart className="w-10 h-10 mr-4 animate-pulse text-white drop-shadow-lg" />
@@ -513,6 +341,20 @@ function App() {
                   </h2>
                   
                   <div className="glass-card rounded-2xl p-8 space-y-6">
+                    {/* Nome do Pet */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                        Nome do Pet <span className="text-red-400">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        value={petDetails.name}
+                        onChange={(e) => setPetDetails(prev => ({ ...prev, name: e.target.value }))}
+                        placeholder="Ex: Luna, Thor, Nina..."
+                        className="form-input w-full px-4 py-3 rounded-xl focus:outline-none transition-colors"
+                      />
+                    </div>
+
                     {/* Espécie */}
                     <div>
                       <label className="block text-sm font-medium text-gray-300 mb-2">
@@ -536,46 +378,21 @@ function App() {
                       </select>
                     </div>
 
-                    {/* Raça - Dropdown baseado na espécie */}
+                    {/* Raça - Campo de texto livre */}
                     <div>
                       <label className="block text-sm font-medium text-gray-300 mb-2">
                         Raça <span className="text-red-400">*</span>
                       </label>
-                      <select
+                      <input
+                        type="text"
                         value={petDetails.breed}
                         onChange={(e) => setPetDetails(prev => ({ ...prev, breed: e.target.value }))}
-                        disabled={!petDetails.especie}
-                        className="form-select w-full px-4 py-3 rounded-xl focus:outline-none transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                      >
-                        {getBreedOptions().map(option => (
-                          <option key={option.value} value={option.value}>
-                            {option.label}
-                          </option>
-                        ))}
-                      </select>
-                      {!petDetails.especie && (
-                        <p className="text-xs text-gray-400 mt-2">
-                          💡 Selecione primeiro a espécie para ver as opções de raça
-                        </p>
-                      )}
-                    </div>
-
-                    {/* Cor da Pelagem */}
-                    <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-2">
-                        Cor da Pelagem <span className="text-red-400">*</span>
-                      </label>
-                      <select
-                        value={petDetails.pelagem}
-                        onChange={(e) => setPetDetails(prev => ({ ...prev, pelagem: e.target.value }))}
-                        className="form-select w-full px-4 py-3 rounded-xl focus:outline-none transition-colors"
-                      >
-                        {PELAGEM_OPTIONS.map(option => (
-                          <option key={option.value} value={option.value}>
-                            {option.label}
-                          </option>
-                        ))}
-                      </select>
+                        placeholder="Ex: Labrador, SRD, Persa, etc..."
+                        className="form-input w-full px-4 py-3 rounded-xl focus:outline-none transition-colors"
+                      />
+                      <p className="text-xs text-gray-400 mt-2">
+                        💡 Digite a raça do seu pet ou "SRD" se for sem raça definida
+                      </p>
                     </div>
 
                     {/* Sexo */}
@@ -702,7 +519,7 @@ function App() {
               </div>
               
               <h3 className="text-2xl font-bold mb-4 text-green-400">
-                Seu pet acaba de contribuir para ajudar uma família!
+                🐾 {result.message}
               </h3>
               
               <p className="text-lg text-gray-300 mb-6">

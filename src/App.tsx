@@ -391,12 +391,12 @@ function App() {
           <div className="flex items-center justify-center mb-6">
             <Heart className="w-8 h-8 text-cyan-400 mr-3 animate-pulse" />
             <h1 className="text-4xl md:text-6xl font-bold neon-blue neon-text-glow">
-              O focinho do seu pet pode salvar uma família
+              O seu pet pode salvar um animal perdido
             </h1>
             <Heart className="w-8 h-8 text-cyan-400 ml-3 animate-pulse" />
           </div>
           <p className="text-xl md:text-2xl text-white max-w-4xl mx-auto leading-relaxed mb-8">
-            Ajude a criar a maior base de focinhos do mundo e reencontrar cães e gatos perdidos.
+            Crie esperança com uma simples foto.
           </p>
           <div className="mt-8 flex items-center justify-center space-x-6">
             <div className="flex items-center space-x-2">

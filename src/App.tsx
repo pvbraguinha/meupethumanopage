@@ -8,10 +8,7 @@ import {
   Clock,
   Brain,
   Globe,
-  Award,
-  Zap,
   Target,
-  Upload,
   AlertCircle
 } from 'lucide-react';
 
@@ -53,7 +50,6 @@ interface UploadResult {
 }
 
 function App() {
-  const [currentView, setCurrentView] = useState<'roadmap' | 'upload'>('roadmap');
   const [visiblePhases, setVisiblePhases] = useState<number[]>([]);
   const [petCount, setPetCount] = useState<number>(0);
   
@@ -99,20 +95,18 @@ function App() {
 
   // Animação de entrada das fases
   useEffect(() => {
-    if (currentView === 'roadmap') {
-      const timer = setInterval(() => {
-        setVisiblePhases(prev => {
-          if (prev.length < roadmapPhases.length) {
-            return [...prev, prev.length];
-          }
-          clearInterval(timer);
-          return prev;
-        });
-      }, 600);
+    const timer = setInterval(() => {
+      setVisiblePhases(prev => {
+        if (prev.length < roadmapPhases.length) {
+          return [...prev, prev.length];
+        }
+        clearInterval(timer);
+        return prev;
+      });
+    }, 600);
 
-      return () => clearInterval(timer);
-    }
-  }, [currentView]);
+    return () => clearInterval(timer);
+  }, []);
 
   const roadmapPhases: RoadmapPhase[] = [
     {
@@ -162,7 +156,7 @@ function App() {
       case 'in-progress':
         return (
           <div className="flex items-center space-x-2 px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-semibold">
-            <Zap className="w-4 h-4" />
+            <CheckCircle className="w-4 h-4" />
             <span>Em andamento</span>
           </div>
         );
@@ -174,19 +168,6 @@ function App() {
           </div>
         );
     }
-  };
-
-  const handleContributeClick = () => {
-    setCurrentView('upload');
-  };
-
-  const handleBackToRoadmap = () => {
-    setCurrentView('roadmap');
-    setResult(null);
-    setPhotos(photos.map(photo => ({ ...photo, file: null, preview: null })));
-    setPetDetails({ name: '', species: '', breed: '', sex: '', age: '' });
-    setShowPetDetails(false);
-    setError(null);
   };
 
   const handleFileSelect = (id: string, file: File) => {
@@ -294,295 +275,15 @@ function App() {
     }
   };
 
+  const handleResetForm = () => {
+    setResult(null);
+    setPhotos(photos.map(photo => ({ ...photo, file: null, preview: null })));
+    setPetDetails({ name: '', species: '', breed: '', sex: '', age: '' });
+    setShowPetDetails(false);
+    setError(null);
+  };
+
   const hasRequiredPhotos = photos.every(photo => photo.file !== null);
-
-  if (currentView === 'upload') {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
-        <div className="container mx-auto px-4 py-8">
-          {/* Header */}
-          <header className="text-center mb-12">
-            <button
-              onClick={handleBackToRoadmap}
-              className="mb-6 text-blue-600 hover:text-blue-800 font-semibold flex items-center mx-auto"
-            >
-              <ArrowRight className="w-4 h-4 mr-2 rotate-180" />
-              Voltar ao Roadmap
-            </button>
-            
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Contribua com Imagens
-            </h1>
-            <p className="text-lg text-gray-600 mb-8">
-              Ajude a treinar nossa IA para salvar pets perdidos
-            </p>
-            
-            <div className="flex items-center justify-center space-x-2 mb-8">
-              <Users className="w-5 h-5 text-blue-600" />
-              <span className="text-gray-600 font-medium">
-                {petCount.toLocaleString()} pets já contribuíram
-              </span>
-            </div>
-          </header>
-
-          {/* Error Message */}
-          {error && (
-            <div className="max-w-2xl mx-auto mb-8">
-              <div className="bg-red-50 border border-red-200 rounded-xl p-4 flex items-center space-x-3">
-                <AlertCircle className="w-6 h-6 text-red-500 flex-shrink-0" />
-                <p className="text-red-700">{error}</p>
-              </div>
-            </div>
-          )}
-
-          {!result ? (
-            <>
-              {/* Upload Section */}
-              <section className="mb-12">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-                  {photos.map((photo) => (
-                    <div
-                      key={photo.id}
-                      className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300"
-                    >
-                      <div className="text-center mb-4">
-                        <h3 className="text-lg font-semibold text-gray-900 mb-1">
-                          {photo.label}
-                        </h3>
-                        <p className="text-sm text-gray-500">{photo.description}</p>
-                      </div>
-
-                      <div 
-                        className="upload-area relative rounded-xl p-8 border-2 border-dashed border-gray-300 hover:border-blue-400 transition-all duration-300 cursor-pointer bg-gray-50 hover:bg-blue-50"
-                        onClick={() => fileInputRefs.current[photo.id]?.click()}
-                      >
-                        {photo.preview ? (
-                          <div className="relative">
-                            <img 
-                              src={photo.preview} 
-                              alt={`Preview ${photo.label}`}
-                              className="w-full h-32 object-cover rounded-lg"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent rounded-lg"></div>
-                            <Camera className="absolute bottom-2 right-2 w-6 h-6 text-white" />
-                          </div>
-                        ) : (
-                          <div className="text-center">
-                            <Camera className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                            <p className="text-gray-600 text-sm">
-                              Toque para capturar ou escolher foto
-                            </p>
-                          </div>
-                        )}
-                      </div>
-
-                      <input
-                        ref={el => fileInputRefs.current[photo.id] = el}
-                        type="file"
-                        accept="image/*"
-                        className="hidden"
-                        onChange={(e) => {
-                          const file = e.target.files?.[0];
-                          if (file) handleFileSelect(photo.id, file);
-                        }}
-                      />
-
-                      {/* Progress indicator */}
-                      <div className="mt-4 flex items-center justify-center">
-                        <div className={`w-3 h-3 rounded-full ${photo.file ? 'bg-green-500' : 'bg-gray-300'} transition-colors`}></div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </section>
-
-              {/* Continue Button */}
-              {!showPetDetails && (
-                <div className="text-center mb-16">
-                  <button
-                    onClick={handleShowPetDetails}
-                    disabled={!hasRequiredPhotos}
-                    className="professional-cta-button disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    <div className="flex items-center space-x-3">
-                      <Heart className="w-6 h-6" />
-                      <span>Continuar</span>
-                      <ArrowRight className="w-6 h-6" />
-                    </div>
-                  </button>
-                </div>
-              )}
-
-              {/* Pet Details Form */}
-              {showPetDetails && (
-                <section className="mb-12">
-                  <div className="max-w-2xl mx-auto">
-                    <h2 className="text-2xl font-bold text-center mb-8 text-gray-900">
-                      Detalhes do Seu Pet
-                    </h2>
-                    
-                    <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-200 space-y-6">
-                      {/* Nome do Pet */}
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Nome do Pet <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                          type="text"
-                          value={petDetails.name}
-                          onChange={(e) => setPetDetails(prev => ({ ...prev, name: e.target.value }))}
-                          placeholder="Ex: Luna, Thor, Nina..."
-                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        />
-                      </div>
-
-                      {/* Espécie */}
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Espécie <span className="text-red-500">*</span>
-                        </label>
-                        <select
-                          value={petDetails.species}
-                          onChange={(e) => {
-                            const newSpecies = e.target.value as 'cachorro' | 'gato';
-                            setPetDetails(prev => ({ 
-                              ...prev, 
-                              species: newSpecies,
-                              breed: ''
-                            }));
-                          }}
-                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        >
-                          <option value="">Selecione a espécie</option>
-                          <option value="cachorro">Cachorro</option>
-                          <option value="gato">Gato</option>
-                        </select>
-                      </div>
-
-                      {/* Raça */}
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Raça <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                          type="text"
-                          value={petDetails.breed}
-                          onChange={(e) => setPetDetails(prev => ({ ...prev, breed: e.target.value }))}
-                          placeholder="Ex: Labrador, SRD, Persa, etc..."
-                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        />
-                      </div>
-
-                      {/* Sexo */}
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Sexo <span className="text-red-500">*</span>
-                        </label>
-                        <select
-                          value={petDetails.sex}
-                          onChange={(e) => setPetDetails(prev => ({ ...prev, sex: e.target.value as 'macho' | 'fêmea' }))}
-                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        >
-                          <option value="">Selecione o sexo</option>
-                          <option value="macho">Macho</option>
-                          <option value="fêmea">Fêmea</option>
-                        </select>
-                      </div>
-
-                      {/* Idade */}
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Idade <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                          type="text"
-                          value={petDetails.age}
-                          onChange={(e) => setPetDetails(prev => ({ ...prev, age: e.target.value }))}
-                          placeholder="Ex: 3 anos, 6 meses, 45 dias..."
-                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        />
-                      </div>
-
-                      {/* Submit Button */}
-                      <div className="pt-6">
-                        <button
-                          onClick={handleSubmitPetForm}
-                          disabled={isProcessing}
-                          className="professional-cta-button w-full disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                          {isProcessing ? (
-                            <>
-                              <Heart className="w-6 h-6 mr-3 animate-pulse" />
-                              Enviando contribuição...
-                            </>
-                          ) : (
-                            'Finalizar'
-                          )}
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </section>
-              )}
-
-              {/* Processing State */}
-              {isProcessing && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                  <div className="bg-white rounded-2xl p-8 max-w-md mx-4 text-center">
-                    <div className="relative mb-6">
-                      <Heart className="w-16 h-16 text-blue-600 mx-auto animate-pulse" />
-                    </div>
-                    <h3 className="text-2xl font-bold mb-4 text-gray-900">Enviando contribuição</h3>
-                    <p className="text-gray-600 mb-6">Seu pet está ajudando uma família!</p>
-                    <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
-                      <div className="bg-gradient-to-r from-blue-500 to-purple-600 h-full rounded-full animate-pulse w-3/4"></div>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </>
-          ) : (
-            /* Result Section */
-            <section className="max-w-2xl mx-auto text-center">
-              <h2 className="text-3xl md:text-4xl font-bold mb-8 text-green-600">
-                Obrigado pela contribuição!
-              </h2>
-              
-              <div className="bg-green-50 border border-green-200 rounded-2xl p-8 mb-8">
-                <div className="relative mb-6">
-                  <div className="w-24 h-24 mx-auto bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center">
-                    <Heart className="w-12 h-12 text-white" />
-                  </div>
-                </div>
-                
-                <h3 className="text-2xl font-bold mb-4 text-green-700">
-                  {result.message}
-                </h3>
-                
-                <p className="text-lg text-gray-700 mb-6">
-                  As fotos enviadas serão usadas para treinar uma inteligência artificial capaz de identificar animais perdidos.
-                </p>
-                
-                <div className="flex items-center justify-center space-x-2 mb-6">
-                  <Users className="w-6 h-6 text-blue-600" />
-                  <span className="text-gray-700 font-semibold text-lg">
-                    {petCount.toLocaleString()} pets já contribuíram!
-                  </span>
-                </div>
-              </div>
-
-              <button
-                onClick={handleBackToRoadmap}
-                className="text-blue-600 hover:text-blue-800 font-semibold transition-colors underline"
-              >
-                Voltar ao início
-              </button>
-            </section>
-          )}
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
@@ -595,15 +296,15 @@ function App() {
               <span>Roadmap de Desenvolvimento</span>
             </div>
             
-            <h1 className="text-4xl md:text-5xl font-black text-gray-900 mb-6 tracking-tight">
+            <h1 className="text-3xl md:text-4xl font-black text-gray-900 mb-6 tracking-tight">
               Smartdog
             </h1>
             
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-700 mb-4">
+            <h2 className="text-xl md:text-2xl font-bold text-gray-700 mb-4">
               O seu pet pode salvar um animal perdido
             </h2>
             
-            <p className="text-lg md:text-xl text-gray-600 mb-8">
+            <p className="text-lg text-gray-600 mb-8">
               Crie esperança com uma simples foto.
             </p>
           </div>
@@ -623,7 +324,7 @@ function App() {
         </header>
 
         {/* Roadmap Phases */}
-        <section className="max-w-6xl mx-auto space-y-8">
+        <section className="max-w-6xl mx-auto space-y-8 mb-16">
           {roadmapPhases.map((phase, index) => (
             <div
               key={phase.id}
@@ -659,7 +360,7 @@ function App() {
                     </p>
                     
                     {phase.description && (
-                      <p className="text-sm text-gray-600 mb-6 leading-relaxed">
+                      <p className="text-sm text-gray-500 mb-6 leading-relaxed">
                         {phase.description}
                       </p>
                     )}
@@ -688,36 +389,276 @@ function App() {
           ))}
         </section>
 
-        {/* Call to Action */}
-        <section className="text-center mt-20">
-          <div className="max-w-4xl mx-auto bg-gradient-to-br from-blue-600 to-purple-700 rounded-3xl p-12 text-white shadow-2xl">
-            <h2 className="text-4xl font-bold mb-6">
-              Faça Parte dessa campanha
-            </h2>
-            
-            <p className="text-xl mb-10 leading-relaxed opacity-90">
-              A sua ajuda pode salvar um animal perdido.
-            </p>
+        {/* Upload Section */}
+        {!result ? (
+          <section className="max-w-6xl mx-auto">
+            <div className="bg-gradient-to-br from-blue-600 to-purple-700 rounded-3xl p-12 text-white shadow-2xl">
+              <div className="text-center mb-12">
+                <h2 className="text-4xl font-bold mb-6">
+                  Faça Parte dessa campanha
+                </h2>
+                
+                <p className="text-xl mb-10 leading-relaxed opacity-90">
+                  A sua ajuda pode salvar um animal perdido.
+                </p>
 
-            <button
-              onClick={handleContributeClick}
-              className="professional-cta-button group"
-            >
-              <div className="flex items-center justify-center space-x-3">
-                <Camera className="w-6 h-6 group-hover:scale-110 transition-transform" />
-                <span className="text-xl font-bold">Contribuir com Imagens</span>
-                <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
+                <div className="flex items-center justify-center mt-8 space-x-2 opacity-80">
+                  <Users className="w-5 h-5" />
+                  <span className="font-medium">
+                    {petCount.toLocaleString()} pets já contribuíram para esta causa
+                  </span>
+                </div>
               </div>
-            </button>
 
-            <div className="flex items-center justify-center mt-8 space-x-2 opacity-80">
-              <Users className="w-5 h-5" />
-              <span className="font-medium">
-                {petCount.toLocaleString()} pets já contribuíram para esta causa
-              </span>
+              {/* Error Message */}
+              {error && (
+                <div className="max-w-2xl mx-auto mb-8">
+                  <div className="bg-red-50 border border-red-200 rounded-xl p-4 flex items-center space-x-3">
+                    <AlertCircle className="w-6 h-6 text-red-500 flex-shrink-0" />
+                    <p className="text-red-700">{error}</p>
+                  </div>
+                </div>
+              )}
+
+              {/* Upload Photos */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-12">
+                {photos.map((photo) => (
+                  <div
+                    key={photo.id}
+                    className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300"
+                  >
+                    <div className="text-center mb-4">
+                      <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                        {photo.label}
+                      </h3>
+                      <p className="text-sm text-gray-500">{photo.description}</p>
+                    </div>
+
+                    <div 
+                      className="upload-area relative rounded-xl p-8 border-2 border-dashed border-gray-300 hover:border-blue-400 transition-all duration-300 cursor-pointer bg-gray-50 hover:bg-blue-50"
+                      onClick={() => fileInputRefs.current[photo.id]?.click()}
+                    >
+                      {photo.preview ? (
+                        <div className="relative">
+                          <img 
+                            src={photo.preview} 
+                            alt={`Preview ${photo.label}`}
+                            className="w-full h-32 object-cover rounded-lg"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent rounded-lg"></div>
+                          <Camera className="absolute bottom-2 right-2 w-6 h-6 text-white" />
+                        </div>
+                      ) : (
+                        <div className="text-center">
+                          <Camera className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                          <p className="text-gray-600 text-sm">
+                            Toque para capturar ou escolher foto
+                          </p>
+                        </div>
+                      )}
+                    </div>
+
+                    <input
+                      ref={el => fileInputRefs.current[photo.id] = el}
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) handleFileSelect(photo.id, file);
+                      }}
+                    />
+
+                    {/* Progress indicator */}
+                    <div className="mt-4 flex items-center justify-center">
+                      <div className={`w-3 h-3 rounded-full ${photo.file ? 'bg-green-500' : 'bg-gray-300'} transition-colors`}></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Continue Button */}
+              {!showPetDetails && (
+                <div className="text-center mb-8">
+                  <button
+                    onClick={handleShowPetDetails}
+                    disabled={!hasRequiredPhotos}
+                    className="bg-white text-blue-600 px-10 py-4 rounded-xl font-bold text-lg hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+                  >
+                    <div className="flex items-center space-x-3">
+                      <Heart className="w-6 h-6" />
+                      <span>Continuar</span>
+                      <ArrowRight className="w-6 h-6" />
+                    </div>
+                  </button>
+                </div>
+              )}
+
+              {/* Pet Details Form */}
+              {showPetDetails && (
+                <div className="max-w-2xl mx-auto">
+                  <h3 className="text-2xl font-bold text-center mb-8 text-white">
+                    Detalhes do Seu Pet
+                  </h3>
+                  
+                  <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-200 space-y-6">
+                    {/* Nome do Pet */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Nome do Pet <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        value={petDetails.name}
+                        onChange={(e) => setPetDetails(prev => ({ ...prev, name: e.target.value }))}
+                        placeholder="Ex: Luna, Thor, Nina..."
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                    </div>
+
+                    {/* Espécie */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Espécie <span className="text-red-500">*</span>
+                      </label>
+                      <select
+                        value={petDetails.species}
+                        onChange={(e) => {
+                          const newSpecies = e.target.value as 'cachorro' | 'gato';
+                          setPetDetails(prev => ({ 
+                            ...prev, 
+                            species: newSpecies,
+                            breed: ''
+                          }));
+                        }}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      >
+                        <option value="">Selecione a espécie</option>
+                        <option value="cachorro">Cachorro</option>
+                        <option value="gato">Gato</option>
+                      </select>
+                    </div>
+
+                    {/* Raça */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Raça <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        value={petDetails.breed}
+                        onChange={(e) => setPetDetails(prev => ({ ...prev, breed: e.target.value }))}
+                        placeholder="Ex: Labrador, SRD, Persa, etc..."
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                    </div>
+
+                    {/* Sexo */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Sexo <span className="text-red-500">*</span>
+                      </label>
+                      <select
+                        value={petDetails.sex}
+                        onChange={(e) => setPetDetails(prev => ({ ...prev, sex: e.target.value as 'macho' | 'fêmea' }))}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      >
+                        <option value="">Selecione o sexo</option>
+                        <option value="macho">Macho</option>
+                        <option value="fêmea">Fêmea</option>
+                      </select>
+                    </div>
+
+                    {/* Idade */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Idade <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        value={petDetails.age}
+                        onChange={(e) => setPetDetails(prev => ({ ...prev, age: e.target.value }))}
+                        placeholder="Ex: 3 anos, 6 meses, 45 dias..."
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                    </div>
+
+                    {/* Submit Button */}
+                    <div className="pt-6">
+                      <button
+                        onClick={handleSubmitPetForm}
+                        disabled={isProcessing}
+                        className="professional-cta-button w-full disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {isProcessing ? (
+                          <>
+                            <Heart className="w-6 h-6 mr-3 animate-pulse" />
+                            Enviando contribuição...
+                          </>
+                        ) : (
+                          'Finalizar'
+                        )}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </section>
+        ) : (
+          /* Result Section */
+          <section className="max-w-2xl mx-auto text-center">
+            <div className="bg-green-50 border border-green-200 rounded-2xl p-8 mb-8">
+              <div className="relative mb-6">
+                <div className="w-24 h-24 mx-auto bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center">
+                  <Heart className="w-12 h-12 text-white" />
+                </div>
+              </div>
+              
+              <h3 className="text-2xl font-bold mb-4 text-green-700">
+                Obrigado pela contribuição!
+              </h3>
+              
+              <h4 className="text-xl font-bold mb-4 text-green-600">
+                {result.message}
+              </h4>
+              
+              <p className="text-lg text-gray-700 mb-6">
+                As fotos enviadas serão usadas para treinar uma inteligência artificial capaz de identificar animais perdidos.
+              </p>
+              
+              <div className="flex items-center justify-center space-x-2 mb-6">
+                <Users className="w-6 h-6 text-blue-600" />
+                <span className="text-gray-700 font-semibold text-lg">
+                  {petCount.toLocaleString()} pets já contribuíram!
+                </span>
+              </div>
+
+              <button
+                onClick={handleResetForm}
+                className="text-blue-600 hover:text-blue-800 font-semibold transition-colors underline"
+              >
+                Contribuir novamente
+              </button>
+            </div>
+          </section>
+        )}
+
+        {/* Processing State */}
+        {isProcessing && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-2xl p-8 max-w-md mx-4 text-center">
+              <div className="relative mb-6">
+                <Heart className="w-16 h-16 text-blue-600 mx-auto animate-pulse" />
+              </div>
+              <h3 className="text-2xl font-bold mb-4 text-gray-900">Enviando contribuição</h3>
+              <p className="text-gray-600 mb-6">Seu pet está ajudando uma família!</p>
+              <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+                <div className="bg-gradient-to-r from-blue-500 to-purple-600 h-full rounded-full animate-pulse w-3/4"></div>
+              </div>
             </div>
           </div>
-        </section>
+        )}
 
         {/* Footer */}
         <footer className="text-center mt-16 pt-8 border-t border-gray-200">

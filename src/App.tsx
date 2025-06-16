@@ -10,8 +10,7 @@ import {
   Globe,
   Award,
   Zap,
-  Target,
-  Shield
+  Target
 } from 'lucide-react';
 
 interface RoadmapPhase {
@@ -69,9 +68,9 @@ function App() {
   const roadmapPhases: RoadmapPhase[] = [
     {
       id: 1,
-      title: "Coleta de Dados",
-      subtitle: "Construção da base de dados de imagens",
-      description: "Coleta pública de imagens da comunidade para treinamento da IA",
+      title: "Resgate o Futuro dos Pets perdidos",
+      subtitle: "Contribua enviando foto do seu pet",
+      description: "As imagens enviadas serão utilizadas para treinar IA a reconhecer focinhos.",
       status: 'completed',
       icon: <Camera className="w-8 h-8" />,
       color: 'from-blue-500 to-blue-600',
@@ -83,9 +82,9 @@ function App() {
     },
     {
       id: 2,
-      title: "Desenvolvimento da IA",
-      subtitle: "Treinamento do modelo de reconhecimento",
-      description: "Desenvolvimento e treinamento do algoritmo de reconhecimento facial",
+      title: "Lançamento MVP",
+      subtitle: "Disponibilização gratuita de IA para reconhecimento facial e focinho de cães e gatos com acurácia de 99%",
+      description: "Redução do número de animais nas ruas no mundo todo",
       status: 'in-progress',
       icon: <Brain className="w-8 h-8" />,
       color: 'from-purple-500 to-purple-600',
@@ -97,9 +96,9 @@ function App() {
     },
     {
       id: 3,
-      title: "Expansão e Parcerias",
-      subtitle: "Integração com organizações",
-      description: "Expansão para prefeituras, clínicas veterinárias e ONGs",
+      title: "Conexão Global",
+      subtitle: "Criação de medidas e prevenção de risco à saúde pública",
+      description: "Diminuição do número de zoonoses. Zero animais nas ruas",
       status: 'upcoming',
       icon: <Globe className="w-8 h-8" />,
       color: 'from-green-500 to-green-600',
@@ -107,20 +106,6 @@ function App() {
         { text: "API pública disponível", status: 'upcoming' },
         { text: "Integração com sistemas existentes", status: 'upcoming' },
         { text: "Programa de certificação", status: 'upcoming' }
-      ]
-    },
-    {
-      id: 4,
-      title: "Sistema de Reconhecimento",
-      subtitle: "Programa de incentivos para contribuidores",
-      description: "Sistema de recompensas para ONGs e tutores que contribuem",
-      status: 'upcoming',
-      icon: <Award className="w-8 h-8" />,
-      color: 'from-yellow-500 to-orange-500',
-      items: [
-        { text: "Certificados digitais", status: 'upcoming' },
-        { text: "Ranking de contribuidores", status: 'upcoming' },
-        { text: "Benefícios para parceiros", status: 'upcoming' }
       ]
     }
   ];
@@ -168,18 +153,17 @@ function App() {
             </div>
             
             <h1 className="text-5xl md:text-7xl font-black text-gray-900 mb-6 tracking-tight">
-              SmartDog
+              Smartdog
             </h1>
             
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-700 mb-6">
-              Tecnologia que Reúne Famílias
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-700 mb-4">
+              O seu pet pode salvar um animal perdido
             </h2>
+            
+            <p className="text-xl md:text-2xl text-gray-600 mb-8">
+              Crie esperança com uma simples foto.
+            </p>
           </div>
-          
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8 leading-relaxed">
-            Desenvolvemos inteligência artificial avançada para reconhecimento facial de pets, 
-            ajudando animais perdidos a encontrarem o caminho de volta para casa.
-          </p>
 
           {/* Stats */}
           <div className="flex flex-wrap justify-center gap-6 mb-8">
@@ -189,26 +173,6 @@ function App() {
                 <div className="text-left">
                   <div className="text-2xl font-bold text-gray-900">{petCount.toLocaleString()}</div>
                   <div className="text-sm text-gray-600">Pets Contribuindo</div>
-                </div>
-              </div>
-            </div>
-            
-            <div className="bg-white rounded-2xl px-6 py-4 shadow-lg border border-gray-200">
-              <div className="flex items-center space-x-3">
-                <Target className="w-6 h-6 text-green-600" />
-                <div className="text-left">
-                  <div className="text-2xl font-bold text-gray-900">98%</div>
-                  <div className="text-sm text-gray-600">Meta de Acurácia</div>
-                </div>
-              </div>
-            </div>
-            
-            <div className="bg-white rounded-2xl px-6 py-4 shadow-lg border border-gray-200">
-              <div className="flex items-center space-x-3">
-                <Shield className="w-6 h-6 text-purple-600" />
-                <div className="text-left">
-                  <div className="text-2xl font-bold text-gray-900">100%</div>
-                  <div className="text-sm text-gray-600">Seguro e Privado</div>
                 </div>
               </div>
             </div>
@@ -281,12 +245,11 @@ function App() {
         <section className="text-center mt-20">
           <div className="max-w-4xl mx-auto bg-gradient-to-br from-blue-600 to-purple-700 rounded-3xl p-12 text-white shadow-2xl">
             <h2 className="text-4xl font-bold mb-6">
-              Faça Parte desta Revolução Tecnológica
+              Faça Parte dessa campanha
             </h2>
             
             <p className="text-xl mb-10 leading-relaxed opacity-90">
-              Cada imagem contribuída ajuda a treinar nossa IA para salvar mais vidas. 
-              Junte-se a milhares de pessoas que já estão fazendo a diferença.
+              A sua ajuda pode salvar um animal perdido.
             </p>
 
             <button
@@ -320,7 +283,7 @@ function App() {
           </div>
           
           <p className="text-gray-500">
-            © 2024 SmartDog. Reunindo famílias através da tecnologia.
+            © 2024 Smartdog. Criando esperança com uma simples foto.
           </p>
         </footer>
       </div>

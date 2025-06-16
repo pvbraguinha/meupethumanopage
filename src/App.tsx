@@ -215,9 +215,9 @@ function App() {
       formData.append('species', petDetails.species);
 
       console.log('=== ENVIANDO PARA BACKEND ===');
-      console.log('Endpoint:', 'https://smartdog-backend-vlm0.onrender.com/upload-pet-images');
+      console.log('Endpoint:', 'https://smartdog-backend-vlm0.onrender.com/api/upload-pet-images');
 
-      const response = await fetch('https://smartdog-backend-vlm0.onrender.com/upload-pet-images', {
+      const response = await fetch('https://smartdog-backend-vlm0.onrender.com/api/upload-pet-images', {
         method: 'POST',
         body: formData,
       });

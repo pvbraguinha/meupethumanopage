@@ -22,33 +22,20 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1.2;
 }
 
-/* 🌈 HAPPY MEMECOIN ANIMATIONS 🌈 */
-@keyframes happy-bounce {
+/* 🎯 CLEAN ANIMATIONS */
+@keyframes gentle-float {
   0%, 100% { 
-    transform: translateY(0px) scale(1);
+    transform: translateY(0px);
   }
   50% { 
-    transform: translateY(-10px) scale(1.05);
+    transform: translateY(-5px);
   }
 }
 
-@keyframes gentle-glow {
-  0%, 100% { 
-    box-shadow: 
-      0 10px 30px rgba(59, 130, 246, 0.2),
-      0 0 20px rgba(147, 51, 234, 0.1);
-  }
-  50% { 
-    box-shadow: 
-      0 15px 40px rgba(59, 130, 246, 0.3),
-      0 0 30px rgba(147, 51, 234, 0.2);
-  }
-}
-
-@keyframes slide-up-happy {
+@keyframes slide-up-clean {
   0% {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(20px);
   }
   100% {
     opacity: 1;
@@ -56,7 +43,16 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-@keyframes rainbow-shift {
+@keyframes soft-glow {
+  0%, 100% { 
+    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.15);
+  }
+  50% { 
+    box-shadow: 0 8px 30px rgba(59, 130, 246, 0.25);
+  }
+}
+
+@keyframes rainbow-clean {
   0% { 
     background-position: 0% 50%; 
   }
@@ -68,85 +64,71 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-@keyframes float-soft {
-  0%, 100% { 
-    transform: translateY(0px) rotate(0deg); 
-  }
-  33% { 
-    transform: translateY(-5px) rotate(1deg); 
-  }
-  66% { 
-    transform: translateY(-3px) rotate(-1deg); 
-  }
-}
-
-/* 📊 HAPPY STAT CARDS */
-.happy-stat-card {
-  @apply rounded-3xl p-8 text-center shadow-xl border-2 border-white/50;
-  animation: gentle-glow 3s ease-in-out infinite;
+/* 📊 CLEAN STAT CARDS */
+.clean-stat-card {
+  @apply rounded-xl p-6 text-center shadow-md border-2;
   transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(5px);
 }
 
-.happy-stat-card:hover {
-  transform: translateY(-8px) scale(1.05);
-  animation: happy-bounce 0.6s ease-in-out;
+.clean-stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
 }
 
-/* 🗺️ ROADMAP PHASES */
-.roadmap-phase-happy {
+/* 🗺️ CLEAN ROADMAP PHASES */
+.roadmap-phase-clean {
   opacity: 0;
-  transform: translateY(30px);
-  transition: all 0.6s ease-out;
+  transform: translateY(20px);
+  transition: all 0.5s ease-out;
 }
 
-.roadmap-phase-happy.visible {
+.roadmap-phase-clean.visible {
   opacity: 1;
   transform: translateY(0);
-  animation: slide-up-happy 0.6s ease-out;
+  animation: slide-up-clean 0.5s ease-out;
 }
 
-.happy-phase-card {
-  @apply rounded-3xl p-8 shadow-2xl;
+.clean-phase-card {
+  @apply rounded-xl p-6 shadow-lg;
   transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(5px);
 }
 
-.happy-phase-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+.clean-phase-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
 }
 
-.happy-phase-icon {
-  @apply w-24 h-24 rounded-2xl flex flex-col items-center justify-center;
-  animation: float-soft 4s ease-in-out infinite;
+.clean-phase-icon {
+  @apply w-16 h-16 rounded-lg flex flex-col items-center justify-center;
   transition: all 0.3s ease;
 }
 
-.happy-phase-icon:hover {
-  transform: scale(1.1) rotate(5deg);
+.clean-phase-icon:hover {
+  transform: scale(1.05);
 }
 
-/* 🏷️ HAPPY STATUS BADGES */
-.happy-status-badge {
-  @apply flex items-center space-x-2 px-4 py-2 rounded-full text-sm font-bold shadow-lg;
+/* 🏷️ CLEAN STATUS BADGES */
+.clean-status-badge {
+  @apply flex items-center space-x-2 px-3 py-1 rounded-full text-xs font-bold shadow-sm;
 }
 
-.happy-status-badge.completed {
-  @apply bg-green-200 text-green-800 border-2 border-green-300;
+.clean-status-badge.completed {
+  @apply bg-green-100 text-green-700 border border-green-200;
 }
 
-.happy-status-badge.in-progress {
-  @apply bg-yellow-200 text-yellow-800 border-2 border-yellow-300;
+.clean-status-badge.in-progress {
+  @apply bg-yellow-100 text-yellow-700 border border-yellow-200;
 }
 
-.happy-status-badge.upcoming {
-  @apply bg-gray-200 text-gray-700 border-2 border-gray-300;
+.clean-status-badge.upcoming {
+  @apply bg-gray-100 text-gray-600 border border-gray-200;
 }
 
-/* 🚀 HAPPY CTA BUTTON */
-.happy-cta-button {
-  @apply relative inline-flex items-center justify-center px-12 py-6 text-white font-black rounded-2xl overflow-hidden shadow-2xl;
+/* 🚀 CLEAN CTA BUTTON */
+.clean-cta-button {
+  @apply relative inline-flex items-center justify-center px-8 py-4 text-white font-black rounded-xl overflow-hidden shadow-lg;
   background: linear-gradient(135deg, 
     #3B82F6 0%,   /* Blue */
     #8B5CF6 25%,  /* Purple */
@@ -154,210 +136,198 @@ h1, h2, h3, h4, h5, h6 {
     #F59E0B 75%,  /* Yellow */
     #10B981 100%  /* Green */
   );
-  background-size: 300% 300%;
-  animation: rainbow-shift 4s ease-in-out infinite;
+  background-size: 200% 200%;
+  animation: rainbow-clean 3s ease-in-out infinite;
   transition: all 0.3s ease;
-  border: 3px solid white;
+  border: 2px solid white;
 }
 
-.happy-cta-button:hover {
-  transform: translateY(-5px) scale(1.08);
-  box-shadow: 
-    0 20px 40px rgba(59, 130, 246, 0.3),
-    0 0 30px rgba(236, 72, 153, 0.2);
-  animation: rainbow-shift 2s ease-in-out infinite;
-}
-
-.happy-cta-button:active {
+.clean-cta-button:hover {
   transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+  animation: rainbow-clean 1.5s ease-in-out infinite;
 }
 
-/* 🌟 HAPPY GLOW EFFECT */
-.happy-cta-button::before {
+.clean-cta-button:active {
+  transform: translateY(0) scale(1.02);
+}
+
+/* 🌟 CLEAN GLOW EFFECT */
+.clean-cta-button::before {
   content: '';
   position: absolute;
-  top: -3px;
-  left: -3px;
-  right: -3px;
-  bottom: -3px;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
   background: linear-gradient(135deg, 
     #3B82F6, #8B5CF6, #EC4899, #F59E0B, #10B981
   );
-  background-size: 400% 400%;
-  animation: rainbow-shift 3s ease-in-out infinite;
+  background-size: 300% 300%;
+  animation: rainbow-clean 2s ease-in-out infinite;
   border-radius: inherit;
   z-index: -1;
-  filter: blur(15px);
-  opacity: 0.7;
+  filter: blur(8px);
+  opacity: 0.5;
 }
 
 /* 📱 RESPONSIVE ADJUSTMENTS */
 @media (max-width: 768px) {
-  .happy-stat-card {
-    @apply p-6;
+  .clean-stat-card {
+    @apply p-4;
   }
   
-  .happy-phase-card {
-    @apply p-6;
+  .clean-phase-card {
+    @apply p-4;
   }
   
-  .happy-phase-icon {
-    @apply w-20 h-20;
+  .clean-phase-icon {
+    @apply w-12 h-12;
   }
   
-  .happy-cta-button {
-    @apply px-8 py-4 text-lg;
+  .clean-cta-button {
+    @apply px-6 py-3 text-lg;
   }
 }
 
 /* ♿ ACCESSIBILITY - REDUCED MOTION */
 @media (prefers-reduced-motion: reduce) {
-  .happy-stat-card,
-  .happy-phase-icon,
-  .happy-cta-button,
-  .happy-cta-button::before {
+  .clean-stat-card,
+  .clean-phase-icon,
+  .clean-cta-button,
+  .clean-cta-button::before {
     animation: none !important;
   }
   
-  .roadmap-phase-happy.visible {
+  .roadmap-phase-clean.visible {
     animation: none !important;
   }
   
-  .happy-stat-card:hover,
-  .happy-phase-card:hover,
-  .happy-cta-button:hover {
+  .clean-stat-card:hover,
+  .clean-phase-card:hover,
+  .clean-cta-button:hover {
     transform: none !important;
   }
 }
 
 /* 🎨 HIGH CONTRAST MODE */
 @media (prefers-contrast: high) {
-  .happy-phase-card {
-    @apply border-4 border-gray-800;
+  .clean-phase-card {
+    @apply border-2 border-gray-800;
   }
   
-  .happy-stat-card {
-    @apply border-4 border-gray-800;
+  .clean-stat-card {
+    @apply border-2 border-gray-800;
   }
   
-  .happy-cta-button {
-    @apply border-4 border-gray-800;
+  .clean-cta-button {
+    @apply border-2 border-gray-800;
   }
 }
 
 /* 📜 CUSTOM SCROLLBAR */
 ::-webkit-scrollbar {
-  width: 12px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: linear-gradient(45deg, #f3f4f6, #e5e7eb);
-  border-radius: 6px;
+  background: #f1f5f9;
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
   background: linear-gradient(45deg, #3B82F6, #8B5CF6);
-  border-radius: 6px;
-  border: 2px solid #f3f4f6;
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(45deg, #2563EB, #7C3AED);
 }
 
-/* 🎪 EXTRA HAPPY EFFECTS */
-.wiggle {
-  animation: wiggle 1s ease-in-out infinite;
+/* 🎪 SUBTLE EFFECTS */
+.soft-shadow {
+  box-shadow: 
+    0 4px 15px rgba(0, 0, 0, 0.08),
+    0 2px 4px rgba(0, 0, 0, 0.06);
 }
 
-@keyframes wiggle {
-  0%, 7% { transform: rotateZ(0); }
-  15% { transform: rotateZ(-15deg); }
-  20% { transform: rotateZ(10deg); }
-  25% { transform: rotateZ(-10deg); }
-  30% { transform: rotateZ(6deg); }
-  35% { transform: rotateZ(-4deg); }
-  40%, 100% { transform: rotateZ(0); }
+.glass-effect {
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* 🌈 RAINBOW TEXT */
-.rainbow-text {
-  background: linear-gradient(45deg, 
-    #3B82F6, #8B5CF6, #EC4899, #F59E0B, #10B981, #3B82F6
-  );
-  background-size: 300% 300%;
-  animation: rainbow-shift 3s ease-in-out infinite;
+/* 🌈 CLEAN GRADIENT TEXT */
+.gradient-text {
+  background: linear-gradient(45deg, #3B82F6, #8B5CF6, #EC4899);
+  background-size: 200% 200%;
+  animation: rainbow-clean 3s ease-in-out infinite;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* 💫 SPARKLE EFFECT */
-.sparkle {
+/* 💫 MINIMAL SPARKLE */
+.minimal-sparkle {
   position: relative;
 }
 
-.sparkle::before {
+.minimal-sparkle::after {
   content: '✨';
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  font-size: 0.8em;
+  opacity: 0.7;
+  animation: gentle-float 3s ease-in-out infinite;
+}
+
+/* 🎈 GENTLE HOVER */
+.gentle-hover {
+  transition: all 0.3s ease;
+}
+
+.gentle-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* 🌸 CLEAN BORDERS */
+.clean-border {
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: 12px;
+}
+
+.clean-border:hover {
+  border-color: rgba(59, 130, 246, 0.4);
+}
+
+/* 🎊 SUBTLE CELEBRATION */
+.subtle-celebrate {
+  position: relative;
+}
+
+.subtle-celebrate:hover::after {
+  content: '🎉';
   position: absolute;
   top: -10px;
   right: -10px;
-  font-size: 1.5em;
-  animation: float-soft 2s ease-in-out infinite;
+  font-size: 1em;
+  opacity: 0;
+  animation: gentle-pop 0.6s ease-out;
 }
 
-/* 🎈 BALLOON FLOAT */
-.balloon-float {
-  animation: balloon-float 6s ease-in-out infinite;
-}
-
-@keyframes balloon-float {
-  0%, 100% { 
-    transform: translateY(0px) translateX(0px); 
-  }
-  25% { 
-    transform: translateY(-10px) translateX(5px); 
+@keyframes gentle-pop {
+  0% { 
+    opacity: 0; 
+    transform: scale(0.5); 
   }
   50% { 
-    transform: translateY(-5px) translateX(-5px); 
-  }
-  75% { 
-    transform: translateY(-15px) translateX(3px); 
-  }
-}
-
-/* 🌸 SOFT SHADOWS */
-.soft-shadow {
-  box-shadow: 
-    0 10px 25px rgba(0, 0, 0, 0.1),
-    0 20px 48px rgba(0, 0, 0, 0.1),
-    0 1px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* 🎊 CELEBRATION EFFECT */
-.celebrate {
-  position: relative;
-  overflow: hidden;
-}
-
-.celebrate::after {
-  content: '🎉';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 2em;
-  opacity: 0;
-  animation: celebrate-pop 2s ease-in-out infinite;
-}
-
-@keyframes celebrate-pop {
-  0%, 90%, 100% { 
-    opacity: 0; 
-    transform: translate(-50%, -50%) scale(0.5); 
-  }
-  5%, 85% { 
     opacity: 1; 
-    transform: translate(-50%, -50%) scale(1.2); 
+    transform: scale(1.1); 
+  }
+  100% { 
+    opacity: 0; 
+    transform: scale(0.8); 
   }
 }

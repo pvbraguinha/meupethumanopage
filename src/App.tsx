@@ -5,9 +5,6 @@ import {
   Users, 
   ArrowRight,
   CheckCircle,
-  Clock,
-  Brain,
-  Globe,
   Target,
   AlertCircle
 } from 'lucide-react';
@@ -113,34 +110,11 @@ function App() {
       id: 1,
       title: "Resgate o Futuro dos Pets perdidos",
       subtitle: "Contribua enviando foto do seu pet",
-      description: "As imagens enviadas serão utilizadas para treinar IA a reconhecer focinhos.",
+      description: "As imagens enviadas serão utilizadas para treinar IA a reconhecer focinhos. O projeto via disponibilizar de forma gratuita a tecnologia para ONGs e usuarios registrarem e reconhecerem com 99% de precisão cães e gatos perdidos.",
       status: 'in-progress',
       icon: <Camera className="w-8 h-8" />,
       color: 'from-blue-500 to-blue-600',
       items: []
-    },
-    {
-      id: 2,
-      title: "Lançamento MVP",
-      subtitle: "Disponibilização gratuita de IA para ONGs registrarem e reconhecerem com 99% de precisão cães e gatos perdidos.",
-      description: "Redução do número de animais nas ruas no mundo todo",
-      status: 'upcoming',
-      icon: <Brain className="w-8 h-8" />,
-      color: 'from-purple-500 to-purple-600',
-      items: []
-    },
-    {
-      id: 3,
-      title: "Conexão Global",
-      subtitle: "Criação de medidas e prevenção de risco à saúde pública",
-      description: "",
-      status: 'upcoming',
-      icon: <Globe className="w-8 h-8" />,
-      color: 'from-green-500 to-green-600',
-      items: [
-        { text: "Diminuir a zero os animais das ruas", status: 'upcoming' },
-        { text: "Diminuição do número de zoonoses", status: 'upcoming' }
-      ]
     }
   ];
 
@@ -163,7 +137,7 @@ function App() {
       default:
         return (
           <div className="flex items-center space-x-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-full text-sm font-semibold">
-            <Clock className="w-4 h-4" />
+            <CheckCircle className="w-4 h-4" />
             <span>Planejado</span>
           </div>
         );

@@ -26,9 +26,9 @@ interface UploadResult {
 
 function App() {
   const [photos, setPhotos] = useState<PhotoSlot[]>([
-    { id: 'frontal', label: 'Foto Frontal', description: 'Foto de frente (obrigatória)', file: null, preview: null, required: true },
-    { id: 'focinho', label: 'Foto do Focinho', description: 'Close do focinho (opcional)', file: null, preview: null, required: false },
-    { id: 'angulo', label: 'Foto em Ângulo', description: 'Foto de lado (opcional)', file: null, preview: null, required: false }
+    { id: 'frontal', label: 'Foto Frontal', description: 'Rosto de frente', file: null, preview: null, required: true },
+    { id: 'focinho', label: 'Foto do Focinho', description: 'Close-up do nariz', file: null, preview: null, required: false },
+    { id: 'angulo', label: 'Foto em Ângulo', description: 'Rosto de lado', file: null, preview: null, required: false }
   ]);
   
   const [showPetDetails, setShowPetDetails] = useState(false);
@@ -314,14 +314,17 @@ function App() {
               </div>
             </section>
 
-            {/* Help Button */}
+            {/* Help Button - ESTILO APRIMORADO COM NEON AZUL */}
             {!showPetDetails && (
               <div className="text-center mb-16">
                 <button
                   onClick={handleShowPetDetails}
                   disabled={!hasRequiredPhotos}
-                  className="social-button group relative inline-flex items-center justify-center px-16 py-8 text-2xl font-black rounded-full transition-all duration-500 transform hover:scale-110 active:scale-95 overflow-hidden shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="perfect-neon-button group relative inline-flex items-center justify-center px-16 py-8 text-2xl font-black rounded-full transition-all duration-500 transform hover:scale-110 active:scale-95 overflow-hidden shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed"
                 >
+                  {/* Shimmer overlay sempre ativo */}
+                  <div className="shimmer-overlay"></div>
+                  
                   <div className="relative flex items-center z-10">
                     <Heart className="w-10 h-10 mr-4 animate-pulse text-white drop-shadow-lg" />
                     <span className="font-black tracking-wide text-white drop-shadow-lg">
@@ -470,7 +473,7 @@ function App() {
                       <button
                         onClick={handleSubmitPetForm}
                         disabled={isProcessing}
-                        className="social-button w-full text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="perfect-neon-button w-full text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         {isProcessing ? (
                           <>

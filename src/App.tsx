@@ -53,7 +53,7 @@ function App() {
   // Upload states
   const [photos, setPhotos] = useState<PhotoSlot[]>([
     { id: 'frontal', label: 'Imagem Frontal', description: 'Rosto da frente', file: null, preview: null, required: true },
-    { id: 'focinho', label: 'Foto do focinho', description: 'Close-up do Nariz', file: null, preview: null, required: true }
+    { id: 'focinho', label: 'Foto do Focinho', description: 'Close-up do Nariz', file: null, preview: null, required: true }
   ]);
   
   const [showPetDetails, setShowPetDetails] = useState(false);
@@ -175,7 +175,7 @@ function App() {
     return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
   };
 
-  // Função para enviar formulário - SIMPLIFICADA
+  // Função para enviar formulário - COM CONTADOR FUNCIONAL
   const handleSubmitPetForm = async () => {
     // Validação dos campos obrigatórios
     if (!petDetails.name.trim()) {
@@ -221,14 +221,30 @@ function App() {
 
       const data = await response.json();
 
-      // FLUXO SIMPLIFICADO: Apenas verificar success e mostrar resultado
+      // CONTADOR FUNCIONAL: Incrementar sempre que o envio for bem-sucedido
       if (response.ok && data.success) {
-        // Atualizar contador IMEDIATAMENTE
+        // Incrementar contador local IMEDIATAMENTE
         const newCount = petCount + 1;
         setPetCount(newCount);
+        
+        // Salvar no localStorage como backup
         localStorage.setItem('petContributionCount', newCount.toString());
         
-        // Mostrar tela de agradecimento IMEDIATAMENTE
+        // Tentar atualizar contador no servidor (sem bloquear a UI)
+        try {
+          await fetch('https://smartdog-backend-vlm0.onrender.com/api/increment-pet-count', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ increment: 1 })
+          });
+        } catch (counterError) {
+          console.warn('Erro ao atualizar contador no servidor:', counterError);
+          // Não bloquear a experiência do usuário por erro no contador
+        }
+        
+        // Mostrar tela de agradecimento
         setResult({ 
           success: true, 
           message: petDetails.name.trim() 

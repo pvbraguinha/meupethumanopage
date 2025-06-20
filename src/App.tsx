@@ -265,10 +265,6 @@ function App() {
             <h1 className="text-3xl md:text-4xl font-black text-gray-900 mb-6 tracking-tight">
               Smartdog
             </h1>
-            
-            <h2 className="text-xl md:text-2xl font-bold text-gray-700 mb-4">
-              O focinho do seu pet pode salvar uma família
-            </h2>
           </div>
 
           {/* Stats */}

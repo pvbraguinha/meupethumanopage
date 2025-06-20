@@ -357,7 +357,7 @@ function App() {
             <div className="bg-gradient-to-br from-blue-600 to-purple-700 rounded-3xl p-12 text-white shadow-2xl">
               <div className="text-center mb-12">
                 <h2 className="text-4xl font-bold mb-6">
-                  Meu pet vai ajudar!
+                  Seu pet pode ajudar?
                 </h2>
               </div>
 

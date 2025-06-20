@@ -53,7 +53,7 @@ function App() {
   // Upload states
   const [photos, setPhotos] = useState<PhotoSlot[]>([
     { id: 'frontal', label: 'Imagem Frontal', description: 'Rosto da frente', file: null, preview: null, required: true },
-    { id: 'focinho', label: 'Foto de Focinho', description: 'Close-up do Nariz', file: null, preview: null, required: true }
+    { id: 'focinho', label: 'Foto do focinho', description: 'Close-up do Nariz', file: null, preview: null, required: true }
   ]);
   
   const [showPetDetails, setShowPetDetails] = useState(false);

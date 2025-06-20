@@ -110,7 +110,7 @@ function App() {
       id: 1,
       title: "O focinho do seu pet pode salvar uma família",
       subtitle: "",
-      description: "Envie duas fotos do seu pet e ajude a salvar animais perdidos. As imagens vão treinar a nossa IA que reconhece focinhos com alta precisão. Nosso objetivo é tornar essa tecnologia gratuita para ONGs, facilitando o reencontro entre cães, gatos e suas famílias.",
+      description: "Envie duas fotos do seu pet e ajude a salvar animais perdidos.",
       status: 'in-progress',
       icon: <Camera className="w-8 h-8" />,
       color: 'from-blue-500 to-blue-600',
@@ -359,10 +359,6 @@ function App() {
                 <h2 className="text-4xl font-bold mb-6">
                   Meu pet vai ajudar!
                 </h2>
-                
-                <p className="text-xl mb-10 leading-relaxed opacity-90">
-                  A sua ajuda pode salvar um animal perdido.
-                </p>
               </div>
 
               {/* Error Message */}

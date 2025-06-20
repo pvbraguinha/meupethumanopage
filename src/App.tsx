@@ -108,9 +108,9 @@ function App() {
   const roadmapPhases: RoadmapPhase[] = [
     {
       id: 1,
-      title: "Participe da campanha",
+      title: "O focinho do seu pet pode salvar uma família",
       subtitle: "",
-      description: "Ao fotografar o seu pet, você estará ajudando a resgatar o futuro de animais perdidos. As imagens enviadas serão usadas para treinar uma inteligência artificial capaz de reconhecer focinhos com alta precisão. Nosso objetivo é tornar essa tecnologia acessível e gratuita para ONGs, facilitando o reencontro entre cães, gatos e suas famílias.",
+      description: "Envie duas fotos do seu pet e ajude a salvar animais perdidos. As imagens vão treinar a nossa IA que reconhece focinhos com alta precisão. Nosso objetivo é tornar essa tecnologia gratuita para ONGs, facilitando o reencontro entre cães, gatos e suas famílias.",
       status: 'in-progress',
       icon: <Camera className="w-8 h-8" />,
       color: 'from-blue-500 to-blue-600',
@@ -361,7 +361,7 @@ function App() {
             <div className="bg-gradient-to-br from-blue-600 to-purple-700 rounded-3xl p-12 text-white shadow-2xl">
               <div className="text-center mb-12">
                 <h2 className="text-4xl font-bold mb-6">
-                  Faça Parte dessa campanha
+                  Meu pet vai ajudar!
                 </h2>
                 
                 <p className="text-xl mb-10 leading-relaxed opacity-90">
